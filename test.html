@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>자바스크립트</title>
+		<style>
+			div{
+				background-color: #eee;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>자바스크립트의 목적</h1>
+		<button>확인</button>
+		<p></p>
+		<script>
+			document.querySelector('button').onclick = function() {
+				if(confirm('궁금하십니까?')) {
+					document.querySelector('p').innerHTML = '사용자들에게 특별한 경험을 제공';
+				}
+			}
+		</script>
+	</body>
+</html>
