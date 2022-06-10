@@ -13,9 +13,9 @@ console.log(value >= 10); // true
 console.log(value % 1 === 0); //true
 
 // 10 이상의 정수가 맞는지를 체크하려면?
-// 저 위의 두 상태가 ture여야함
+// 저 위의 두 상태가 true여야함
 
-console.log(value >= 10 && value % 1 === 0) // ture
+console.log(value >= 10 && value % 1 === 0) // true
 
 
 let input = 'y';
@@ -26,10 +26,10 @@ console.log(input === 'y'); // true
 console.log(input ==='Y'); // false
 console.log(input === 'Yes'); // false
 
-console.log(input === 'y' || input === 'Y') // ture
-console.log(input === 'y' || input === 'Y' || input === 'Yes') // ture
-console.log(input === 'y' || 'Y' || 'Yes') // ture 좋지 않은 코드이므로 사용하지 말 것
-console.log(input === ('y' || 'Y' || 'Yes')) // ture 좋지 않은 코드이므로 사용하지 말 것
+console.log(input === 'y' || input === 'Y') // true
+console.log(input === 'y' || input === 'Y' || input === 'Yes') // true
+console.log(input === 'y' || 'Y' || 'Yes') // true 좋지 않은 코드이므로 사용하지 말 것
+console.log(input === ('y' || 'Y' || 'Yes')) // true 좋지 않은 코드이므로 사용하지 말 것
 
 
 

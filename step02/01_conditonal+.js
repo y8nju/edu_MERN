@@ -1,4 +1,4 @@
-
+// 01_coditional.js 👉 let으로 변수 선언
 
 let time = 657; // 주차한 시간
 let price;

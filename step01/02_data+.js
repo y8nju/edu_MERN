@@ -9,6 +9,6 @@ console.log('432' == 432); // true
 console.log(typeof 'true'); // string
 console.log('true' === true); // false: string === boolean
 console.log('true' == true); // false: NaN == 1
-console.log('1' == true); // ture: 1 == 1
+console.log('1' == true); // true: 1 == 1
 console.log(+'1' == +true); // true: 1 == 1
 console.log(+'true'); // NaN

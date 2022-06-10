@@ -10,7 +10,7 @@ console.log(+str);
 console.log(typeof (+str)); // number
 // 숫자로 구성된 문자열 앞에 +를 붙이면 숫자열로 타입 변환
 console.log( +true ); // 1
-//ture => 1
+//ttue => 1
 // false => 0
 
 let str2 = '062-720-4800';
