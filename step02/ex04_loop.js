@@ -34,25 +34,12 @@ while(input !== -1) {
             // Lv Cut
             // 해당 레벨까지 올라가는데 필요한 경험치?
             let lv = read.question('Input Leve About: ');
-            if(lv == 1) {
-              console.log(`Lv1까지 필요한 금액은 ${lv1}원입니다`)
-            } else if(lv == 2) {
-              console.log(`Lv2까지 필요한 금액은 ${lv2}원입니다`)
-            } else if(lv == 3) {
-              console.log(`Lv3까지 필요한 금액은 ${lv3}원입니다`)
-            } else if(lv == 4) {
-              console.log(`Lv4까지 필요한 금액은 ${lv4}원입니다`)
-            } else if(lv == 5) {
-              console.log(`Lv5까지 필요한 금액은 ${lv5}원입니다`)
-            } else if(lv == 6) {
-              console.log(`Lv6까지 필요한 금액은 ${lv6}원입니다`)
-            } else if(lv == 7) {
-              console.log(`Lv7까지 필요한 금액은 ${lv7}원입니다`)
-            } else if(lv == 8) {
-              console.log(`Lv8까지 필요한 금액은 ${lv8}원입니다`)
-            } else if(lv == 9) {
-              console.log(`Lv9까지 필요한 금액은 ${lv9}원입니다`)
+            let total = 0;
+            for(let vip=1; vip <=lv; vip++) {
+                let exp = vip**2 * 10000;
+                total +=exp;
             }
+            console.log(`${lv}가 되기 위한 누적 금액: ${total}`)
             break;
         case 1:
             let yourExp = read.question('Input Your Total Exp: ');
