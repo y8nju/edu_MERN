@@ -20,6 +20,12 @@ for( console.log('반복시작'); x > 0 ; console.log('한 회전 끝')) {
 		x *= -2;
 	}
 }
+
+for 루프의 각 항은 필수가 아니라 옵션
+for ( ; x>0; console.log('한 회전 끝');) {
+
+}
+
  */
 
 let cnt;
@@ -27,3 +33,13 @@ for (cnt = 1; cnt <=5; cnt++) {
 	console.log('to do job' + cnt)
 }
 console.log(cnt);
+
+
+// 대표적인 상황이 정해진 횟수만큼의 반복처리에 용이
+console.log(2**10); // 1024
+
+let result = 1;
+for(let c=1; c<=10; c++) {
+	result *= 2;
+}
+console.log(result);

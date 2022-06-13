@@ -35,7 +35,7 @@ while(input !== -1) {
             // 해당 레벨까지 올라가는데 필요한 경험치?
             let lv = read.question('Input Leve About: ');
             let total = 0;
-            for(let vip=1; vip <=lv; vip++) {
+            for(let vip=1; vip <=lv-1; vip++) {
                 let exp = vip**2 * 10000;
                 total +=exp;
             }
