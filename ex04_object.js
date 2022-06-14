@@ -1,4 +1,4 @@
-/* 
+/*
 	point라는 변수에  객체를 할당하세요
 	해당 객체는 아래와 같은 밸류형 프로퍼티를 가지고 있습니다
 	x : number(임의)
@@ -9,15 +9,15 @@
 		point.move(10, -5);
 	- console.log(point.x, point.y); // 10 -5
 	- quardant() : return number (사분면 구하기)
-	- rangeToZero(): return number // 원점 Math.sqrt() 👈🏻 루트
-	- rotate(axis) : return X, 
+	- rangeToZero(): return number // 원점까지의 거리 구하기 Math.sqrt() 👈🏻 루트
+	- rotate(axis) : return X,
 		// point -> (3, 4)
-		//point.rotate('x') 
+		//point.rotate('x')
 		// point -> (3, -4)
 */
 
 let point = {
-	x : 2, 
+	x : 2,
 	y : 3,
 	move: function(tx, ty) {
 		this.x = tx;
@@ -40,17 +40,25 @@ let point = {
 		}
 		return ret;
 	},
+	rangeToZero: function(zX = 0, zY = 0) {
+		let calc = Math.sqrt((zX-this.x)**2 + (zY-this.y)**2)
+		return calc;
+	},
 	rotate: function(axis) {
 		if(axis === 'x') {
-			
+			this.y = -(this.y);
 		}else {
-			
+			this.x = -(this.x);
 		}
 	}
 }
-console.log(point.quardant());
-console.log(point.x, point.y);
+// 포인트 이동
 point.move(4, -3);
 console.log(point.x, point.y);
+// 사분면 출력
+console.log(point.quardant());
+// 축 회전
 point.rotate('x');
 console.log(point.x, point.y);
+// 원점과의 거리
+console.log(point.rangeToZero());
