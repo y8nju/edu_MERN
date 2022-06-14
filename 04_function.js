@@ -33,3 +33,7 @@ let countDivisor = (n) => {
 console.log(countDivisor(15)) // 4
 
 console.log('=========================');
+
+
+let plus = (n1, n2) => n1 + n2;
+plus(2, 3); //4

@@ -23,6 +23,7 @@ console.log(typeof display) //function
 let fn = function() {
     console.log('function made by expression');
 }
+// 변수 fn은 함수의 기능을 수행한다
 fn(); // function made by expression
 console.log(typeof fn)
 
