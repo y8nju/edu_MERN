@@ -1,4 +1,4 @@
-/* 
+/*
 	체스 참고: https://ko.wikipedia.org/wiki/%EC%B2%B4%EC%8A%A4?tableofcontents=0
 	좌표 8, 8( 0-7, 0-7)
 	=============================
@@ -19,33 +19,40 @@
 */
 
 function Bishop(x, y, color) {
-	// 좌표 0-7 안에서만 움직인다요
-	if(this.color === 'undefined') {
-		return 'B'
-	}
-}
-Bishop.prototype.move = function(tx, ty) {
-	this.x = tx;
-	this.y = ty;
-}
-Bishop.prototype.isMoveable = function(tx, ty) {
-	this.x = tx;
-	this.y = ty;
-	// 같은 수로만 증감시 움직일 수 있다요
-	// if(this.x === tx++ && this.y === ty++) {
-	// 	return true;
-	// } else if (this.x === tx-- && this.y === ty--) {
-		
-	// }
-
-}
-Bishop.prototype.color = function() {
-
+  // 좌표 0-7 안에서만 움직인다요
+  this.x = 0;
+  this.y = 0
+  if (!(this.x + x >= 0 && this.x + x <= 7 && this.y + y >= 0 && this.y + y <= 7)) {
+    console.log('좌표는 0과 7을 벗어날 수 없습니다')
+  } else {
+    this.x = this.x + x;
+    this.y = this.y + y;
+  };
+  this.color = color ?? 'B';
 }
 
-/* 
+
+Bishop.prototype.move = function(tx, ty, color) {
+  this.x = tx;
+  this.y = ty;
+	this.color = color ?? this.color;
+	return console.log(this.x = tx, this.y = ty, this.color)
+}
+Bishop.prototype.isMoveable = function(tx, ty, color) {
+	this.color = color ?? this.color;
+  if (!(this.x - tx === this.y - ty)) {
+    return console.log('이동할 수 없습니다');
+  } else {
+    return console.log(this.x = tx, this.y = ty, this.color)
+  }
+}
+
+/*
 new Bishop(3, 1);
 new Bishop(3, 1, 'W');
 // 3번째 값이 안들어오면 default 'B'
  */
-
+let test = new Bishop(0, 0, 'W');
+console.log(test);
+test.move(3, 4);
+test.isMoveable(3, 5);
