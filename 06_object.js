@@ -20,3 +20,17 @@ console.log(coke.price); // 1200
 console.log(typeof coke) // object
 console.log(typeof coke.price + '/' + coke.price); // number/1200
 console.log(typeof coke['product'] + '/' + coke['product']); // string/Coke
+
+console.log('==================');
+
+let human = {
+	nick : 'aru',
+	hobby1: 'sleep',
+	hobby2: 'handmade',
+	hobby3: 'trable'
+};
+
+console.log(human.hobby1);
+for(let i = 1; i <= 3; i++) {
+	console.log(human['hobby'+i]);
+};
