@@ -20,13 +20,13 @@ console.log(panel);
 let tx = 2;
 let ty = 4;
 console.log(panel[tx][ty]);
-// 여기에서는 tx가 y이다 
+// 여기에서는 tx가 y이다
 // 해당 좌표 x축에 7이 있는지 체크
 // y축이 고정
 for(let rx = 0; rx<10; rx++) {
 	console.log(panel[ty][rx]);
 }
-/* 
+/*
 위와 동일하게 작동
 for(let ry=0; ry<10; ry++) {
 	for(let rx = 0; rx< 10; rx++){
@@ -38,11 +38,11 @@ for(let ry=0; ry<10; ry++) {
  */
 // 해당 좌표 y축에 7이 있는지 체크
 // x축이 고정
-for(let ry = 0; ry<10; ry++) {
-	console.log(panel[ry][tx]);
-}
-
-
-for(let num = 0; num <10; num++) {
-	if()
-}
+// for(let ry = 0; ry<10; ry++) {
+// 	console.log(panel[ry][tx]);
+// }
+//
+//
+// for(let num = 0; num <10; num++) {
+// 	if()
+// }

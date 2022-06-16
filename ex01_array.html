@@ -3,32 +3,108 @@
 
 <head>
 	<style>
+		* {
+			box-sizing: border-box;
+			margin: 0;
+		}
 		:root {
 			--length: 3rem;
+			--gray: 0, 0%, 74%;
 		}
-		table {
-			font-family: arial, sans-serif;
-			border-collapse: collapse;
-			margin: 0 auto;
+		body {
+			height: 100vh;
+			overflow: hidden;
+			box-sizing: border-box;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			background-color: #f9f9f9;
 		}
 
-		td,
-		th {
+		/* table */
+		table {
+			border-collapse: collapse;
+			background-color: #fff;
+		}
+		td {
 			border: 1px solid #dddddd;
 			text-align: center;
 			width: var(--length);
 			height: var(--length);
 		}
 		td:hover {
-			background-color: rgb(245, 245, 245);
+			background-color: hsla(var(--gray), 20%);
+			border: 1.5px solid hsla(var(--gray));
 			cursor: pointer;
+		}
+		td.active {
+			background-color: hsla(var(--gray), 20%);
+			border: 1.5px solid hsla(var(--gray));
+		}
+
+		/* resultWrap */
+		.resultWrap {
+			margin-bottom: 2rem;
+			border-top: 1px solid #aaa;
+			border-bottom: 1px solid #aaa;
+		}
+		.resultWrap .row {
+			height: 2.4rem;
+			display: flex;
+			border-bottom: 1px solid #ccc;
+		}
+		.resultWrap .row:last-child {
+			border-bottom: none;
+		}
+		.resultWrap .th {
+			font-weight: bold;
+			background-color: #ddd;
+			border-top: none;
+			text-align: center;
+		}
+		.resultWrap .tit {
+			width: 30%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-weight: bold;
+			background-color: #ddd;
+			border-right: 1px solid #ccc;
+		}
+		.resultWrap .result {
+			width: 70%;
+			display: flex;
+			align-items: center;
+			padding: 0 1rem;
+			font-size: .8rem;
 		}
 	</style>
 </head>
 
 <body>
+	<div class="resultWrap">
+		<div class="row th">
+			<span class="tit">현재 좌표</span>
+			<span class="result"></span>
+		</div>
+		<div class="row horizontal">
+			<span class="tit">수평 체크</span>
+			<span class="result"></span>
+		</div>
+		<div class="row vertical">
+			<span class="tit">수직 체크</span>
+			<span class="result"></span>
+		</div>
+		<div class="row diagonal">
+			<span class="tit">대각선 체크</span>
+			<span class="result"></span>
+		</div>
+
+	</div>
+
 	<script>
-		let panel = new Array(10);  // 
+		let panel = new Array(10); //
 		//console.log(panel.length);
 		for (let idx = 0; idx < panel.length; idx++) {
 			panel[idx] = new Array(10);
@@ -40,30 +116,77 @@
 			// console.log(row, typeof row, col, typeof col);
 			panel[row][col] = 7;
 		}
+
 		document.write("<table>");
 		for (let ty = 0; ty < 10; ty++) {
 			document.write("<tr/>");
 			for (let tx = 0; tx < 10; tx++) {
-				document.write(`<td onclick="check(${ty}, ${tx});">${panel[ty][tx] ?? "-"}</td>`);
+				document.write(
+					`<td onclick="check(${ty}, ${tx});">${panel[ty][tx] ?? "·"}</td>`);
 			}
 			document.write("</tr>");
 		}
-		document.write("<table>");
-	   
+		document.write("</table>");
+		let table = document.querySelector('table');
+		let resultWrap = document.querySelector('.resultWrap');
+		let tableW = table.offsetWidth;
+		resultWrap.style.width = tableW + 'px';
+
 		function check(ty, tx) {
-			alert(ty+","+tx);
+			alert(ty + "," + tx);
 			// 아래에 작성
-			console.log('수평체크');
-			for(let ry=0; ry<10; ry++) {
-				for(let rx = 0; rx< 10; rx++){
-					if(Math.abs(rx-tx) !== 0 && Math.abs(ry-ty) === 0){
-						if(panel[ry][rx] === 7) {
+			document.querySelector('.th .result').innerText = `${ty}, ${tx}`
+
+			console.log('수평 확인')
+			for (let ry = 0; ry < 10; ry++) {
+				for (let rx = 0; rx < 10; rx++) {
+					if (Math.abs(rx - tx) !== 0 && Math.abs(ry - ty) === 0) {
+						if (panel[ry][rx] === 7) {
 							console.log(`${ry}, ${rx}`)
+							document.querySelector('.horizontal .result').textContent = (`${ry}, ${rx}`)
 						}
 					}
 				}
 			}
+			console.log('수직 확인')
+			for (let ry = 0; ry < 10; ry++) {
+				for (let rx = 0; rx < 10; rx++) {
+					if (Math.abs(ry - ty) !== 0 && Math.abs(rx - tx) === 0) {
+						if (panel[ry][rx] === 7) {
+							console.log(`${ry}, ${rx}`)
+							document.querySelector('.vertical .result').textContent = (`${ry}, ${rx}`)
+						}
+					}
+				}
+			}
+			console.log('대각선 확인')
+			for (let ry = 0; ry < 10; ry++) {
+				for (let rx = 0; rx < 10; rx++) {
+					if (Math.abs(ry - ty) === Math.abs(rx - tx)) {
+						if (panel[ry][rx] === 7) {
+							console.log(`${ry}, ${rx}`)
+							document.querySelector('.diagonal .result').textContent = (`${ry}, ${rx}`)
+						}
+					}
+				}
+			}
+
 		}
+
+		let td = document.querySelectorAll('td');
+		for (let i = 0; i < td.length; i++) {
+
+			td[i].addEventListener("click", function(){
+				// td[i].classList.remove('active');
+				// 다른 td 누르면 해당 클래스 뺏기
+				if(this.classList.contains('active')){
+					this.classList.remove('active');
+				} else {
+					this.classList.add('active');
+				}
+			});
+		}
+
 	</script>
 </body>
 
