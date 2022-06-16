@@ -15,12 +15,15 @@ Circle.prototype.chage = function(radius) {
 Circle.prototype.center = { x: 0, y: 0};
 Circle.prototype.radius = 1;
 
+const c = new Circle();
+console.log('change' in c); // 뒤에 있는 객체가 앞에 있는 프로퍼티가 있는가?
+
 let c1 = new Circle();
 // console.log(c1); //Circle {}
 // console.log(c1.__proto__); 
 // {
 //     getArea: [Function (anonymous)],
-//     chage: [Function (anonymous)],
+//     change: [Function (anonymous)],
 //     center: { x: 0, y: 0 },
 //     radius: 1
 //   }
