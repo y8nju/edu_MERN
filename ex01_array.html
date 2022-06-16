@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<style>
+		:root {
+			--length: 3rem;
+		}
+		table {
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			margin: 0 auto;
+		}
+
+		td,
+		th {
+			border: 1px solid #dddddd;
+			text-align: center;
+			width: var(--length);
+			height: var(--length);
+		}
+		td:hover {
+			background-color: rgb(245, 245, 245);
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+		let panel = new Array(10);  // 
+		//console.log(panel.length);
+		for (let idx = 0; idx < panel.length; idx++) {
+			panel[idx] = new Array(10);
+		}
+		// console.log(panel[0] === panel[1]);
+		for (let cnt = 1; cnt <= 20; cnt++) {
+			let row = Math.floor(Math.random() * 10);
+			let col = Math.floor(Math.random() * 10);
+			// console.log(row, typeof row, col, typeof col);
+			panel[row][col] = 7;
+		}
+		document.write("<table>");
+		for (let ty = 0; ty < 10; ty++) {
+			document.write("<tr/>");
+			for (let tx = 0; tx < 10; tx++) {
+				document.write(`<td onclick="check(${ty}, ${tx});">${panel[ty][tx] ?? "-"}</td>`);
+			}
+			document.write("</tr>");
+		}
+		document.write("<table>");
+	   
+		function check(ty, tx) {
+			alert(ty+","+tx);
+			// 아래에 작성
+			console.log('수평체크');
+			for(let ry=0; ry<10; ry++) {
+				for(let rx = 0; rx< 10; rx++){
+					if(Math.abs(rx-tx) !== 0 && Math.abs(ry-ty) === 0){
+						if(panel[ry][rx] === 7) {
+							console.log(`${ry}, ${rx}`)
+						}
+					}
+				}
+			}
+		}
+	</script>
+</body>
+
+</html>
