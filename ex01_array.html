@@ -26,6 +26,7 @@
 		table {
 			border-collapse: collapse;
 			background-color: #fff;
+			position: relative;
 		}
 		td {
 			border: 1px solid #dddddd;
@@ -35,12 +36,10 @@
 		}
 		td:hover {
 			background-color: hsla(var(--gray), 20%);
-			border: 1.5px solid hsla(var(--gray));
 			cursor: pointer;
 		}
 		td.active {
 			background-color: hsla(var(--gray), 20%);
-			border: 1.5px solid hsla(var(--gray));
 		}
 
 		/* resultWrap */
@@ -48,6 +47,7 @@
 			margin-bottom: 2rem;
 			border-top: 1px solid #aaa;
 			border-bottom: 1px solid #aaa;
+			position: relative;
 		}
 		.resultWrap .row {
 			height: 2.4rem;
@@ -104,7 +104,7 @@
 	</div>
 
 	<script>
-		let panel = new Array(10); //
+		let panel = new Array(10);
 		//console.log(panel.length);
 		for (let idx = 0; idx < panel.length; idx++) {
 			panel[idx] = new Array(10);
@@ -119,7 +119,8 @@
 
 		document.write("<table>");
 		for (let ty = 0; ty < 10; ty++) {
-			document.write("<tr/>");
+			document.write("<tr>");
+			let each = panel[ty];
 			for (let tx = 0; tx < 10; tx++) {
 				document.write(
 					`<td onclick="check(${ty}, ${tx});">${panel[ty][tx] ?? "·"}</td>`);
@@ -127,6 +128,7 @@
 			document.write("</tr>");
 		}
 		document.write("</table>");
+
 		let table = document.querySelector('table');
 		let resultWrap = document.querySelector('.resultWrap');
 		let tableW = table.offsetWidth;
@@ -148,6 +150,33 @@
 					}
 				}
 			}
+			// for(let ry = 0; ry<10;ry++){
+			// 	console.log('위쪽 확인')
+			// 	for(let step =1;ty-step >= 0 ; step++){
+			// 		if (panel[ty-step][tx] === 7){ //타겟에서 열을 고정하고 행을 줄여서 7을 찾는다.
+			// 			console.log(ty-step, tx);
+			// 		};
+			// 	};
+			// 	console.log('대각선 우측 위 확인')
+			// 	for(let step=1; ; step++) {
+			// 		if(ty-step<0 || tx+step > 9) {
+			// 			break;
+			// 		}
+			// 		if(panel[ty-step][tx+step] === 7) {
+			// 			console.log(ty-step, tx+step);
+			// 		}
+			// 	}
+			// 	console.log('대각선 우측 아래 확인')
+			// 	for(let step=1; ; step++) {
+			// 		if(ty-step> 9 || tx+step > 9) {
+			// 			break;
+			// 		}
+			// 		if(panel[ty+step][tx+step] === 7) {
+			// 			console.log(ty-step, tx+step);
+			// 		}
+			// 	}
+			// }
+
 			console.log('수직 확인')
 			for (let ry = 0; ry < 10; ry++) {
 				for (let rx = 0; rx < 10; rx++) {
@@ -170,20 +199,15 @@
 					}
 				}
 			}
-
+			
 		}
 
 		let td = document.querySelectorAll('td');
 		for (let i = 0; i < td.length; i++) {
-
 			td[i].addEventListener("click", function(){
-				// td[i].classList.remove('active');
 				// 다른 td 누르면 해당 클래스 뺏기
-				if(this.classList.contains('active')){
-					this.classList.remove('active');
-				} else {
-					this.classList.add('active');
-				}
+				// td[i].classList.remove('active');
+				this.classList.toggle('active');
 			});
 		}
 

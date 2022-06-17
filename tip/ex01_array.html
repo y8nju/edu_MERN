@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let panel = [
+            [7, , 7, , , 7, , , , ,],
+            [7, , , 7, , 7, , , , ,],
+            [7, , 7, , , 7, , , , ,],
+            [7, , , , , 7, 7, , , ,],
+            [7, , 7, , , , , , 7, ,],
+            [, , , , , , 7, , , ,],
+            [, , , 7, , , 7, , , ,],
+            [, , , , 7, , 7, , , ,],
+            [, , , , , 7, , , 7, ,],
+            [, , 7, , , , 7, , , 7]
+        ];
+     
+        document.write("<table>");
+        for (let ty = 0; ty < 10; ty++) {
+            document.write("<tr>");
+            let each = panel[ty];
+            for (let tx = 0; tx < 10; tx++) {
+                document.write(`<td onclick="check(${ty}, ${tx});">${panel[ty][tx] ?? "-"}</td>`);
+            }
+            document.write("</tr>");
+        }
+        document.write("</table>");
+
+        //==================================================
+        function check(ty, tx) {
+            alert(ty + "," + tx);
+            // 위
+            for(let step=1; ty-step >=0 ; step++) {
+                if(panel[ty-step][tx] == 7) {
+                    console.log(ty-step, tx);
+                }
+            }
+            // 대각선 우측 위
+            for(let step=1;  ; step++) {
+                if( ty-step <0 || tx+step > 9) {
+                    break;
+                }
+                if(panel[ty-step][tx+step] == 7) {
+                    console.log(ty-step, tx+step);
+                }
+            }
+            // 대각선 우측 아래
+            for(let step=1;  ; step++) {
+                if( ty+step >9 || tx+step > 9) {
+                    break;
+                }
+                if(panel[ty+step][tx+step] == 7) {
+                    console.log(ty-step, tx+step);
+                }
+            }
+            /*
+            for(let i = ty-1; i>0; i--) {
+                if(panel[i][tx] === 7)
+            }
+            */
+ 
+
+            //==================================================
+        }
+    </script>
+</body>
+
+</html>

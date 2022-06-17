@@ -1,0 +1,97 @@
+<html>
+<head>
+    <style>
+        * {
+			box-sizing: border-box;
+			margin: 0;
+		}
+		:root {
+			--length: 3rem;
+			--gray: 0, 0%, 74%;
+		}
+		body {
+			height: 100vh;
+			overflow: hidden;
+			box-sizing: border-box;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			background-color: #f9f9f9;
+		}
+		/* table */
+		table {
+			border-collapse: collapse;
+			background-color: #fff;
+			position: relative;
+		}
+		td {
+			border: 1px solid #dddddd;
+			text-align: center;
+			width: var(--length);
+			height: var(--length);
+		}
+		td:hover {
+			background-color: hsla(var(--gray), 20%);
+			cursor: pointer;
+		}
+        /* user */
+		h2 {
+			margin-top: 2rem;
+			/* background-color: hsla(var(--gray), 50%); */
+			padding: 1rem 2rem;
+			border-radius: 2rem;
+			letter-spacing: .2rem;
+			line-height: 1;
+			/* border: 1px solid #dddddd; */
+            text-align: center;
+		}
+        h2+ h2 {
+            margin-top: 1rem;
+        }
+		h2 .tit {
+			color: #fff;
+		}
+    </style>
+     <script src="./othello.js"></script>
+</head>
+<body>
+    <div>
+      
+    </div>
+    <script>
+        const othello = new OthelloEngine();
+        othello.init();
+        display();
+
+        function display() {
+            let html = "";
+            html += "<table>";
+            for (let row = 0; row < 8; row++) {
+                html += "<tr>";
+                for (let col = 0; col < 8; col++) {
+                    html+= `<td onclick="handle(${row}, ${col});">${othello.panel[row][col] ?? " "}</td>`;
+                }
+                html += "</tr>";
+            }
+            html += "</table>";
+            html += `<h2> 현재유저 : ${othello.user}</h2>`;
+            let score =othello.getScore();
+            html += `<h2> ${score.userA} vs ${score.userB} </h2>`;
+            document.querySelector("div").innerHTML = html;
+        };
+
+        function handle(trow, tcol){
+            let rst = othello.isAble(trow, tcol);
+            alert(rst);
+            if(rst) {
+                othello.proceed(trow, tcol);
+                othello.switchUser();
+                display();
+            }
+        }
+       
+    </script>
+</body>
+
+</html>
