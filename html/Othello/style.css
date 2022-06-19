@@ -1,0 +1,122 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+:root {
+	--length: 3rem;
+	--black: 212, 33%, 18%;
+	--mainColor: 210, 13%, 91%;
+	--tableColor: 207, 65%, 97%;
+	--userAColor: 227, 69%, 58%;
+	--userBColor: 0, 55%, 54%;
+}
+body {
+	font-family: Pretendard, Arial, sans-serif;
+	height: 100vh;
+	overflow: hidden;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: hsl(var(--black));
+	background-color: hsla(var(--mainColor), 50%);
+}
+
+.userA {
+	background-color: hsla(var(--userAColor), 10%);
+	color: hsl(var(--userAColor));
+}
+.userB {
+	background-color: hsla(var(--userBColor), 10%);
+	color: hsl(var(--userBColor));
+}
+/* table */
+table {
+	border-collapse: collapse;
+	background-color: #fff;
+	border-radius: .2rem;
+	outline: 1rem solid #fff;
+	overflow: hidden;
+}
+
+td {
+	width: var(--length);
+	height: var(--length);
+	background-color: hsla(var(--mainColor), 30%);
+	text-align: center;
+	border: 2px solid #fff;
+	border-radius: .4rem;
+}
+
+td:not(.userA, .userB):hover {
+	background-color: hsl(var(--mainColor));
+	cursor: pointer;
+}
+
+/* user */
+.userInfo {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 3rem;
+	border-radius: .2rem;
+	background-color: #fff;
+	outline: 1rem solid #fff;
+}
+.userInfo .userContent {
+	width: 5rem;
+	height: 5rem;
+	position: relative;
+	font-size: 2.4rem;
+    font-weight: bold;
+	text-align: center;
+    line-height: 5rem;
+	border-radius: .2rem;
+}
+.userInfo .user {
+	width: 1.2rem;
+	height: 1.2rem;
+	position: absolute;
+	right: .2rem;
+	top: .2rem;
+	font-size: .8rem;
+	font-weight: normal;
+	border-radius: .2rem;
+	line-height: 1.2rem;
+	color: #000;
+	background-color: #fff;
+}
+.userScore {
+	align-self: flex-end;
+	line-height: 1;
+}
+.userScore div:first-child {
+	font-size: .9rem;
+	font-weight: bold;
+	text-align: right;
+	margin: 0 .2rem .6rem 0;
+}
+.userScore div:last-child {
+	padding: .2rem .3rem;
+    font-size: .9rem;
+	border-radius: 1rem;
+	background-color: hsla(var(--mainColor), 50%);
+}
+.userScore span {
+	display: inline-block;
+	padding: .2rem .8rem;
+	border-radius: 1rem;
+	color: hsla(var(--black), 70%);
+}
+.userScore span.userAScore {
+	margin-right: .2rem;
+}
+.userScore span.focus {
+	color: hsl(var(--black));
+	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 2px;
+}

@@ -1,0 +1,85 @@
+<html>
+<head>
+	<link rel="stylesheet" href="style.css">
+	 <script src="./othello.js"></script>
+</head>
+<body>
+	<div>
+	  
+	</div>
+	<script>
+		const othello = new OthelloEngine();
+		othello.init();
+		display();
+		changeUser();
+
+		function display() {
+			let html = "";
+			//userInfo
+			html += "<div class='userInfo'>";
+			html += `<div class="userContent"><span class="user">${othello.user}</span><span class="userName"><span></div>`;
+			
+			let score = othello.getScore();
+			html += `<div class='userScore'>
+				<div>USER SCORE</div>
+				<div><span class='userAScore'>USER A: ${score.userA}</span><span class='userBScore'>USER B: ${score.userB}</span></div>
+				</div>`;
+			html += "</div>";
+			//table
+			html += "<table>";
+			for (let row = 0; row < 8; row++) {
+				html += "<tr>";
+				for (let col = 0; col < 8; col++) {
+					html += `<td onclick="handle(${row}, ${col});">${othello.panel[row][col] ?? " "}</td>`;
+				}
+				html += "</tr>";
+			}
+			html += "</table>";
+			document.querySelector("div").innerHTML = html;
+			// style
+			let table = document.querySelector('table');
+			let userInfo = document.querySelector('.userInfo');
+			let tableW = table.offsetWidth;
+			userInfo.style.width = tableW + 'px';
+		};
+
+		function handle(trow, tcol){
+			let rst = othello.isAble(trow, tcol);
+			alert(rst);
+			if(rst) {
+				othello.proceed(trow, tcol);
+				othello.switchUser();
+				display();
+				changeUser();
+			}
+		}
+		// style
+		function changeUser() {
+			let userContent = document.querySelector('.userContent');
+			let userName = document.querySelector('.userName');
+			let userAScore = document.querySelector('.userAScore');
+			let userBScore = document.querySelector('.userBScore');
+			if(othello.user == -1) {
+				userName.innerText = 'A';
+				userContent.classList.toggle('userA');
+				userAScore.classList.add('focus');
+			}else if(othello.user == 1) {
+				userName.innerText = 'B';
+				userContent.classList.toggle('userB');
+				userBScore.classList.add('focus');
+			}
+			let tds = document.getElementsByTagName('td');
+			for (let td of tds) {
+				if(td.innerText == -1) {
+					td.innerText = 'A';
+					td.classList.toggle('userA')
+				} else if(td.innerText == 1) {
+					td.innerText = 'B';
+					td.classList.toggle('userB');
+				}
+			}
+      	}
+	</script>
+</body>
+
+</html>
