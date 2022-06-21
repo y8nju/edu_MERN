@@ -60,7 +60,7 @@ class Wall extends Rectangle {
 }
 class User extends Rectangle {
 	constructor() {
-		super(2, 370, 24,24);
+		super(6, 370, 24,24);
 	}
 	fly() {
 		super.translate(0, -8); 	// y축으로만 움직임
