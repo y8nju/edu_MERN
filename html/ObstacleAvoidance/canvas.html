@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		canvas {
+			border: 1px solid #3d596d;
+			background-color: #f3f6f8;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600px" height="400px"></canvas>
+	
+	<script src="game.js"></script>
+	<script>
+		const canvas = document.querySelector('canvas');
+		const ctx = canvas.getContext('2d');
+		ctx.fillRect(380, 300, 30, 30);
+
+		let r = new Rectangle(10, 10, 40, 100);
+		ctx.fillStyle = '#3d596d';
+		ctx.fillRect(r.x, r.y, r.w, r.h);	// x, y, width, height
+		
+		let r2 = new Rectangle(300, 70, 100, 40);
+		ctx.fillStyle = '#dc5034';
+		ctx.fillRect(...r2.toArray());
+
+		console.log(r.crashWith(r2));
+
+		// setInterval(function() {
+		// 	r2.translate(-5, 0);
+		// 	ctx.clearRect(0, 0, 600, 400);
+		// 	ctx.fillRect(...r2.toArray());
+		// }, 100);
+	</script>
+</body>
+</html>

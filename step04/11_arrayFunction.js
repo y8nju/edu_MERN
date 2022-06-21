@@ -26,3 +26,14 @@ numbers.forEach(function(val, idx){
 
 console.log(copy);
 console.log(total) */
+
+
+
+let pan = new Array(10)
+pan.fill(null);
+pan.forEach(function(val, idx, arr) {
+	arr[idx] = new Array(10);
+	arr[idx].fill(null);
+	// console.log(arr == pan);
+})
+console.log(pan);
