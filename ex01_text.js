@@ -18,12 +18,22 @@ const read = require('readline-sync');
 const words = [];   // 사용자가 입력한 단어를 저장할 용도
 console.log('WORD CONCAT !')
 while(true) {
-	// 마지막으로 입력한 단어를 출력'
 
 	words[0] = 'APPLE'  // 처음으로 출력되는 단어가 undefind이므로 고정시켜놓자
-   
 	let lastWord = words[words.length-1];
-	let input = read.question(lastWord + "->");
+	let input = read.question(lastWord + "-> ");
+	let inputText = input.toUpperCase();   // 입력값은 그냥 대문자로 만들자
+	
+	if(!(words.includes(inputText))){	// 입력값이 배열의 요소와 겹치지 않으면
+		if(inputText.startsWith(lastWord.slice(-1))) {
+			words.push(inputText) // 입력 값을 배열에 넣자
+		}else {
+			console.log('응?');
+		}
+	}else {
+		console.log('이미 썼다요');
+	}
+
 	// input의 첫글자가 lastWord 마지막 문자랑 같은지
 	// lastWord[lastWord.length-1]이 마지막 문자값
 	// lastWord.charAt(lastWord.length-1);
@@ -32,15 +42,7 @@ while(true) {
 	// input.startsWith(??)
 	// input[0] == ??  / input.charAt(0) ===?
 	// input.substring(0, 1) === ?'
-
-	let inputText = input.toUpperCase();   // 입력값은 그냥 대문자로 만들자
-	console.log(inputText)
-	// console.log(words.includes(inputText));
-	if(input.startsWith(lastWord.slice(-1))) {
-		words.push(inputText) // 입력 값을 배열에 넣자
-	}else {
-		
-	}
+	
 
 }
 
