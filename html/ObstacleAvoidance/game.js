@@ -17,7 +17,7 @@ class Rectangle {
 		this.x += tx;
 		this.y += ty;
 	}
-	crashWith(other) {
+	crashWith(other) {	// 다른객체와의 충돌 조건
 		// 매개변수로 받은 other로 Rectangle 객체가 들어온다고 생각
 		/* 
 			this의 bottomY(👉y+h)이 other의 topY 보다 작으면 false

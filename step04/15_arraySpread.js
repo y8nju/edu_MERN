@@ -22,3 +22,5 @@ function test(a,b,c) {
 
 test(arr); // a = 1,32,4,5, b = undefined. c = undefined
 test(...arr);	// a = 1, b = 32. c = 4
+
+// concat과 같은 효과
