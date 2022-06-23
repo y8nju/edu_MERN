@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        canvas {
-            background: rgb(11, 0, 0);
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Matrix</title>
+	<style>
+		canvas {
+			background: rgb(11, 0, 0);
+		}
+	</style>
 </head>
 <body>
-    <canvas width="'400" height="250"></canvas>
-    <script>
-        const ctx = document.querySelector('canvas').getContext('2d');
-        let red = 12;
-        let green = 255;
-        let blue = 40;
-        setInterval(function(){
-            ctx.clearRect(0, 0, 400, 250);
-            ctx.font = '20px Lucida Blackletter'
-            ctx.fillStyle = `#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`;
-            ctx.fillText('F', 50, 50);
-            red += 15;
-            red %= 255;
-            blue += 15;
-            blue %= 255;
-        },200)
-    </script>
+	<canvas width="'400" height="250"></canvas>
+	<script>
+		// 매트릭스 구현해보자
+		const ctx = document.querySelector('canvas').getContext('2d');
+		let red = 12;
+		let green = 255;
+		let blue = 40;
+		setInterval(function(){
+			ctx.clearRect(0, 0, 400, 250);
+			ctx.font = '20px Lucida Blackletter'
+			ctx.fillStyle = `#${red.toString(16)}${green.toString(16)}${blue.toString(16)}`;
+			ctx.fillText('F', 50, 50);
+			red += 15;
+			red %= 255;
+			blue += 15;
+			blue %= 255;
+		},200)
+
+		// Math class, String class를 이용해서
+		// 알파벳 대문자 랜덤 생성,....ㅎ
+
+		for(let c = 1; c<=20; c++) {
+			let d = 65 + Math.floor((Math.random()*26));
+			let sd = String.fromCharCode(d);
+			console.log(sd);
+			break;
+		}
+	</script>
 </body>
 </html>
