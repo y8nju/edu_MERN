@@ -5,22 +5,105 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Date</title>
 	<style>
-		input {
-
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
 		}
+		:root {
+			--black: 199, 18%, 33%;
+			--blue: 227, 69%, 58%;
+			--bgColor: 210, 13%, 91%;
+			--userBColor: 0, 55%, 54%;
+		}
+		body {
+			font-family: Pretendard, Arial, sans-serif;
+			height: 100vh;
+			overflow: hidden;
+			box-sizing: border-box;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			background-color: hsla(var(--bgColor), 50%);
+		}
+		.container {
+			width: 22rem;
+			border-radius: .2rem;
+			background-color: #fff;
+		}
+		hr {
+			width: calc(100% - 1.4rem);
+			height: 1px;
+			border: 0;
+			background-color: hsla(var(--black), 30%);
+			margin: 0 auto;
+		}
+		.content {
+			padding: 1rem;
+		}
+		.content.nowDate {
+			font-size: .8rem;
+			line-height: 1;
+			text-align: right;
+			padding-top: 1.1rem;
+			color: hsl(var(--black));
+		}
+		.content.calWrap {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		input, button {
+			padding: .2rem .4rem;
+			border-radius: .2rem;
+			line-height: 1;
+		}
+		input {
+			color: hsl(var(--black));
+			border: 1px solid hsla(var(--black), 70%);
+			background-color: hsla(var(--bgColor), 10%);
+		}
+		input:focus, button:focus {
+			outline: 2px solid hsla(var(--blue), 30%);
+		}
+		button {
+			color: hsl(var(--blue));
+			border: 1px solid hsla(var(--blue), 50%);
+			background-color: hsla(var(--blue), 10%);
+		}
+		
 	</style>
 </head>
 <body>
-	<div style="text-align: right;"></div>
-	<hr />
-	<div>
-		<input type="date"/> ~ <input type="date" /> 
-		<button onclick="set();">30일 </button>
-		<!-- 버튼 누르면 첫번째 input이 30일 전으로  -->
+	<div class="container">
+		<div class="nowDate content"></div>
+		<hr/>
+		<div class="calWrap content">
+			<input type="date"/> ~ <input type="date" /> 
+			<button onclick="set();">-30일</button>
+			<!-- 버튼 누르면 첫번째 input이 30일 전으로  -->
+		</div>
 	</div>
 
 	<script>
 		let inputs = document.querySelectorAll('input');
+		!function() {
+			setInterval(function() {
+				let time = new Date().toTimeString();
+				document.querySelector('.nowDate').innerHTML = time;
+				// 최초 1개만 선택하는 선택자
+			}, 1000);
+			
+			let today = new Date();
+			let tDate = ('0' + today.getDate()).slice(-2);	// 일 
+			let tMon = ('0' + (today.getMonth()+1)).slice(-2);	// 월
+			let tYear = (today.getFullYear());	// 년도
+			inputs[1].value = `${tYear}-${tMon}-${tDate}`
+			
+			// value는 YYYY-MM-DD
+			// Date를 이용해서 이 프로그램이 작동한 날짜로 설정되게 작업
+		}();
 
 		function set() {
 			/* 
@@ -29,29 +112,13 @@
 				만들어진 Date로 년도, 월, 일을 추출해서
 				'YYYY-MM-DD'를 만들자
 			*/
-			// let prev60 = new Date(Date.now() - (1000*60*60*24*60));
-			let input1Date= new Date(inputs[1].value)
-			let prev30 = new Date(input1Date - (1000*60*60*24*30));
-			console.log(prev30)
-			inputs[0].value = prev30;
+			let input1 = Date.parse(inputs[1].value)
+			let prev30 = new Date(input1-(1000*60*60*24*30));
+			let pDate = ('0' + prev30.getDate()).slice(-2);	// 일 
+			let pMon = ('0' + (prev30.getMonth()+1)).slice(-2);	// 월
+			let pYear = (prev30.getFullYear());	// 년도
+			inputs[0].value = `${pYear}-${pMon}-${pDate}`
 		}
-		!function() {
-			setInterval(function() {
-				let time = new Date().toTimeString();
-				document.querySelector('div').innerHTML = time;
-				// 최초 1개만 선택하는 선택자
-			}, 1000);
-			
-			let today = new Date();
-			let tDate = ('0' + today.getDate()).slice(-2);	// 일 
-			let tMonth = ('0' + (today.getMonth()+1)).slice(-2);	// 월
-			let tYear = (today.getFullYear());	// 년도
-			inputs[1].value = `${tYear}-${tMonth}-${tDate}`
-			
-
-			// value는 YYYY-MM-DD
-			// Date를 이용해서 이 프로그램이 작동한 날짜로 설정되게 작업
-		}();
 	</script>
 </body>
 </html>
