@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Date</title>
+	<style>
+		input {
+
+		}
+	</style>
+</head>
+<body>
+	<div style="text-align: right;"></div>
+	<hr />
+	<div>
+		<input type="date"/> ~ <input type="date" /> 
+		<button onclick="set();">30일 </button>
+		<!-- 버튼 누르면 첫번째 input이 30일 전으로  -->
+	</div>
+
+	<script>
+		let inputs = document.querySelectorAll('input');
+
+		function set() {
+			/* 
+				현재의 input[1].value 를 뽑아서 이걸 가지고 Date
+				그 Date time에서 30일을 빼서 그 결과로 다시 Date를 만들고
+				만들어진 Date로 년도, 월, 일을 추출해서
+				'YYYY-MM-DD'를 만들자
+			*/
+			// let prev60 = new Date(Date.now() - (1000*60*60*24*60));
+			let input1Date= new Date(inputs[1].value)
+			let prev30 = new Date(input1Date - (1000*60*60*24*30));
+			console.log(prev30)
+			inputs[0].value = prev30;
+		}
+		!function() {
+			setInterval(function() {
+				let time = new Date().toTimeString();
+				document.querySelector('div').innerHTML = time;
+				// 최초 1개만 선택하는 선택자
+			}, 1000);
+			
+			let today = new Date();
+			let tDate = ('0' + today.getDate()).slice(-2);	// 일 
+			let tMonth = ('0' + (today.getMonth()+1)).slice(-2);	// 월
+			let tYear = (today.getFullYear());	// 년도
+			inputs[1].value = `${tYear}-${tMonth}-${tDate}`
+			
+
+			// value는 YYYY-MM-DD
+			// Date를 이용해서 이 프로그램이 작동한 날짜로 설정되게 작업
+		}();
+	</script>
+</body>
+</html>
