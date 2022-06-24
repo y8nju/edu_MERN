@@ -1,0 +1,9 @@
+국립국어원 표준국어 대사전
+https://stdict.korean.go.kr/main/main.do
+
+http://127.0.0.1
+
+
+https://stdict.korean.go.kr/api/search.do?certkey_no=4038&key=2A480A7CAEDBE4890EDB7617D52911DD&type_search=search&req_type=json&q=
+
+통신에 사용되는 함수가 browser에서만 작동하는 host 함수
