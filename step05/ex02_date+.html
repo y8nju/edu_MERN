@@ -82,43 +82,41 @@
 		<div class="calWrap content">
 			<input type="date"/> ~ <input type="date" /> 
 			<button onclick="set();">-30일</button>
-			<!-- 버튼 누르면 첫번째 input이 30일 전으로  -->
 		</div>
 	</div>
 
 	<script>
 		let inputs = document.querySelectorAll('input');
+		function set() {
+			inputs[0].value = inputs[1].value;
+        	let end = new Date(inputs[1].value);
+			end.setDate(end.getDate()-30);
+			let year = end.getFullYear();
+			let mon = end.getMonth()+1;
+			let date = end.getDate();
+			let toValue = `${year}-${('0'+mon).slice(-2)}-${('0'+date).slice(-2)}`
+			inputs[0].value = toValue;
+
+			// let start = new Date(end.getTime()-(1000*60*60*24*30))
+			// let date = today.getDate()	// 일 
+			// let mon =today.getMonth()+1	// 월
+			// let year = today.getFullYear();	// 년도
+			// inputs[1].value = `${year}-${mon < 10 ? '0'+ mon : mon}-${date <10 ? '0' + date : date}`
+		}	
 		!function() {
 			setInterval(function() {
 				let time = new Date().toTimeString();
 				document.querySelector('.nowDate').innerHTML = time;
-				// 최초 1개만 선택하는 선택자
 			}, 1000);
 			
 			let today = new Date();
-			let tDate = ('0' + today.getDate()).slice(-2);	// 일 
-			let tMon = ('0' + (today.getMonth()+1)).slice(-2);	// 월
-			let tYear = (today.getFullYear());	// 년도
-			inputs[1].value = `${tYear}-${tMon}-${tDate}`
-			
-			// value는 YYYY-MM-DD
-			// Date를 이용해서 이 프로그램이 작동한 날짜로 설정되게 작업
-		}();
+			let date = today.getDate()	// 일 
+			let mon =today.getMonth()+1	// 월
+			let year = today.getFullYear();	// 년도
+			inputs[1].value = `${year}-${mon < 10 ? '0'+ mon : mon}-${date <10 ? '0' + date : date}`
 
-		function set() {
-			/* 
-				현재의 input[1].value 를 뽑아서 이걸 가지고 Date
-				그 Date time에서 30일을 빼서 그 결과로 다시 Date를 만들고
-				만들어진 Date로 년도, 월, 일을 추출해서
-				'YYYY-MM-DD'를 만들자
-			*/
-			let input1 = Date.parse(inputs[1].value)
-			let prev30 = new Date(input1-(1000*60*60*24*30));
-			let pDate = ('0' + prev30.getDate()).slice(-2);	// 일 
-			let pMon = ('0' + (prev30.getMonth()+1)).slice(-2);	// 월
-			let pYear = (prev30.getFullYear());	// 년도
-			inputs[0].value = `${pYear}-${pMon}-${pDate}`
-		}
+			//  let toValue = today.toISOString().slice(0, 10); // 이건 국내시간에 대해서는 보정이 필요하므로 사용을 주의하도록 하자
+		}();
 	</script>
 </body>
 </html>
