@@ -1,0 +1,20 @@
+body {
+	font-size: .8rem;
+}
+section {
+	line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 {
+	background-color: lavender;
+	width: fit-content;
+	padding: 0 .4rem;
+	border-radius: .2rem;
+}
+code, xmp {
+	background-color: #eee;
+	border-radius: 3px;
+	font-family: courier, monospace;
+	padding: 0 3px;
+	display: inline-block;
+	margin: 0
+}
