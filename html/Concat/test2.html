@@ -5,64 +5,53 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>끝말 잇기</title>
-	<link rel="stylesheet" href="style.css">
+	<!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
 	<h1>끝말잇기</h1>
 	<div class="container">
 		<p class="lastWord">최종 제시어 <b>아무거나 입력가능</b></p>
-		<input type="text" onchange="turn();" placeholder="단어를 입력하세요">
-		<hr>
+		<input type="text" onchange="turn();">
+		<!-- <hr>
 		<div class="historyWrap">
 			<b>단어 리스트</b>
 			<div class="history"></div>
-		</div>
+		</div> -->
 	</div>
-	<script>
+	<!-- <script>
 		let words =[];
 		let lastWord = null;
-		
+
 		function turn() {
 			let val = document.querySelector('input').value;
+
 			let target = `https://stdict.korean.go.kr/api/search.do?certkey_no=4043&key=5089D2A99A5BF77AA38DF1C0564D2B32&type_search=search&req_type=json&q=${val}`;
-			let wordLast = words[words.length-1];
+			
 			fetch(target).then(function(rst) {
 				return rst.json()
 			}).then(function(obj) {
-				
 				if(obj.channel.total > 0) {
 					lastWord = val;
-					let bText = document.querySelector('b');
-					bText.innerHTML = lastWord;
+					document.querySelector('b').innerHTML = lastWord;
 					
 					if(words.length === 0) {
 						words.push(val);
 					}else {
 						if(words.includes(lastWord)) {
-							alert('이미 입력한 단어입니다');
-							bText.innerHTML = wordLast;
+							alert('이미 입력한 단어입니다')
 						}else {
-							if(val.length === 1) {
-								alert('단어는 2글자 이상이여야 합니다')
-								bText.innerHTML = wordLast;
-							}else {
-								if(wordLast[wordLast.length-1] === val[0]) {
-									words.push(val);
-								}else {
-									alert(`[ ${wordLast[wordLast.length-1]} ]로 시작하는 단어를 입력하세요`)
-									bText.innerHTML = wordLast;
-								}
-							}
+							words.push(val);
+							// console.log(words[words.length-1][0]);
 						}
 					}
 					
 					// history 쌓기
 					let history = document.querySelector('.history');
 					history.innerHTML = words;
-					
+
 					// 확인용 콘솔
 					console.log(words)
-					// console.log(obj.channel.total)
+					console.log(obj.channel.total)
 				} else {
 					alert(`${val}는 없습니다`)
 				}
@@ -75,6 +64,6 @@
 			document.querySelector('input').value = '';
 		}
 
-	</script>
+	</script> -->
 </body>
 </html>
