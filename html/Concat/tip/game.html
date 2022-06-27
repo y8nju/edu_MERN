@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>끝말잇기</h2>
+    <div>
+        <p></p>
+        <p>
+            제시어 : <b>아무거나 입력가능</b>
+        </p>
+        <p>
+            <input type="text" onchange="turn();">
+        </p>
+        <p>
+            <i></i>
+        </p>
+
+    </div>
+    <script>
+        let words = [];
+
+        function turn(){
+            let val = document.querySelector("input").value;
+            if(!/^[가-힣]{2,}$/.test(val)) {
+                alert("두 글자이상의 한글단어를 입력해주세요.");
+                return;
+            }
+            if(words.length !==0) {
+                let last = words[words.length-1];
+                if(!val.startsWith(last.slice(-1))) {
+                    alert("끝말잇기 룰을 숙지해주세요.");
+                    return;
+                }
+            }
+            //============================================
+            let target = `https://stdict.korean.go.kr/api/search.do?certkey_no=4043&key=5089D2A99A5BF77AA38DF1C0564D2B32&type_search=search&req_type=json&q=${val}`;
+            fetch(target).then(function(rst) {
+                // console.log(rst);
+                return rst.json();   
+            }).then(function(obj) {
+                // console.log(obj);
+                // console.log(obj.channel.total);
+                if(obj.channel.total > 0) {
+                    words.push(val);
+                    document.querySelector("b").innerHTML = val;
+                    document.querySelector("i").innerHTML= obj.channel.item[0].sense.definition;
+                    document.querySelector("p").innerHTML = words.join("→")
+                } else {
+                    alert(`${val} 은/는 없는 단어!`);
+                }
+            }).catch(function(e){
+                alert(`${val} 은/는 없는 단어!`);
+            });
+            document.querySelector("input").value = "";
+
+        }
+    </script>
+</body>
+</html>

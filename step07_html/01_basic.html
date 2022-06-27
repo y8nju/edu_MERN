@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DOM</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<ul>
+		<li>Javascript</li>
+		<li>HTML</li>
+		<li>node.js</li>
+		<li>MongoDB</li>
+	</ul>
+	<hr>
+	<section>
+		<h3>HTML</h3>
+		<div>
+			Hyper Text Markup Language <br>
+			HTML은 계층구조를 띄고 있다
+		</div>
+	</section>
+	<section>
+		<h3>DOM</h3>
+		<div>
+			parsing 👉DOM <br>
+			브라우저에 장착된 렌더링 엔진은 HTML을 파싱해가며 <abbr title="Document Object Modle">DOM</abbr>을 생성해 나간다<br>
+			&emsp;DOM은 트리 구조를 띄고 있다<br>
+			&emsp;<i>CSS를 파싱해서 만들어지는 건 CSSOM이라고 한다</i><br>
+			파싱해 나가다가 script를 만나게 되면 분석이 정지되고, script를 작동시킴<br>
+			script를 처리하고 나면 DOM 생성을 다시 진행하게하게 됨<br>
+			분석이 다 끝나게 되면 이걸 토대로 렌더링에 들어간다<br>
+			DOM이나 CSSOM을 변경하는 경우, 변경된 내용을 기반으로 브라우저에 다시 렌더링된다<br>
+			&emsp; <b>리플로우</b>(레이아웃 재설정), <b>리페인트</b>(변경된 DOM 기반으로 다시 그리는 것)라고 한다
+		</div>
+	</section>
+	<script>
+		console.log(document.querySelector('li'));
+		setTimeout(function() {
+			document.querySelector('ul').appendChild(document.createElement('li'));
+		}, 100)
+	</script>
+</body>
+</html>

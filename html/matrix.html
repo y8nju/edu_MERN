@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+
+<body style="margin: 0;">
+	<canvas></canvas>
+	<script>
+		const canvas = document.querySelector(canvas);
+		const ctx = canvas.getContext("2d");
+
+		const width = 1920;
+		const height = 1080;
+		const cols = Math.floor(width / 20) + 1;	// 가로를 20씩 나눠서 칸설정
+		const verticalPos = new Array(cols).fill(0);
+
+		ctx.fillStyle = "#000"
+		ctx.fillRect(0, 0, width, height);	// 전체를 black으로 칠함
+
+		setInterval(function draw() {
+			ctx.fillStyle = "#0001";
+			ctx.fillRect(0, 0, width, height);
+
+			ctx.fillStyle = "#0f0";	// 녹색
+			verticalPos.forEach((y, index) => {
+				const text = String.fromCharCode(Math.random() * 128)	// 랜덤 문자열
+				const x = index * 20;	// 좌표
+				ctx.fillText(text, x, y)
+				if (y > 100 + Math.random() * 10000) {
+					verticalPos[index] = 0;
+				} else {
+					verticalPos[index] = y + 20;
+				}
+			});
+		}, 50)
+		window.setInterval(draw, 50);
+	</script>
+</body>
+
+</html>
