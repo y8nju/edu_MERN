@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div>
+		<ul class="food">
+			<li>김치찌개</li>
+			<li>삼겹살</li>
+			<li>떡볶이</li>
+		</ul>
+	</div>
+	<script>
+		const food = document.querySelector('.food');
+		
+		
+		/* 
+		확보한 노드를 cloneNode로 복사본을 만들 수 있다
+		default 👉 false(deep clone) 자손을 제외한 본인만 clone
+		true 👉자손까지 clone
+		*/
+		food.parentNode.appendChild(food.cloneNode(true));
+		
+		/* 
+		node를 교체 할 수도 있다
+		replaceChild(newNode, oldNode)
+		*/
+		const newItem = document.createElement('li');
+		newItem.textContent = '곱창';
+		food.replaceChild(newItem, food.firstElementChild.nextElementSibling);	// 👉 nth-child(2)
+		
+		/* 
+		이미 DOM에 존재하는 노드를 appendChild, insertBefore를 하게되면, 
+		노드가 이동한다
+		*/
+		food.appendChild(food.firstElementChild);	// firstchild가 lastchild로 이동한다
+		
+		/* 
+		removeChild 👉 제거
+		*/
+		food.removeChild(food.firstElementChild);
+	</script>
+</body>
+</html>

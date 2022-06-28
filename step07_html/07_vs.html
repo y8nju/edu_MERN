@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>HTMLcollection vs NodeList</title>
+	<style>
+		.red {
+			color: tomato;
+		}
+		.blue {
+			color: navy;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li class="red">아이고</li>
+		<li class="red">세상에</li>
+		<li class="red">마상에</li>
+	</ul>
+	<script>
+		// HTMLCollection은 라이브객체
+			let names = document.getElementsByClassName('red');
+			// for(let i = 0; i<names.length; i++) {	// 건너띄는 현상이 발생할 수 있음
+			// 	names[i].className = "blue";
+			// }
+			for(let elm of names) {	// 건너띄는 현상이 발생할 수 있음
+				elm.classList = "blue";
+			}
+
+		// NodeList
+		// let names = document.querySelectorAll('.red');
+		// for(let i = 0; i<names.length; i++) {
+		// 	names[i].className = 'blue';
+		// }
+	</script>
+</body>
+</html>

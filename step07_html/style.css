@@ -1,5 +1,7 @@
 body {
 	font-size: .8rem;
+	padding: 2rem;
+	color: #333;
 }
 section {
 	line-height: 1.5;
@@ -7,8 +9,9 @@ section {
 h1, h2, h3, h4, h5, h6 {
 	background-color: lavender;
 	width: fit-content;
-	padding: 0 .4rem;
+	padding: .4rem;
 	border-radius: .2rem;
+	line-height: 1;
 }
 code, xmp {
 	background-color: #eee;
@@ -17,4 +20,7 @@ code, xmp {
 	padding: 0 3px;
 	display: inline-block;
 	margin: 0
+}
+.content {
+	padding-left: 1rem;
 }

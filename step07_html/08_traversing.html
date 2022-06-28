@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Traversing</title>
+</head>
+<body>
+	<div>
+		<h1 id="title">웹 개발의 프론트엔드 영역</h1>
+		<ul id="list" class="content">
+			<li class="basic ">HTML</li>
+			<li class="basic ">CSS</li>
+			<li class="basic js">JavaScript</li>
+			<li id="react" class="js"><b>R</b>eact.<i>js</i></li>
+		</ul>
+		<p>프론트엔드는 사용자와 밀접하게 닿아있는 표면적인 영역</p>
+	</div>
+	<script>
+		const list = document.querySelector("#list");
+
+		console.log(list.previousSibling);	// #text
+		console.log(list.previousElementSibling);	// <h1 id="title">웹 개발의 프론트엔드 영역</h1>
+		console.log(list.nextSibling);	// #text
+		console.log(list.nextElementSibling);	// <p>프론트엔드는 사용자와 밀접하게 닿아있는 표면적인 영역</p>
+		
+		console.log(list.firstChild.nodeName);	// #text
+		console.log(list.firstElementChild.nodeName);	// LI
+		console.log(list.lastChild.nodeName);	// #text
+		console.log(list.lastElementChild.nodeName);	// LI
+
+
+		console.log(react.childNodes.length);	// 3
+		console.log(react.children.length);	// 2
+/* 
+		// parentNode 부모
+		// console.log(list.parentNode);	// div
+		// list.parentNode.style.color = "tomato";
+		
+		// childNodes, children
+		const childs = list.childNodes;	//NodeList 👉 text.node 포함
+		console.log(childs.length);	// 9
+		for(let one of childs) {
+			console.log(one.nodeName, one.nodeType);
+			// #text 3
+			// LI 1
+			// #text 3
+			// LI 1
+			// #text 3
+			// LI 1
+			// #text 3
+			// LI 1
+			// #text 3
+		}
+		const children = list.children;	// HTMLCollection 👉 낫 포함
+		console.log(children.length);	// 4
+		for(let one of children) {
+			console.log(one.nodeName, one.nodeType);
+		}
+		 */
+	</script>
+</body>
+</html>

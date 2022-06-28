@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>DOM</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div id="view">
+		<h1>DOM Manupulation&#40;DOM 조작&#41;</h1>
+		<p id="inform" class="content"> 
+			<b>HTML</b> 파싱이 끝나고 나면 DOM 트리가 완성되는데, 이걸 조작할 수 있다. <br>
+			(DOM에 변경이 일어나면 Repaint) 
+		</p>
+	</div>
+	<script>
+		// insertAdjacentHTML
+		// 👉beforebegin, afterbegin, beforeend, afterend
+		// HTML구조를 다시 만드는 것이 아닌 추가(insert)
+		const inform = document.querySelector("#inform");
+		inform.insertAdjacentHTML("beforebegin", "<hr>");	// inform 앞에
+		inform.insertAdjacentHTML("beforeend", "<br> Hi");	// inform의 last-child
+		inform.insertAdjacentHTML("afterbegin", "DOM");	// inform의 first-child
+		inform.insertAdjacentHTML("afterend", "DOM 구조 조작");	// inform 뒤에
+
+		
+	</script>
+	<!-- <script>
+		// innerHTML 프로퍼티를 이용한 DOM 조작
+		const inform = document.querySelector("#inform");
+		// innerHTML 은 내부 HTML 구조를 얻을 수 있다
+			// 기존에 가지고 있던 내부 구조를 지우고 다시 만드는 개념이다
+		console.log(inform.innerHTML);
+		inform.innerHTML += "<br><b>도큐먼트 오브젝트 모델</b>은 자바스크립트에 의해 변경가능"
+		inform.innerHTML += `<img src='' onerror='console.log("‼")'>`
+	</script> -->
+</body>
+</html>

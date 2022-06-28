@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DOM</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div>
+		<!--
+			 id는 유니크하고 1개만 쓸 수 있지만, 
+			 class는 중복 사용이 가능하고, 여러개를 사용 할 수 있다
+		 -->
+		<h1 id="title">웹 개발의 프론트엔드 영역</h1>
+		<ul class="content">
+			<li class="basic ">HTML</li>
+			<li class="basic ">CSS</li>
+			<li class="basic js">JavaScript</li>
+			<li class="js">그외 프론트엔드 프레임워크</li>
+		</ul>
+	</div>
+	<script>
+		// 2. DOM에서 Element 얻어내는 방법 className
+			// 👉 HTMLCollection(유사 배열 객체)
+		let basic = document.getElementsByClassName('basic');
+		for(let one of basic) {
+			console.log(one.textContent);
+		}
+		for(let i = 0; i<basic.length; i++) {
+			console.log(basic[i].textContent);
+		}
+		[...basic].forEach(function(one) {
+			console.log(one.textContent);
+		});
+		// Array.from(basic).
+
+		// 3. TagName
+		let ul = document.getElementsByTagName('ul');
+		ul[0].getElementsByClassName('js');
+	</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DOM</title>
+	<style>
+		@font-face {
+			font-family: 'LeferiPoint-WhiteObliqueA';
+			src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+		}
+		body {
+			font-family: 'LeferiPoint-WhiteObliqueA';
+		}
+	</style>
+</head>
+<body>
+	
+	추가: <input type="text" onchange="add(this)">
+	<ol id="student">
+		<li>시크릿 쥬쥬</li>
+	</ol>
+	<script>
+		function add(elm) {
+			// student.insertAdjacentHTML("beforeend", `<li>${elm.value}</li>`);	// 아래와 동일한 효과
+			const li = document.createElement('li');
+			const liTxt = document.createTextNode(elm.value);
+			li.appendChild(liTxt);
+			// appendChild 👉 마지막 자식 노드로 추가
+			// document.querySelector("#student").appendChild(li);
+			// document.querySelector('#student').insertAdjacentHTML(position, node);
+			const student = document.querySelector("#student");
+			student.insertBefore(li, student.firstElementChild);
+			// insertBefore 👉 원하는 위치에 추가할 수 있다
+			elm.value = "";
+		}
+		/* 
+			innerHTML이나, insertAdjecentHTML은 HTML을 파싱해서 노드가 생성되고 반영되는 방식
+
+			노드를 직접 생성해서 추가(/삭제/치환)를 하는 방법도 존재한다
+		*/
+	</script>
+</body>
+</html>

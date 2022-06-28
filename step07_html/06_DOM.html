@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>웹 개발의 영역</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div id="container">
+		<h1 id="front">우리 교육과정의 웹 개발의 프론트엔드 영역</h1>
+		<ul>
+			<li class="basic ">HTML</li>
+			<li class="basic ">CSS</li>
+			<li class="basic js">JavaScript</li>
+			<li class="js">React.js</li>
+		</ul>
+	</div>
+	<div>
+		<h1 id="back">우리 교육과정의 웹 개발의 백엔드 영역</h1>
+		<ol>
+			<li class="js">Node.js</li>
+			<li class="js">Express.js</li>
+			<li class="db">MongoDB</li>
+		</ol>
+	</div>
+	<script>
+		// 4. css selector를 이용하는 querySelector, querySelectorAll
+			// #id, .class, tagName
+
+		// querySelector 매칭되는 one
+		let front = document.querySelector('#front');
+		console.log(front.textContent);
+
+		let basic = document.querySelector('.basic')	// .basic 중 가장 첫번째
+		console.log(basic.textContent);
+		
+		let olFirstLi = document.querySelector('ol li');	// ol의 자손 중 가장 첫번째 li
+		console.log(olFirstLi.textContent);
+		
+		// querySelectorAll 매칭되는 some
+		// 👉 NodeList(유사 배열 객체)
+		let js = document.querySelectorAll('.js');	// 모든 .js
+		console.log(js);
+		[...js].forEach((elm) => elm.style.color="coral");
+
+		let frontJs = container.querySelectorAll('.basic');	// container 안에 있는 모든 basic
+		[...frontJs].forEach((elm) => elm.style.color="navy");
+
+	</script>
+</body>
+</html>

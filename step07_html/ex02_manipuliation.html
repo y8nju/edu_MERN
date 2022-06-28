@@ -1,0 +1,160 @@
+<html>
+	<head>
+		
+		<style>
+			button {
+				min-width: 4rem;
+				margin: .2rem;
+				padding: .2rem 0;
+				font-size: .7rem;
+			}
+			.wrap {
+				width: 600px;
+				display: flex;
+				justify-content: space-between;
+			}
+			.btnWrap {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			section {
+				background-color: #d7d7d7;
+				padding: 1rem;
+				border-radius: .4rem;
+				text-align: center;
+			}
+			section > div {
+				background-color: #fff;
+				padding: 1.5rem;
+				border-radius: .4rem;
+				margin-top: 1rem;
+				text-align: left;
+			}
+			.item {
+				padding: .2rem 0;
+				line-height: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<div class ="wrap">
+			<section>
+				<button onclick="moveTop()">위로</button>
+				<button onclick="moveBottom()">아래로</button>
+				<div id="main">
+					<div class="item">
+						<input type="checkbox"><label>감혜빈</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>공병구</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>김기협</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>김주완</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>양일섭</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>유유유</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>이성훈</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>이솔</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>이혜주</label>
+					</div>
+				</div>
+			</section>
+			<section class="btnWrap">
+				<button onclick="moveLeft()">←</button>
+				<button onclick="moveRight()">→</button>
+			</section>
+			<section>
+				<button onclick="removeItem()">삭제</button>
+				<div id="sub">
+					<div class="item">
+						<input type="checkbox"><label>장철영</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>정상춘</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>조아연</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>최윤주</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>최현</label>
+					</div>
+					<div class="item">
+						<input type="checkbox"><label>한세훈</label>
+					</div>
+				</div>
+			</section>
+			<script>
+				// document.createDocumentFragment(); 가상의 부모 노드
+
+				// moveTop
+				function moveTop() {
+					let items = document.querySelector("#main").querySelectorAll(".item");
+					let chkItems = [...items].filter(function(elm) {
+						if(elm.firstElementChild.checked) {
+							return true;
+						}
+					});
+					chkItems.forEach(function(elm) {
+						document.querySelector("#main").appendChild(elm); // 맨 아래
+						
+					});
+				}
+				// moveRight
+				function moveRight() {
+					let items = document.querySelector("#main").querySelectorAll(".item");
+					let chkItems = [...items].filter(function(elm) {
+						if(elm.firstElementChild.checked) {
+							return true;
+						}
+					});
+					chkItems.forEach(function(elm) {
+						document.querySelector("#sub").appendChild(elm);
+						elm.firstElementChild.checked = false;
+					});
+				}
+				// moveLeft
+				function moveLeft() {
+					let items = document.querySelector("#sub").querySelectorAll(".item");
+					let chkItems = [...items].filter(function(elm) {
+						if(elm.firstElementChild.checked) {
+							return true;
+						}
+					});
+					chkItems.forEach(function(elm) {
+						document.querySelector("#main").appendChild(elm);
+						elm.firstElementChild.checked = false;
+					});
+				}
+				// sub Wrap remove
+				function removeItem() {
+					let items = document.querySelector("#sub").querySelectorAll(".item");
+					let chkItems = [...items].filter(function(elm) {
+						if(elm.firstElementChild.checked) {
+							return true;
+						}
+					});
+					chkItems.forEach(function(elm) {
+						elm.remove();
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

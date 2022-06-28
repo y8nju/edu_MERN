@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Document</title>
+</head>
+<body>
+	<div>
+		<h1 id="front">웹 개발의 프론트엔드 영역</h1>
+		<ul id="list" class="content">
+			<li class="basic ">HTML</li>
+			<li class="basic ">CSS</li>
+			<li class="basic js">JavaScript</li>
+			<li id="react" class="js"><b>R</b>eact.<i>js</i></li>
+		</ul>
+		<p>프론트엔드는 사용자와 밀접하게 닿아있는 표면적인 영역</p>
+	</div>
+	<script>
+		/* 
+			HTML 요소의 텍스트를 변경하고자 한다면, 
+			(텍스트 노드의) nodeValue 혹은 (요소노드의) textContent를 사용하면 된다
+		*/
+		
+		//nodeValue
+		const front = document.querySelector("#front");
+		console.log(front.firstChild.nodeValue);	// 웹 개발의 프론트엔드 영역
+		// front.childNodes[0].nodeValue = "???"
+
+		// textContent 👉 자식 노드들의 모든 텍스트를 합친 것(html 무시)
+		console.log(front.textContent);	// 웹 개발의 프론트엔드 영역
+		front.textContent = "???????<small>?????</small>"
+	</script>
+</body>
+</html>

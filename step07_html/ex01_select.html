@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Select</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse : collapse;
+			border-spacing : 0;
+			border-top: 2px solid gray; 
+			border-bottom: 2px solid gray; 
+			padding: .4rem 0;
+		}
+		td {
+			border-bottom: 1px dotted gray; 
+			padding: .4rem .2rem;
+		}
+		tr:first-child {
+			border-bottom: 1px solid gray;
+			background-color: #eee;
+		}
+		td:first-child {
+			width: 10%;
+			border-right: 1px dotted gray;
+			text-align: center;
+		}
+		tr:last-child td {
+			border-bottom: none;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div class="container" style="margin-top: 1rem; padding-bottom: 1rem;">
+			<h2>1단계</h2>
+			<table>
+				<tr>
+					<td>
+						<input type="checkbox" onchange="selectAll()">
+					</td>
+					<td>전체선택</td>
+				</tr>
+				<tr>
+					<td><input class="chkBox" type="checkbox"></td>
+					<td>안녕하세요</td>
+				</tr>
+				<tr>
+					<td><input class="chkBox" type="checkbox"></td>
+					<td>[광고]</td>
+				</tr>
+				<tr>
+					<td><input class="chkBox" type="checkbox"></td>
+					<td>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</td>
+				</tr>
+				<tr>
+					<td><input class="chkBox" type="checkbox"></td>
+					<td> Tenetur non,</td>
+				</tr>
+			</table>
+		</div>
+		<div class="container" style="margin-top: 1rem; padding-bottom: 1rem;">
+			<h2>2단계</h2>
+			<table>
+				<tr>
+					<td>
+						<input type="checkbox" onchange="selectAll()" id="step2">
+					</td>
+					<td>전체선택</td>
+				</tr>
+				<tr>
+					<td><input class="jopChk" type="checkbox"></td>
+					<td>교사</td>
+				</tr>
+				<tr>
+					<td><input class="jopChk" type="checkbox"></td>
+					<td>직장인</td>
+				</tr>
+				<tr>
+					<td><input class="jopChk" type="checkbox"></td>
+					<td>자영업자</td>
+				</tr>
+				<tr>
+					<td><input class="jopChk" type="checkbox"></td>
+					<td>주부</td>
+				</tr>
+			</table>
+		</div>
+	<script>
+		function selectAll() {
+			let inpAllChk = document.querySelector('input').checked;
+			let chkBox = document.querySelectorAll('.chkBox');
+			for(let i = 0; i < chkBox.length; i++) {
+				if(inpAllChk === true) {
+					chkBox[i].checked = true
+				}else {
+					chkBox[i].checked = false
+				}
+			}
+			
+			let flag = document.querySelector('#step2').checked;
+			let jop = document.querySelectorAll('.jopChk');
+			[...jop].forEach((elm) => elm.checked=flag);
+		}
+	</script>
+</body>
+</html>
