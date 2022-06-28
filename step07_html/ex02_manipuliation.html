@@ -102,7 +102,6 @@
 			</section>
 			<script>
 				// document.createDocumentFragment(); 가상의 부모 노드
-
 				// moveTop
 				function moveTop() {
 					let items = document.querySelector("#main").querySelectorAll(".item");
@@ -112,9 +111,29 @@
 						}
 					});
 					chkItems.forEach(function(elm) {
-						document.querySelector("#main").appendChild(elm); // 맨 아래
-						
+						elm.previousElementSibling.before(elm);
+						// if(!(elm === items[0])) {
+							// elm.previousElementSibling.before(elm);
+						// } else {
+						// 	alert('더 이상 이동 할 수 없습니다');
+						// }
+					})
+				}
+				//moveBottom
+				function moveBottom() {
+					let items = document.querySelector("#main").querySelectorAll(".item");
+					let chkItems = [...items].filter(function(elm) {
+						if(elm.firstElementChild.checked) {
+							return true;
+						}
 					});
+					chkItems.forEach(function(elm) {
+						elm.nextElementSibling.after(elm);
+						// if(!(elm === items[items.length-1])) {
+						// } else {
+						// 	alert('더 이상 이동 할 수 없습니다')
+						// }
+					})
 				}
 				// moveRight
 				function moveRight() {
