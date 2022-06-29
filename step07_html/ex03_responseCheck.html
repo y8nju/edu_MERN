@@ -21,6 +21,7 @@
 	}
 	body {
 		overflow: hidden;
+		line-height: 1;
 	}
 	#screen {
 		width: 100vw;
@@ -45,67 +46,93 @@
 	}
 	#result {
 		position: absolute;
-		top: 65%;
+		top: 60%;
 		left: 50%;
 		z-index: 5;
 		transform: translateX(-50%);
 		font-family: 'LeferiPoint-WhiteObliqueA';
-		font-size: 2rem;
+		font-size: 1.4rem;
 		background-color: white;
-		color: dodgerblue;
-		padding: 1rem 1.4rem;
+		color: MediumAquamarine;
+		padding: .8rem 1.2rem .4rem;
 		border-radius: 4rem;
-		display: none;
+		opacity: 0;
 	}
-	.return {
+	#restart {
+		width: 5rem;
+		height: 5rem;
 		position: absolute;
 		top: 10%;
 		right: 10%;
 		z-index: 5;
-
+		border-color: transparent;
+		border-radius: 50%;
+		-webkit-mask-image: url(https://unpkg.com/ionicons@5.5.2/dist/svg/refresh-outline.svg);
+		background-color: white;
+		cursor: pointer;
+		opacity: 0;
+	}
+	#result.show {
+		opacity: 1;
+	}
+	
+	#restart.show {
+		opacity: 1;
 	}
 	</style>
 </head>
 <body>
 	<div id="screen" class="waiting">클릭해서 시작하세요</div>
 	<div id="result"></div>
-	<button class="return">
-		<img src="https://www.clipartmax.com/png/middle/264-2645031_convenient-return-icon-within-seven-days-comments-return-icon.png" alt="return">
-	</button>
+	<button id="restart"></button>
 	<script>
 		const screen = document.querySelector('#screen');
 		const result = document.querySelector('#result');
+		const restart = document.querySelector('#restart')
 		let startTime;
 		let endTime;
 		const records = [];
 		let timeoutId;
 
 		screen.addEventListener("click", function() {
-		if(screen.classList.contains("waiting")) {
-			screen.classList.replace("waiting", "ready");
-			screen.textContent = '초록색이 되면 클릭하세요';
-			timeoutId = setTimeout(function() {
-				startTime = new Date();
-				screen.classList.replace("ready", "now");
-				screen.textContent = '클릭하세요';
-			}, Math.floor(Math.random() * 1000 +2000))
-		} else if(screen.classList.contains("ready")) {
-			clearTimeout(timeoutId);
-			screen.classList.replace("ready", "waiting");
-			screen.textContent = "아직 아니예요"
-		} else if(screen.classList.contains("now")) {
-			endTime = new Date();
-			const current = endTime - startTime;
-			records.push(current);
-			const average = records.reduce((a, c) => a + c);	// records.lenght
-			result.style.display = "block";
-			result.textContent = `현재 ${current}ms, 평균 ${average}ms`;
-			startTime = null;
-			endTime = null;
-			// screen.classList.replace("now", "waiting");
-			// screen.textContent = '클릭해서 시작하세요'
-		}
-	})
+			if(screen.classList.contains("waiting")) {
+				screen.classList.replace("waiting", "ready");
+				screen.textContent = '초록색이 되면 클릭하세요';
+				timeoutId = setTimeout(function() {
+					startTime = new Date();
+					screen.classList.replace("ready", "now");
+					screen.textContent = '클릭하세요';
+				}, Math.floor(Math.random() * 1000 +2000))
+			} else if(screen.classList.contains("ready")) {
+				clearTimeout(timeoutId);
+				screen.classList.replace("ready", "waiting");
+				screen.textContent = '서두르지 마세요';
+			} else if(screen.classList.contains("now")) {
+				endTime = new Date();
+				const current = endTime - startTime;
+				records.push(current);
+				const average = records.reduce((a, c) => a + c);	// records.lenght
+				result.textContent = `현재 ${current}ms, 평균 ${average}ms`;
+				result.classList.add('show');
+				startTime = 0;
+				endTime = 0;
+				screen.textContent = '속도를 확인하세요'
+				screen.style.pointerEvents = "none"
+				setTimeout(function(){
+					restart.classList.add('show');
+				}, 500)
+			}
+		});
+
+		restart.addEventListener("click", function() {
+			if(screen.classList.contains("now")) {
+				result.classList.remove('show');
+				restart.classList.remove('show');
+				screen.classList.replace("now", "waiting");
+				screen.removeAttribute("style")
+				screen.textContent = '클릭해서 시작하세요'
+			}
+		});
 	</script>
 </body>
 </html>
