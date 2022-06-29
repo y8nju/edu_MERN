@@ -1,0 +1,218 @@
+<html>
+
+<head>
+
+	<style>
+		:root {
+			--red: 227, 69%, 58%;
+			--blue: 0, 55%, 54%;
+		}
+		button {
+			min-width: 4rem;
+			margin: .2rem;
+		}
+		.wrap {
+			width: 600px;
+			display: flex;
+			justify-content: space-between;
+		}
+		.btnWrap {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+		section {
+			background-color: #d7d7d7;
+			padding: 1rem;
+			border-radius: .4rem;
+			text-align: center;
+		}
+		section>div {
+			background-color: #fff;
+			padding: 2rem;
+			border-radius: .4rem;
+			margin-top: 1rem;
+			text-align: left;
+		}
+		.item {
+			padding: .2rem 0;
+		}
+		#main .selected {
+			background-color: hsl(var(--blue), 20%);
+		}
+		#main .selected {
+			background-color: hsl(var(--red), 20%);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wrap">
+		<section>
+			<button onclick="moveToUp()">위로</button> <button onclick="moveToDown()">아래로</button>
+			<div id="main">
+				<div class="item selected">
+					<input type="checkbox" onchange="effect(this)" checked><label>감혜빈</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>공병구</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>김기협</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>김주완</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>양일섭</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>유유유</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>이성훈</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>이솔</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>이혜주</label>
+				</div>
+			</div>
+		</section>
+		<section class="btnWrap">
+			<button onclick="moveToLeft()">&lt&lt&lt</button>
+			<button onclick="moveToRight()">&gt&gt&gt</button>
+		</section>
+		<section>
+			<button onclick="delfn()">삭제</button>
+			<div id="sub">
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>장철영</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>정상춘</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>조아연</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>최윤주</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>최현</label>
+				</div>
+				<div class="item">
+					<input type="checkbox" onchange="effect(this)"><label>한세훈</label>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+	<script>
+		function effects(elm) {
+			elm.parentElement.classList.toggle("selected");
+		}
+		function effect() {
+			let items = document.querySelectorAll(".item");
+			[...items].forEach(function (e) {
+				if (e.firstElementChild.checked) {
+					e.classList.add("selected");
+				} else {
+					e.classList.remove("selected");
+				}
+			})
+
+		}
+		function effectss() {
+			let items = document.querySelectorAll(".item");
+			[...items].forEach(function (e) {
+				if (e.firstElementChild.checked) {
+					e.classList.toggle("selected", true);
+				} else {
+					e.classList.toggle("selected", false);
+				}
+			})
+
+		}
+
+		function moveToRight() {
+			let items = document.querySelector("#main").querySelectorAll(".item");
+			let checkedItems = [...items].filter(function (elm) {
+				if (elm.firstElementChild.checked) {
+					return true;
+				}
+			});
+
+			checkedItems.forEach(function (elm) {
+				document.querySelector("#sub").appendChild(elm);
+			});
+		}
+		function moveToLeft() {
+			let items = document.querySelector("#sub").querySelectorAll(".item");
+			let checkedItems = [...items].filter(function (elm) {
+				if (elm.firstElementChild.checked) {
+					return true;
+				}
+			});
+
+			checkedItems.forEach(function (elm) {
+				document.querySelector("#main").appendChild(elm);
+			});
+		}
+
+		function delfn() {
+			let items = document.querySelector("#sub").querySelectorAll(".item");
+			let checkedItems = [...items].filter(function (elm) {
+				if (elm.firstElementChild.checked) {
+					return true;
+				}
+			});
+			checkedItems.forEach(function (elm) {
+				elm.remove();
+			})
+		}
+
+
+		function moveToDown() {
+			let items = document.querySelector("#main").querySelectorAll(".item");
+			let checkedItems = [...items].filter(function (elm) {
+				if (elm.firstElementChild.checked) {
+					return true;
+				}
+			});
+			//nextElementsibiling
+			//replacechild
+			checkedItems.reverse().forEach(function (e) {
+				if (e.nextElementSibling != undefined && !checkedItems.includes(e.nextElementSibling)) {
+					e.insertAdjacentElement("beforebegin", e.nextElementSibling)
+					console.log(e.nextElementSibling);
+				}
+			})
+		} function moveToUp() {
+			let items = document.querySelector("#main").querySelectorAll(".item");
+			let checkedItems = [...items].filter(function (elm) {
+				if (elm.firstElementChild.checked) {
+					return true;
+				}
+			});
+			checkedItems.forEach(function (e) {
+				if (e.previousElementSibling != undefined && !checkedItems.includes(e.previousElementSibling)) {
+					e.insertAdjacentElement("afterend", e.previousElementSibling)
+
+				}
+			})
+
+		}
+		// createDocumentFragment 꼭 한번 찾아볼것
+		// let fragment = document.createDocumentFragment();
+		// checkedItems.forEach(function (elm) {
+		// 	fragment.append(elm);
+		// })
+		// document.querySelector("#sub").appendChild(fragment);
+	</script>
+</body>
+
+</html>

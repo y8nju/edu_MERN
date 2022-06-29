@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Attribute Css</title>
+</head>
+<body>
+	<h1 id="target" style="font-size: 4rem; color: salmon;">Style Attribute</h1>
+	<script>
+		const target = document.querySelector("#target");
+		console.log(target.getAttribute("style"), typeof target.getAttribute("style"));
+		// string
+		// font-size: 4rem; color: salmon; string
+		console.log(target.style, typeof target.style);
+		// object
+		// CSSStyleDeclaration {0: 'font-size', 1: 'color', accentColor: '', additiveSymbols: '', alignContent: '', alignItems: '', alignSelf: '', …} 'object'
+		// style 프로퍼티를 통해서 css 변경을 할 때는 문자열로 설정하는게 보다는
+		// target.style = "font-size: 5rem;"	// 전체 style 변경됨
+		target.style.color = "red"
+		//css 속성 중에는 -이 들어가는 것들은 javascript에서 식별자로 - 을 쓰는게 불가능 하므로, 카멜케이스로 써야한다
+		target.style.fontWeight = 'lighter';
+		target.style["background-color"] = "salmon"
+		target.style.backgroundColor = "tomato"
+	</script>
+</body>
+</html>

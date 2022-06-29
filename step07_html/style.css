@@ -1,5 +1,19 @@
+@font-face {
+	font-family: 'LeferiPoint-WhiteObliqueA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+    font-family: 'SBAggroM';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroM.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
+	font-family: 'LeferiPoint-WhiteObliqueA';
 	font-size: .8rem;
+	line-height: 1.5;
 	padding: 2rem;
 	color: #333;
 }
@@ -7,20 +21,30 @@ section {
 	line-height: 1.5;
 }
 h1, h2, h3, h4, h5, h6 {
-	background-color: lavender;
 	width: fit-content;
-	padding: .4rem;
-	border-radius: .2rem;
+	font-family: 'SBAggroM';
 	line-height: 1;
+	border-radius: .2rem;
+	background-color: lavender;
+	padding: .4rem .4rem .1rem;
 }
 code, xmp {
-	background-color: #eee;
-	border-radius: 3px;
-	font-family: courier, monospace;
-	padding: 0 3px;
 	display: inline-block;
+	font-family: courier, monospace;
+	line-height: 1;
+	border-radius: .2rem;
+	background-color: #eee;
+	padding: .1rem .4rem;
 	margin: 0
 }
 .content {
 	padding-left: 1rem;
+}
+		
+input:checked + label {
+	font-weight: bold;
+}
+button {
+	font-family: 'LeferiPoint-WhiteObliqueA';
+	border: 1px solid #ddd;
 }

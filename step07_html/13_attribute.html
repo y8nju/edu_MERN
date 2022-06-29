@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Attribute</title>
+	<link rel="stylesheet" href="./style.css">
+	<style>
+		.txt {
+			color: white;
+		}
+		.text {
+			color: black;
+		}
+	</style>
+</head>
+<body>
+	<h2 id="title" class="txt">어트리뷰트(Attribute)</h2>
+	<input type="checkbox" id="cBox" value="agree"><label for="cBox">agree</label>
+	<p>
+		HTML 요소는 여러개 속성(어트리뷰트)을 가질 수 있다
+		이런 속성값들은 요소에 추가적인 정보를 설정하는 용도로 쓰이고
+		형태는 <code>속성이름=속성값</code> 형식으로 정의한다
+	</p>
+	<p>
+		이런 속성값들 역시 javascript로 제어할 수 있다
+		요소에 설정하는 속성의 종류는 글로벌한 것도 있고, 한정적인 것도 있다
+	</p>
+	<script>
+		const title = document.querySelector('#title');
+		console.log(title.attributes);
+		// NamedNodeMap {0: id, 1: class, 2: style, id: id, class: class, style: style, length: 3}
+		for(let attr of title.attributes) {
+			console.log(attr.name, attr.value);
+			/* id title
+			class txt
+			style color: white */
+		}
+		// console.log(title.attributes.style.value);	// color: white
+		console.log(title.attributes.class.value);	// txt
+		title.attributes.class.value = "text";
+		console.log(title.attributes.class.value);	// text
+	</script>
+</body>
+</html>

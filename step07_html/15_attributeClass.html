@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box {
+			background-color:antiquewhite;
+			width: fit-content;
+			list-style-position : inside;
+			padding: .2rem;
+			margin: .4rem 0;
+		}
+		.red {
+			color: salmon;
+		}
+		.blue {
+			color: dodgerblue;
+		}
+		.bold {
+			font-weight: bolder;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li class="box" >id</li>
+		<li class="box red" id="target" >class</li>
+	</ul>	
+	<script>
+		const target = document.querySelector("#target");
+		// classList(유사배열객체)
+		console.log(target.classList);
+			// DOMTokenList(2) ['box', 'red', value: 'box red']
+		// add(...)	추가
+		target.classList.add("bold");
+		// remove(...) 제거
+		target.classList.remove("red");
+		// contains(string) 포함여부
+		// target.classList.contains()
+		// trplace(old, new) 👉old를 new로 바꿈
+		// toggle(string, [boolean]) 👉 boolean 생략가능
+		setInterval(function() {
+			target.classList.toggle("box", true)
+			// true 추가된 상태로 강제함
+		}, 2000)
+
+		/* 
+		console.log(target.getAttribute("class"));
+		// 속성 노드는 해당 요소 객체의 프로퍼티로 등록이 되잇다
+		// className 이름이라는 프로퍼티로 등록이 되 잇다
+		console.log(target.className);
+		target.className += ' bold';
+		// let classes = target.className.split(/\s+/);
+		// classes.push("bold");
+		// target.className = classes.join(" ")
+		target.className = target.className.replace("red", "")
+		*/
+	</script>
+</body>
+</html>

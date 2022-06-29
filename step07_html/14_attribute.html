@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Attribute</title>
+	<link rel="stylesheet" href="./style.css">
+	<style>
+		.txt {
+			color: white;
+		}
+		.text {
+			color: black;
+		}
+		.navy {
+			color: navy
+		}
+	</style>
+</head>
+<body>
+	<h2 id="title" class="txt">어트리뷰트(Attribute)</h2>
+	<input type="checkbox" id="cBox" value="agree"><label for="cBox">agree</label>
+	<p>
+		HTML 요소는 여러개 속성(어트리뷰트)을 가질 수 있다
+		이런 속성값들은 요소에 추가적인 정보를 설정하는 용도로 쓰이고
+		형태는 <code>속성이름=속성값</code> 형식으로 정의한다
+	</p>
+	<p>
+		이런 속성값들 역시 javascript로 제어할 수 있다
+		요소에 설정하는 속성의 종류는 글로벌한 것도 있고, 한정적인 것도 있다
+	</p>
+	<input type="text" id="msg" onkeyup="test()">
+	<!-- onkeyup 👉키를 눌렀다 땔 때 이벤트 -->
+
+	<script>
+		function test() {
+			const msg = document.querySelector("#msg");
+			console.log(msg.value, 'vs' , msg.getAttribute("value"));
+			// .getAttribute가 작동하지 않을 수 있으니 참고✨.value로 그냥 찍는 것이 더 나을지도
+		}
+		setTimeout(function() {
+			// attribute 라고 전체를 얻어서 거기서 키를 통해 접근하지 않고도
+			/* let tc = document.querySelector("#title").getAttribute("class");
+			console.log(tc);	//tc
+			const p = document.querySelector("p");
+			p.setAttribute("class", "navy"); */
+			/* 
+				HTML 요소가 가지고 있는 속성(어트리뷰트)들은 거기에 상응한 프로퍼티가 만들어진다
+			*/
+			let target = document.querySelector("#cBox");
+			console.log(target.id);	// target.getAttribute("id")
+			console.log(target.value);	// target.getAttribute("value"), target.atrribute.value.value
+			target.type = "radio"
+			console.log(target.getAttribute("type"))
+		}, 1000);
+	</script>
+</body>
+</html>

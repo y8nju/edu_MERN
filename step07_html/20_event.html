@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+	<title>Event</title>
+</head>
+<body>
+	<canvas id="cvs1" style="background-color: salmon; height: 200px; width: 200px" onmousedown="drow1(this);"></canvas>
+	<canvas id="cvs2" style="background-color: dodgerblue; height: 200px; width: 200px" onmousedown="drow2(event);"></canvas>
+	<canvas id="cvs3" style="background-color: antiquewhite; height: 200px; width: 200px" onmousedown="drow3();"></canvas>
+	<script>
+		// document.querySelector('#cvs').onmousedown = function(e) {
+		// 	// on이벤트 쓸 때 매개변수는 꼭 1개 이상 넣자!
+		// 	console.log(e);
+		// 		// MouseEvent {isTrusted: true, screenX: 345, screenY: 254, clientX: 349, clientY: 174, …}
+		// 	console.log(e.clientX, e.clientY);
+      	// 	const ctx = this.getContext("2d");
+		// 	ctx.fillRect(e.offsetX, e.offsetY, 2, 2);
+		// }
+		function drow1(e) {
+			console.log(event);
+			// 이벤트 삭제하고 싶을 때, null
+			e.onmousedown = null;
+		}
+		function drow2(e) {
+			console.log(event);
+			// 이벤트 삭제하고 싶을 때, null
+			e.target.onmousedown = null;
+		}
+		function drow3() {
+			console.log(event);
+			// 이벤트 삭제하고 싶을 때, null
+			document.querySelector('#cvs3').onmousedown = null
+		}
+
+
+		// function getCursorPosition(canvas, event) {
+		// 	const rect = canvas.getBoundingClientRect()
+		// 	const x = event.clientX - rect.left
+		// 	const y = event.clientY - rect.top
+		// 	console.log("x: " + x + " y: " + y);
+      	// 	const ctx = document.querySelector('#cvs').getContext("2d");
+		// 	ctx.fillRect(x, y, 2, 2);
+		// }
+
+		// const canvas = document.querySelector('canvas')
+		// canvas.addEventListener('mousedown', function(e) {
+		// 	getCursorPosition(canvas, e)
+		// })
+	</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Dataset</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<p>
+		data Attribute와 dataset 프로퍼티를 사용하면 사용자  정의 속성을 만들 수가 있다<br>
+		<code>data-* = ""</code> 로 사용한다<br>
+		<a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">MDN HTMLElement.dataset</a>
+	</p>
+	<input type="checkbox" id="cb1" value="A-11" data-row="A" data-col="11" data-seat-price="10000">
+	<label for="cb1">A열 11행</label>
+	<input type="checkbox" id="cb2" value="B-7">
+	<label for="cb2">B열 7행</label>
+	<p><button onclick="show()">확인</button></p>
+	<script>
+		function show() {
+			const cbox = document.querySelectorAll('input:checked');
+			for(let elm of cbox) {
+				console.log(elm.type);	// checkbox
+				console.log(elm.dataset);	// DOMStringMap {row: 'A', col: '11', seatPrice: '10000'}
+				console.log(elm.dataset.row);	// A
+				console.log(elm.dataset.col);	// 11
+				console.log(elm.dataset.seatPrice);	//10000
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<button id="btn">addEventListener</button>
+	<script>
+		const btn = document.querySelector("#btn");
+		btn.addEventListener("click", function(e) {
+			if(e.ctrlKey) {
+				alert("HEY!");
+			}
+			console.log(e);
+		})
+		// btn.addEventListener("click", function(e) {
+		// 	console.error(e);
+		// })
+		function namedHandle(e) {
+			console.error(e)
+		}
+		btn.addEventListener("click", namedHandle)
+		
+		/* 
+			삭제하고 싶을 때
+			속성이나 프로퍼티방식으로 등록했을 때 👉 null
+			// addEventListner 로 등록시킨 function은 이런 방식으로 삭제
+			btn.onclick = null;
+			
+		*/
+		// 정식적으로 remove를 시켜야하는데
+		btn.removeEventListener('click', namedHandle);
+
+		/* 
+			프로퍼티 방식의 핸들러는 1:1로 연결(바인딩)되는 반면
+		*/
+		// btn.onclick = function(e) {
+		// 	console.log(e);
+		// }
+		// btn.onclick = function(e) {
+		// 	console.error(e);
+		// }
+	</script>
+</body>
+</html>

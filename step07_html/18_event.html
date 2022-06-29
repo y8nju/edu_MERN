@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div>
+		<h2>이벤트 드리븐</h2>
+		<p>
+			브라우저는 특정 사건이 일어나면, 이를 감지해서 이벤트를 발생시킨다<br>
+			클릭이나, 키보드 입력, 마우스 움직임 등등..... <br>
+			각각의 사전에 맞추어 특정타입으로 이벤트가 생성된다
+		</p>
+		<p>
+			유저가 특정행동을 할 때 이에 반응해서 어떤 작업을 하고 싶다면, <br>
+			<mark>이벤트 핸들러</mark>	(이벤트가 발생했을 때 호출될 함수)를 작성해서 브라우저에게 위임을 하면 된다(핸들러 등록)
+		</p>
+		<p>
+			핸들러 등록은 3가지 형태로 가능하다<br>
+			등록할 수 있는 이벤트의 종류는 200여가지가 된다
+		</p>
+		<button onclick="test();">TYPE1 - 속성을 이용</button>
+		<button id="btn2">TYPE2 - 프로퍼티 이용</button>
+		<button id="btn3">TYPE3 - addEventListner Fn을 이용</button>
+	</div>
+		<script>
+			function test() {
+				alert("HEY!");
+			}
+			document.querySelector("#btn2").onclick = function() {
+				alert("HEY!");
+			};
+			document.querySelector("#btn3").addEventListener("click", () => alert("HEY!") );
+		</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div>
+		<button onclick="alert(event);">속성을 이용해서 등록</button>
+		<button id="btn">프로퍼티를 이용해서 등록</button>
+		<p>
+			html 요소에 속성으로 등록할 때는 암묵적으로(자동적으로) 함수를 만들어서<br>
+			그 안에 우리가 작성한 내용내용이 함수 몸체로 들어간다
+		</p>
+		<code>
+			function onclick(event) {
+				test();
+			}
+		</code>
+	</div>
+	<script>
+		// document.querySelector("#btn").onclick = function() {
+		// 	alert(event);
+		// }
+		document.querySelector("#btn").onclick = function(e) {
+			// alret(event, e);
+			// alret(event == e);
+			console.log(e.target)	// 이벤트 근원지
+		}
+	</script>
+</body>
+</html>
