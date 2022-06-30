@@ -1,0 +1,47 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+#wrapper {
+	max-width: 1000px;
+	width: 100vw;
+	text-align: center;
+	margin: 0 auto;
+}
+.card {
+	width: 20%;
+	height: 16rem;
+	display: inline-block;
+	perspective: 40%;
+	margin: .6rem;
+	border-radius: .8rem;
+	overflow: hidden;
+	cursor: pointer;
+}
+.card div {
+	border-radius: .8rem;
+}
+.cardInner {
+position: relative;
+width: 100%;
+height: 100%;
+text-align: center;
+transition: transform 0.8s;
+transform-style: preserve-3d;
+}
+.card.flipped .cardInner {
+transform: rotateY(180deg);
+}
+.cardFront {
+background: NavajoWhite;
+}
+.cardFront, .cardBack {
+position: absolute;
+width: 100%;
+height: 100%;
+border: 1px solid #eee;
+backface-visibility: hidden;
+}
+.cardBack {
+transform: rotateY(180deg);
+}
