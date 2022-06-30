@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+	<style>
+		button {
+			border-style: outset;
+		}
+		button:focus, button:active {
+			border-style: inset;
+		}
+	</style>
+</head>
+<body>
+	<a href="https://keycode.info" id="link" target="_blank">keyCode 확인</a>
+	<button id="btn">BUTTON</button>
+	<input type="checkbox" id="chkBox">
+	<script>
+		// 2. DOM 요소는 이벤트에 의한 기본 동작이 설정되어 있다
+		// 이 동작 자체를 중단 시킬 수 있다
+		document.querySelector("#chkBox").onclick = function(e) {
+			e.preventDefault(); // 동작 무효화
+		}
+		document.querySelector("#link").onclick = function(e) {
+			e.preventDefault(); // 동작 무효화
+		}
+		document.querySelector("#btn").onclick = function(evt) {
+			console.log("EVENT");
+			console.log(evt);
+		}
+		// 1. 이벤트 강제 전파 할 수 있다
+		let e = new MouseEvent("click");
+		document.querySelector("#btn").dispatchEvent(e);    // 클릭하지 않아도 이벤트가 발생한다
+	</script>
+</body>
+</html>

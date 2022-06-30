@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Event</title>
+	<style>
+		button {
+			border-color: #ddd;
+			margin: .4rem;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button>BUTTON</button>
+		<button id="add">Add</button>
+	</div>
+	<script>
+		document.querySelector("#container").onclick = function(e) {
+			if(e.target === this.firstElementChild) {	// e.target === e.target.parentNode.firstElementChild
+				return
+			}
+			if(e.target != this) { // if([...this.children].includes(e.target))
+				e.target.parentNode.removeChild(e.target);
+			}
+			// e.currentTarget.removeChild(e.target);
+		}
+		document.querySelector("#add").onclick = function(e) {
+			e.stopPropagation()	// 이벤트 전파 중단
+			let clone = e.target.previousElementSibling.cloneNode(true);
+			e.target.parentNode.insertBefore(clone, e.target);
+		}
+	</script>
+</body>
+</html>

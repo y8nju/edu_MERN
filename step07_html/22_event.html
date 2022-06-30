@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<ul id="list" style="border: 1px solid #ddd;">
+		<li id="one" style="border: 1px dotted #ddd;">아이고</li>
+		<li>세상에</li>
+		<li>마상에</li>
+	</ul>
+	<hr>
+	<section>
+		<h2>캡쳐링 & 버블링</h2>
+		<p class="content">
+			<ol>
+				<li>
+					<mark>캡쳐링</mark><br>
+					브라우저는 어떤 특정요소에 이벤트가 발생했을 때 그걸 전달하기 위해서<br>
+					DOM을 타고 차례로 내려가면서 탐색을 하게됨
+				</li>
+				<li>
+					<mark>버블링</mark><br>
+					목적지에 이벤트를 전달하고 나면 이벤트를 회수함<br>
+					<ul>
+						<li>상위 객체에 이벤트 처리를 위임하면, 버블링 단계에서 작동한다</li>
+						<li>이벤트 종류에 따라서 버블링이 되는 이벤트가 있고, 아닌 것도 있다<br>
+							<code>.bubbles</code>로 확인
+						</li>
+					</ul>
+				</li>
+				<li>
+					<code>addEvnetListener</code>로 등록시킬 때 는 캡쳐링 단계에서 할건지, 버블링 단계에서 할건지 조절이 가능<br>
+					요소에 속성 설징 되었거나 프로퍼티로 직접 설정한 거는 버블링에서 캐치 됨
+				</li>
+			</ol>
+		</p>
+	</section>
+
+	<script>
+		// 자식요소에 이벤트가 등록되어 있으면, 부모요소의 이벤트는 버블링 되면서 작동한다
+		// 상위 객체에 이벤트 처리를 위임하면, 버블링 단계에서 작동한다
+		document.querySelector("#list").addEventListener("click", function(e){
+			console.log('#list에 등록 된 핸들러 작동');
+			// console.log(e.bubbles);	// true
+			console.log(e.eventPhase);	//3
+		});
+		// 이벤트 종류에 따라서 버블링이 되는 이벤트가 있고, 아닌 것도 있다
+		document.querySelector("#one").addEventListener("click", function(e){
+			console.log('#one에 등록 된 핸들러 작동');
+			console.log(e.type);	// click
+			console.log(e.eventPhase);	//2
+			console.log(e.bubbles);	// true
+			console.log(e.isTrusted);	// 사용자에 의해 발생한 이벤트가 맞는지?
+			console.log(e.timeStamp);	// 문서가 로딩되고 난 후 경과된 시간
+		});
+		/* 
+			addEvnetListener로 등록시킬 때 는 캡쳐링 단계에서 할건지, 버블링 단계에서 할건지 조절이 가능
+			요소에 속성 설징 되었거나 프로퍼티로 직접 설정한 거는 버블링에서 캐치 됨
+		*/
+
+		/* function handle(e) {
+			console.log(e.target, "vs", event.currentTarget);
+			// .target 👉 실제 이벤트가 발생되는 곳
+			// .currentTarget 👉 이벤트를 처리하는 곳
+		};
+		document.querySelector("#list").addEventListener("click", handle); */
+	</script>
+</body>
+</html>

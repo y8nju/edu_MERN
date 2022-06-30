@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div id="mouse" style="background-color: #f7f7f7;">
+		<h3>마우스 이벤트</h3>
+		<ul>
+			<li><code>click</code> <br><code>dblclick</code></li>
+			<li><code>mousedown</code> <br><code>mouseup</code></li>
+			<li><code>mousemove</code></li>
+			<li>
+				<code>mouseenter</code>: 버블링 X <br>
+				<code>mouseover</code>: 모든 이벤트를 감지하고 싶을 때는 over를 사용
+			</li>
+			<li>
+				<code>mouseleave</code>: 버블링 X <br>
+				<code>mouseout</code>
+			</li>
+		</ul>
+	</div>
+	<div id="key">
+		<h3>키 이벤트</h3>
+		<a href="https://keycode.info">키 이벤트 확인</a>
+		<ul>
+			<li><code>keyup</code></li>
+			<li>
+				<code>keydown</code> <br>
+				<code>keypress</code>: 화살표 작동 X, 사용하지 않는 추세이다
+			</li>
+			<!-- <li><code></code></li> -->
+		</ul>
+		<p id="view"></p>
+	</div>
+	
+	<script>
+		document.querySelector("#mouse").onmouseover = function(e) {
+			console.log(e.target);
+			console.log(e.clientX, e.clientY);
+			console.log(e.ctrlKey);	// altKey, shiftKey, button
+		}
+
+		document.querySelector("body").onkeyup = function(e) {
+			console.log(e);
+			console.log(e.key);
+			console.log(e.keyCode);
+			if(e.keyCode === 113) {	// F2 Key
+				e.target.style.backgroundColor = "blue";
+			}else {
+				e.target.style.backgroundColor = "#" + Math.round(Math.random() * 0xffffff).toString(16);
+			}
+		}
+	</script>
+</body>
+</html>

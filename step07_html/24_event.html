@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Event</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<div id="focus">
+		<h3>포커스 이벤트</h3>
+		<ul>
+			<li>
+				<code>focus</code>: 버블링 X <br>
+				<code>focusin</code>
+			</li>
+			<li>
+				<code>blur</code>: 버블링 X <br>
+				<code>focusout</code>
+			</li>
+			<!-- <li><code></code></li> -->
+
+		</ul>
+	</div>
+	<div id="form">
+		<h5>Focus Event</h5>
+		<div class="content">
+			<input type="text"> <input type="password">
+		</div>
+	</div>
+	<div id="">
+		<h3>리소스 이벤트</h3>
+		<a href="https://webdir.tistory.com/515">문서의 로드시점</a>
+		<ul>
+			<li><code>onload</code>: 문서가 로딩이 다 된 이후 작동</li>
+			<!-- <li><code></code></li> -->
+		</ul>
+	</div>
+	<script>
+		document.querySelector("#form").addEventListener("focusin", e => {
+			e.target.style.backgroundColor="LemonChiffon";
+		});
+		document.querySelector("#form").addEventListener("focusout", e => {
+			e.target.style.backgroundColor="field";
+		});
+		
+		// 리소스 이벤트
+		// document.body.onload = function(e) {
+		// 	console.log(e);
+		// }
+		window.onload = function(e) {
+			console.log(e);
+		}
+	</script>
+</body>
+</html>
