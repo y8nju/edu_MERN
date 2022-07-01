@@ -38,12 +38,14 @@
 					return;
 				}
 			}
+			if(words.includes(val)) {
+				return alert('이미 입력한 단어입니다');
 
+			}
 			let target = `https://stdict.korean.go.kr/api/search.do?certkey_no=4043&key=5089D2A99A5BF77AA38DF1C0564D2B32&type_search=search&req_type=json&q=${val}`;
-			
-			fetch(target).then(function(rst) {
-				return rst.json()
-			}).then(function(obj) {
+			async function wordSerch() {
+				let rst = await fetch(target);
+				let obj = await rst.json();
 				if(obj.channel.total > 0) {
 					
                     words.push(val);
@@ -56,11 +58,12 @@
 				} else {
 					alert(`${val}는 없습니다`)
 				}
-			}).catch(function(e) {
+				return;
+			}
+			wordSerch().catch(function(e) {
 				console.log(e);
 				alert(`${val}는 없습니다`)
-			})
-
+			});
 			
 			document.querySelector('input').value = '';
 		}

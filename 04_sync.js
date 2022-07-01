@@ -6,11 +6,11 @@ const fs = require('fs');
 
 let readData;
 
-readData = fs.readFileSync('./package.json', 'utf-8')
+// readData = fs.readFileSync('./package.json', 'utf-8')
 
-// fs.readFile('./package.json', 'utf-8', function(err, data) {
-// 	readData = data;
-// 	console.log(data);
-// });
+fs.readFile('./package.json', 'utf-8', function(err, data) {
+	readData = data;
+	console.log(data);
+});
 
 console.log('The end');
