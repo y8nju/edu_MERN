@@ -8,7 +8,7 @@ let readData;
 
 // readData = fs.readFileSync('./package.json', 'utf-8')
 
-fs.readFile('./package.json', 'utf-8', function(err, data) {
+fs.readFile('../package.json', 'utf-8', function(err, data) {
 	readData = data;
 	console.log(data);
 });
