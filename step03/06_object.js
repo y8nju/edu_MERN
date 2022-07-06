@@ -34,3 +34,4 @@ console.log(human.hobby1);
 for(let i = 1; i <= 3; i++) {
 	console.log(human['hobby'+i]);
 };
+console.log(Object.keys(human))
