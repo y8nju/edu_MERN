@@ -17,11 +17,14 @@ const path = require('path');
 fs.readFile('./package.json', function(err, data) {
 	// 읽기에 실패하면 err에 데이터가 들어가고, 성공하면 data가 들어감
 	console.log(data instanceof Buffer, data);
+	console.log(data.toString("utf-8"));
 });
 
+// 3. sync
 let data = fs.readFileSync('./package.json');
 console.log(data instanceof Buffer, data);
 
+//2. promises
 fs.promises.readFile('./package.json')
 	.then((data) => {
 		console.log(data instanceof Buffer, data);
