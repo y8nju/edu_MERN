@@ -13,10 +13,36 @@
 			너의 요청 처리할 수 없다
 */
 
+const http = require('http');
 const url = require('url');
-!function() {
-	let rst = url.parse('dayList?rank=8&gernre=action&gernre=romance', true);	
-	// false: defult, String
-	// true: queryString을 Object
-	console.log(rst.query);
-}();
+
+http.createServer((req, res) => {
+	let pathName = url.parse(req.url).pathname;
+	res.setHeader('content-type', 'text/html;charset=utf-8');
+	let rst = url.parse(req.url, true);
+	let weekData = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+	let numData = /^\d{1,}$/;
+	if(pathName === '/weekdayList' && weekData.includes(rst.query.week) && numData.test(rst.query.rank)) {
+		// switch(rst.query.week) {
+		// 	case 'mon':
+		// 		'월'
+		// 		break
+		// }
+		res.write(`<section style="text-align: center;">
+			<h1>요청처리결과 😃</h1>
+			<h3>${rst.query.week} 웹툰 ${rst.query.rank}위</h3>
+		</section>`)
+	}else {
+		res.write('<h1 style="text-align: center;">Sorry🙏 Page Not Found</h1>');
+	}
+	res.end();
+}).listen(8080, () => {
+	console.log('[Server] Start');
+});
+
+// !function() {
+// 	let rst = url.parse('dayList?rank=8&gernre=action&gernre=romance', true);	
+// 	// false: defult, String
+// 	// true: queryString을 Object
+// 	console.log(rst.query);
+// }();
