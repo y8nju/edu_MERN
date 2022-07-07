@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title></title>
+	<style>
+		@font-face {
+			font-family: 'LeferiPoint-WhiteObliqueA';
+			src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+		}
+		* {
+			text-align: center;
+			font-family: 'LeferiPoint-WhiteObliqueA';
+			color: #333;
+		}
+		h3 {
+			background-color: lavender;
+			line-height: 1;
+			padding: .8rem;
+		}
+
+	</style>
+</head>
+<body>
+	<h3>주차요금 안내 &#128663;</h3>
+    <table>
+        <tr>
+            <td>이용시간</td>
+            <td>사용요금</td>
+        </tr>
+        <tr>
+            <td><%= used %> </td>
+            <td><%= price %> </td>
+        </tr>
+    </table>
+    <% if(used <= 10) { %> 
+    <p><em>10분까지는 무료 회차시간입니다</em></p>
+    <% } %> 
+</body>
+</html>

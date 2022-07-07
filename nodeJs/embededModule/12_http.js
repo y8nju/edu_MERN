@@ -23,15 +23,34 @@ http.createServer((req, res) => {
 	let weekData = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 	let numData = /^\d{1,}$/;
 	if(pathName === '/weekdayList' && weekData.includes(rst.query.week) && numData.test(rst.query.rank)) {
-		// switch(rst.query.week) {
-		// 	case 'mon':
-		// 		'월'
-		// 		break
-		// }
 		res.write(`<section style="text-align: center;">
 			<h1>요청처리결과 😃</h1>
-			<h3>${rst.query.week} 웹툰 ${rst.query.rank}위</h3>
-		</section>`)
+			<h3>`);
+		switch(rst.query.week) {
+			case 'mon':
+				res.write(`<h3>월`);
+				break
+			case 'tue':
+				res.write(`<h3>화`);
+				break
+			case 'wed':
+				res.write(`<h3>수`);
+				break
+			case 'thu':
+				res.write(`<h3>목`);
+				break
+			case 'fri':
+				res.write(`<h3>금`);
+				break
+			case 'sat':
+				res.write(`<h3>토`);
+				break
+			case 'sun':
+				res.write(`<h3>일`);
+				break
+		}
+		res.write(`요 웹툰 ${rst.query.rank}위</h3>
+		</section>`);
 	}else {
 		res.write('<h1 style="text-align: center;">Sorry🙏 Page Not Found</h1>');
 	}
@@ -45,4 +64,12 @@ http.createServer((req, res) => {
 // 	// false: defult, String
 // 	// true: queryString을 Object
 // 	console.log(rst.query);
+
+// 	let arr = rst.query.split('&');
+// 	let obj = {};
+// 	arr.forEach(elm => {
+// 		let tmp = elm.split('=');
+// 		obj[tmp[0]] = tmp[1]
+// 	});
+// 	console.log(obj);
 // }();

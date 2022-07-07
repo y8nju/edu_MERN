@@ -29,7 +29,7 @@ http.createServer((req, res) => {
 			res.write(`<section style="text-align: center;">
 				<h1>요청처리결과 😃</h1>
 				<h3>${weekData[queryWeek]}요 웹툰 ${rst.query.rank}위</h3>
-			</section>`)
+			</section>`);
 			break
 		}
 		
@@ -41,9 +41,12 @@ http.createServer((req, res) => {
 	console.log('[Server] Start');
 });
 
-// !function() {
-// 	let rst = url.parse('dayList?rank=8&gernre=action&gernre=romance', true);	
-// 	// false: defult, String
-// 	// true: queryString을 Object
-// 	console.log(rst.query);
-// }();
+
+/* 
+	인덱스 비교해서 뽑기
+	const kor = []
+	const eng = []
+	if(eng.cotains(query.week)){
+		kor[eng.indexOf(query.week)];
+	}
+*/

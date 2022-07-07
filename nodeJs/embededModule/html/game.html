@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ObstacleAvoidance</title>
+	<style>
+		body {
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0 auto;
+			background-color: #0f172a;
+		}
+		canvas {
+			border: 1px solid #3d596d;
+			background-color: #1e293b;
+			border-radius: 0.5rem;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600px" height="400px"></canvas>
+	
+	<script src="static/game.js"></script>
+	<script>
+		const canvas = document.querySelector('canvas');
+		const ctx = canvas.getContext('2d');
+
+		let frame = 0; 
+		const walls = [];
+		const user = new User();
+		
+		let procedure;
+		canvas.addEventListener("mouseenter", function() {
+			if(procedure) {
+				clearInterval(procedure);
+			}
+			procedure = setInterval(function() {
+				user.fly()
+			}, 100);
+		});
+		canvas.addEventListener("mouseleave", function() {
+			if(procedure) {
+				clearInterval(procedure);
+			}
+			procedure = setInterval(function() {
+				user.fall()
+			}, 100);
+		});
+
+		// main
+		let main = setInterval(function(){
+			if(frame%20 === 0) {	// frame이 20의 배수일 때
+				walls.push(new Wall('#06b6d4', 10 + Math.random()*20));
+			};
+			ctx.clearRect(0, 0, 600,400);
+			ctx.fillStyle = '#e5e7eb';
+			ctx.fillRect(...user.toArray());
+
+			walls.forEach(function(obj) {
+				obj.slide();	// 모든 wall에게 이동 함수 적용
+				ctx.fillStyle = obj.color;
+				ctx.fillRect(...obj.toArray());
+			});
+			// walls에 wall객체들이 추가만 되고 있다.
+			// x < 0 이하로 된 얘들은 지워주는 작업을 추가
+			// 혹은 (x >= 0) 이상인 얘들만 filter 걸어서 변경
+			walls.filter(function(obj) {
+				if(!(obj.x + obj.w >= 0)) {
+					walls.shift();
+				}
+			});
+			
+			// console.log(walls.length);
+
+			frame++	// frame 추가
+
+			// user하고 wall하고 충돌체크 해줘야함
+			// 만약 하나라도 출돌되면 이건 게임 오버 crashWith()
+			// forEach혹은 배열에 some 함수 이용
+			// 멈추고 싶으면 clearIneterval(main)
+			// if(이 놈들이 충돌하면) { clearIneterval(main) }
+			walls.forEach(function(obj) {
+				if(obj.crashWith(user)) {
+					clearInterval(main);
+					ctx.fillStyle = 'rgb(244 63 94/.25)';
+					ctx.fillRect(0, 70, 600, 260);
+					ctx.font = '900 80px Arial';
+					ctx.textAlign = 'center'
+					ctx.fillStyle = '#e5e7eb';
+					ctx.fillText('GAME OVER', 300, 220);
+				}
+			});
+		} ,100);
+		
+		
+	</script>
+</body>
+</html>
