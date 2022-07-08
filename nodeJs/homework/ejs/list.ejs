@@ -1,51 +1,29 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <style>
-        div {
-            margin: 10px;
-            align-items: center;
-        }
-    </style>
-
+	<title>영화 선택</title>
+	<style>
+		<%- include('../static/css/style.css'); %>
+	</style>
 </head>
-
 <body>
-    <h2>영화 무료 관람 예약 <small>(영화사 이벤트 2022.07.08 한정)</small></h2>
-    <div style="display: flex;">
-        <div>
-            <label>토르 - 러브 앤 썬더</label>
-            <p>
-                <a href="">
-                    <img src="/85999_320.jpg" width="200px" />
-                </a>
-            </p>
-        </div>
-        <div>
-            <label>탑건-매버릭</label>
-
-            <p>
-                <a href=""><img src="./static/82120_320.jpg"
-                        width="200px" /></a>
-            </p>
-        </div>
-        <div>
-            <label>헤어질 결심</label>
-            <p>
-                <a href=""><img src="/85852_320.jpg"
-                    width="200px" /></a>
-            </p>
-        </div>
-        <div>
-            <label>범죄도시 2</label>
-            <p>
-                <a href=""><img src="/85813_320.jpg"
-                    width="200px" /></a>
-
-            </p>
-        </div>
-    </div>
+	<div class="wrap">
+		<section class="borderB container">
+			<h1>영화 무료 관람 예약 <small style="font-size: 70%">(영화사 이벤트 2022.07.08 한정)</small> 🎟️</h1>
+		</section>
+		<section class="flex between container" style="gap: 3%;">
+		
+		<% for(let i = 0; i < movies.length; i++) { %>
+			<article class="card" style="width: calc(100% / <%= movies.length %>); cursor: pointer;">
+				<a class="borderB" href="seat?code=<%= movies[i].id %>" style="display:block; overflow: hidden; position: relative;">
+					<img src="<%= movies[i].img %>" 
+						onerror="this.src='<%= movies[i].subImg %>'; this.onerror=null;"> 
+				</a>
+				<h3 style="padding: 1.4rem 1.2rem 1rem;"><%= movies[i].name %></h3>
+			</article>
+		<% } %> 
+			
+		</section>
+	</div>
 </body>
-
 </html>

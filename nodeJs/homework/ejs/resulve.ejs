@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> 예약 정보 확인 </title>
+	<style>
+		<%- include('../static/css/style.css'); %>
+	</style>
+</head>
+<body>
+	<div class="flex center" style="width: 50%; min-width: 600px;">
+		<article class="card flex col" style="width: 100%;">
+			<section class="borderB" style="background-color: var(--black); color: #fff; padding: 2rem 2rem 1.8rem;">
+				<h1>예약 정보 확인</h1>
+			</section>
+			<section class="flex">
+				<div style="flex: 1; border-right: 1px solid var(--black);">
+					<img src="<%= movie.img %>" 
+						onerror="this.src='<%= movie.subImg %>'; this.onerror=null;"> 
+				</div>
+				<div class="flex col" style="flex: 1; font-size: 1.4rem;">
+					<div class="content borderB" style="text-align: center;">
+						<h2><%= movie.name %></h2>  
+					</div>
+					<div class="content borderB">
+						<h3 style="border-bottom: 2px solid var(--black); display: inline-block;">접수된 좌석 번호</h3>
+						<p class="tag" style="margin: 1.6rem auto 0; font-weight: bold;"><%= seatNo %></p>
+					</div>
+					<div class="content borderB" style="text-align: center;">
+						무료 관람 신청이 접수되었습니다 ✨
+					</div>
+					<form action="/" class="flex center content" style="height: 100%;">
+						<button type="submit" class="tag" style="width: 100%; font-size: 1.4rem; background-color: var(--accent);">처음으로 돌아가기</button>
+					</form>
+				</div>
+		</article>
+	</div>
+</body>
+
+</html>

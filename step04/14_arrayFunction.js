@@ -46,3 +46,4 @@ console.log(f);	// Person { name: '감혜빈', age: 27, gender: '남' }
 	배열과 같은 이런 객체들은 API를 참조해서 사용하는 것, 
 	자바스크립트 API는 Mozila의 MDN API를 많이 이용한다
 */
+console.log(student.name)
