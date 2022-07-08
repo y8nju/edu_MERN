@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<%- include('./a.ejs'); %>
+
+	<!-- 
+		form 태그도 사용자가 서비스를 편하게 이용할 수 있게 해준다
+		사용자로 부터 어떤 데이터를 전달받기 위해서 사용한다
+
+	-->
+	<h1>1st</h1>
+	<form action="/sample/serch" method="post">
+		<input type="hidden" name="key" value="13213451dfdf">
+		<input type="text" name="q">
+		<input type="password" name="loginpass" onchange="this.parentNode.submit();">
+		<button type="submit">로그인</button>
+	</form>
+	<h1>2st</h1>
+	<form action="/sample/serch">
+		<p>
+			<h6>radio</h6>
+			<input type="radio" name="gender" value="female" id="rFemeale"><label for="rFemeale">여성</label>
+			<input type="radio" name="gender" value="male" id="rMeale"><label for="rMeale">남성</label>
+			<input type="radio" name="gender" value="private" id="rprivate"><label for="rprivate">비공개</label>
+		</p>
+		<p>
+			<h6>Check Box</h6>
+			<input type="checkbox" name="favorite" value="apple"><label for="">사과</label>
+			<input type="checkbox" name="favorite" value="banana"><label for="">바나나</label>
+			<input type="checkbox" name="favorite" value="cherry"><label for="">체리</label>
+			<input type="checkbox" name="favorite" value="egg"><label for="">달걀</label>
+		</p>
+		<button type="submit">로그인</button>
+	</form>
+	<h1>3rd</h1>
+	<form action="/sample/serch">
+		<p>
+			<select name="stock" id="">
+				<option value="005930">삼성전자</option>
+				<option value="035720">카카오</option>
+				<option value="005360">모나미</option>
+			</select>
+			<select name="birth" id="">
+				<% for (let year = 2022; year>1950; year--) { %> 
+					<option><%= year %></option>
+				<% } %> 
+			</select>
+		</p>
+		<p>
+			<textarea name="dec"></textarea>
+		</p>
+		<button>선택</button>
+	</form>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주차요금계산</title>
+    <style>
+        @font-face {
+			font-family: 'LeferiPoint-WhiteObliqueA';
+			src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+		}
+		* {
+			text-align: center;
+			font-family: 'LeferiPoint-WhiteObliqueA';
+			color: #333;
+		}
+		h3 {
+			background-color: lavender;
+			line-height: 1;
+			padding: .8rem;
+		}
+    </style>
+</head>
+
+<body>
+	<h3>주차요금 안내 &#128663;</h3>
+	<p>최종 주차요금은 <b><%= price %>원</b>입니다.</p>
+	<p> 총 주차시간은 <b><%= used %>분</b> 입니다</p>
+	
+    <% if(used <= 10) { %> 
+		<p><em>10분까지는 무료 회차시간입니다</em></p>
+		<% } %> 
+</body>
+
+</html>

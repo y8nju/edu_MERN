@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Example</title>
+	<style>
+		h1, h2, h3, h4, h5, h6 {
+			width: fit-content;
+			font-family: 'SBAggroL';
+			line-height: 1;
+			border-radius: .2rem;
+			background-color: DimGray;
+			color: white;
+			padding: .4rem;
+		}
+		input:checked + label {
+			font-weight: bold;
+		}
+		input, button {
+			border: 1px solid #ddd;
+			border-radius: .2rem;
+			line-height: 1; 
+			padding: .4rem;
+		}
+		input:focus, button:focus {
+			outline: 2px solid powderblue;
+		}
+	</style>
+</head>
+<body>
+	<%# ejs 주석
+		GET 방식은 주소창에 직접 작성해서 요청을 보내면 발생하는 방식으로 테스트하기 쉬움
+			GET방식은 입력한 내용을 확인할 수 있다
+			http://localhost:8080/solution?keyword=dfd
+				👉 [Query String Parameters] keyword: dfd
+		POST 방식은 HTML에 특별한 장치를 해뒀을 때 발생하는 방식
+			POST 방식의 요청이 발생하는 일반적인 상황은 form 태그에 의한 동작이 실행되었을 때 이다
+			POST 방식은 입력한 내용이 hidden
+				요청하는 데이터의 공개여부가 민감할 경우 사용(로그인)
+			http://localhost:8080/solution
+				👉 [Form Data] keyword: dfd
+	%> 
+	<h2>To Solution (GET)</h2>
+	<form action="/solution" method="get">
+		<input type="text" name="keyword">
+		<!-- name: query key 값 -->
+		<button type="submit">SUBMIT</button>
+		<button type="button">BUTTON</button>
+		<button type="reset">RESET</button>
+	</form>
+	<h2>To Solution (POST)</h2>
+	<%#
+		button type
+		submit: 부모 form을 정해진 액션 경로로 제출
+		reset: 다시 초기화
+		button: 이벤트 설정 등등
+	%> 
+	<form action="/solution" method="post">
+		<input type="text" name="keyword">
+		<button type="submit">SUBMIT</button>
+		<button type="button">BUTTON</button>
+		<button type="reset">RESET</button>
+	</form>
+</body>
+</html>

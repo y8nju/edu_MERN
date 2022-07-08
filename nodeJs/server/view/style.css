@@ -1,0 +1,68 @@
+@font-face {
+	font-family: 'LeferiPoint-WhiteObliqueA';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-WhiteObliqueA.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+    font-family: 'SBAggroL';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroL.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+	font-family: 'LeferiPoint-WhiteObliqueA';
+	font-size: .8rem;
+	line-height: 1.5;
+	padding: 2rem;
+	color: #333;
+}
+section {
+	line-height: 1.5;
+}
+a {
+	color: LightSkyBlue;
+}
+h1, h2, h3, h4, h5, h6 {
+	width: fit-content;
+	font-family: 'SBAggroL';
+	line-height: 1;
+	border-radius: .2rem;
+	background-color: lavender;
+	padding: .4rem .4rem .1rem;
+}
+code, xmp {
+	display: inline-block;
+	font-family: courier, monospace;
+	line-height: 1;
+	border-radius: .2rem;
+	background-color: #eee;
+	padding: .1rem .4rem;
+	margin: 0
+}
+input:checked + label {
+	font-weight: bold;
+}
+input, button {
+	font-family: 'LeferiPoint-WhiteObliqueA';
+	border: 1px solid #ddd;
+	border-radius: .2rem;
+}
+input:focus, button:focus {
+	outline: 2px solid powderblue;
+}
+mark {
+	font-weight: bold;
+}
+li {
+	margin-bottom: .6rem;
+}
+li:last-child {
+	margin-bottom: 0;
+}
+li li {
+	margin-bottom: .3rem;
+}
+.content {
+	padding-left: 1rem;
+}
