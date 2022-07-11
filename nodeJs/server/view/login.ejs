@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<h2>사용할 플레이어 이름 입력</h2>
+	<small>중복이름은 거절 될 수 있습니다</small>
+	<form action="/session">
+		<label for="name"></label>
+		<input type="text" name="name" id="name">
+		<!-- <button type="submit">확인</button> -->
+	</form>
+	<% if(msg) {%> 
+		<p><%= msg %></p>
+	<% } %> 
+</body>
+</html>
