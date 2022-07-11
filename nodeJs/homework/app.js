@@ -12,14 +12,14 @@ http.createServer((req, res) => {
 	
 	// static
 	if(pathname.startsWith("/static")) {
-		fs.createReadStream(path.join(__dirname, '/', pathname)).pipe(res);
+		return fs.createReadStream(path.join(__dirname, '/', pathname)).pipe(res);
 	}
 
 	const movies = [
 		{id: 'mv01', name: '토르 - 러브 앤 썬더', img: '/static/images/85999_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85999/85999_320.jpg'},
-		{id: 'mv02', name: '탑건-매버릭', img: '/static/images/85999_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000082/82120/82120_320.jpg'},
-		{id: 'mv03', name: '헤어질 결심', img: '/static/images/85999_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85852/85852_320.jpg'},
-		{id: 'mv04', name: '범죄도시 2', img: '/static/images/85999_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85813/85813_320.jpg'}
+		{id: 'mv02', name: '탑건-매버릭', img: '/static/images/82120_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000082/82120/82120_320.jpg'},
+		{id: 'mv03', name: '헤어질 결심', img: '/static/images/85852_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85852/85852_320.jpg'},
+		{id: 'mv04', name: '범죄도시 2', img: '/static/images/85813_320.jpg', subImg: 'https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85813/85813_320.jpg'}
 	]
 
 	if (pathname === "/list") {	
@@ -33,7 +33,7 @@ http.createServer((req, res) => {
 	} else if (pathname === "/seat") {
 		const query = url.parse(req.url, true).query;
 		const movie = movies.find(obj => obj.id === query.code);
-		console.log(movie);
+		// console.log(movie);
 		ejs.renderFile(path.join(__dirname, "ejs", "seat.ejs"), { movie })
 			.then((data) => {
 				res.writeHead(200, {
@@ -41,7 +41,7 @@ http.createServer((req, res) => {
 				});
 				res.end(data);
 			});
-	} else if (pathname === "/resulve") {
+	} else if (pathname === "/resurve") {
 		if(req.method==="GET") {
 			res.writeHead(302, {
 				"location" : "/input"
@@ -56,9 +56,9 @@ http.createServer((req, res) => {
 			const query = url.parse("/?" + result, true).query;
 			let movie = movies.find(obj => obj.id === query.movie);
 			let seatNo = query.seatNo;
-			console.log(seatNo)
-			console.log(movie.name)
-			ejs.renderFile(path.join(__dirname, "ejs", "resulve.ejs"), { movie, seatNo })
+			// console.log(seatNo)
+			// console.log(movie.name)
+			ejs.renderFile(path.join(__dirname, "ejs", "resurve.ejs"), { movie, seatNo })
 				.then((data) => {
 					res.writeHead(200, {
 						"content-type": "text/html;charset=utf-8",

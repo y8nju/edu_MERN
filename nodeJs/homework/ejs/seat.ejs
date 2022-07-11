@@ -2,9 +2,7 @@
 <html>
 <head>
 	<title>좌석 선택</title>
-	<style>
-		<%- include('../static/css/style.css'); %>
-	</style>
+		<link rel="stylesheet" href="/static/css/style.css">		
 </head>
 <body>
 	<div class="wrap">
@@ -13,7 +11,7 @@
 			<p style="font-size: 1.4rem; margin-top:.7rem; margin-left:.5rem">좌석을 선택해주세요.(최대2개)</p>
 		</section>
 		<section class="flex center container">
-			<form action="/resulve" method="post">
+			<form action="/resurve" method="post">
 				<input type="hidden" name="movie" value="<%= movie.id %>" checked>
 				<table>
 					<tr>
