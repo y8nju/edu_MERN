@@ -7,7 +7,7 @@ const uuid = require('uuid');
 // const cookieParser = require('');
 
 function cookieParser(str) {
-	const cookies = {};
+	const cookies = {};	// new Map
 	if(str) {
 		let cookieArray = str.split(/;\s+/);
 		cookieArray.forEach(obj => {
