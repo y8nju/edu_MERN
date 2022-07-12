@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>좌석 선택</title>
+		<link rel="stylesheet" href="/css/style.css">		
+</head>
+<body>
+	<div class="wrap">
+		<section class="borderB container">
+			<h1><%= movie.name %></h1>
+			<p style="font-size: 1.4rem; margin-top:.7rem; margin-left:.5rem">좌석을 선택해주세요.(최대2개)</p>
+		</section>
+		<section class="flex center container">
+			<form action="/resurve" method="post">
+				<input type="hidden" name="movie" value="<%= movie.id %>" checked>
+				<table>
+					<tr>
+						<th colspan="10">SCREEN</th>
+					</tr>
+					<% for(let row=1; row<=5; row++) {%>
+						<tr>
+						<%for(let seat= 1; seat <= 10 ; seat++  ){%>
+							<td><input class="chkBox" type="checkbox" name="seatNo" value="<%=row +'-' + seat %>" onclick="chkCnt(this);"></td>
+						<%}%>
+						</tr>
+					<% } %>
+				</table>
+				<div style="text-align:center; margin-top:2rem;">
+					<button type="submit" style="font-size: 1.2rem;">예약확정</button>
+					<button type="reset" style="font-size: 1.2rem;" onclick="chkReset()">재선택</button>
+				</div>
+			</form>
+		</section>
+	</div>
+	<script>
+		let cnt = 0;
+		function chkReset() {
+			cnt = 0;
+		}
+		function chkCnt(obj) {
+			if(obj.checked) {
+				cnt += 1;
+			} else {
+				cnt -= 1;
+			}
+			if(cnt > 2) {
+				alert('좌석은 최대 2개까지 선택 가능합니다');
+				obj.checked = false;
+				cnt -= 1;
+			}
+			
+			document.querySelector('.button');
+			console.log(cnt);
+		}
+		
+	</script>
+</body>
+</html>

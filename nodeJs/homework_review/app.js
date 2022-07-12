@@ -52,7 +52,8 @@ http.createServer(async (req, res) => {
 			const query = url.parse("/?"+recv, true).query;
 			// id 란 이름이 영화 id 값이 넘어오고,   seat라는 이름으로 선택된 좌석값이 넘어옴.
 			// 이걸 추출해서 적절하게 작업해서 rendering 시키는게 목적
-			let target = movies.find((elm)=> elm.id == params.get("id"));
+			let target = movies.for((elm)=> elm.id == params.get("id"));
+
 			// let target = movies.find((elm)=> elm.id == query.id));
 			// let seat = params.get("seat");      // 맨 처음일치되는 데이터 하나가 추출 (string)
 			// let seat = params.getAll("seat");      // 일치되는 데이터 전부가 배열로 추출 (string)

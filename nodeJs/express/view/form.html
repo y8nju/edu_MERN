@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Input</title>
+	<style>
+		h1, h2, h3, h4, h5, h6 {
+			width: fit-content;
+			font-family: 'SBAggroL';
+			line-height: 1;
+			border-radius: .2rem;
+			background-color: DimGray;
+			color: white;
+			padding: .4rem;
+		}
+		input:checked + label {
+			font-weight: bold;
+		}
+		input, button {
+			border: 1px solid #ddd;
+			border-radius: .2rem;
+			line-height: 1; 
+			padding: .4rem;
+		}
+		input:focus, button:focus {
+			outline: 2px solid powderblue;
+		}
+		form {
+			margin: 2rem;
+			display: flex;
+			flex-direction: column;
+		}
+	</style>
+</head>
+<body>
+	<h2>POST</h2>
+	<form action="/req/2" method="post" enctype="">
+		<input type="text" name="visitor" placeholder="이름을 입력하세요">
+		<textarea name="comment" rows="5" placeholder="자유롭게 입력하세요"></textarea>
+		<button type="submit">SUBMIT</button>
+	</form>
+	<h2>GET</h2>
+	<form action="/req/2" method="get">
+		<input type="text" name="visitor" placeholder="이름을 입력하세요">
+		<textarea name="comment" rows="5" placeholder="자유롭게 입력하세요"></textarea>
+		<button type="submit">SUBMIT</button>
+	</form>
+</body>
+</html>

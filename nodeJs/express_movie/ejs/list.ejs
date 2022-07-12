@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>영화 선택</title>
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<div class="wrap">
+		<section class="borderB container">
+			<h1>영화 무료 관람 예약 <small style="font-size: 70%">(영화사 이벤트 2022.07.08 한정)</small> 🎟️</h1>
+		</section>
+		<section class="flex between container" style="gap: 3%;">
+		
+		<% for(let i = 0; i < movies.length; i++) { %>
+			<article class="card" style="width: calc(100% / <%= movies.length %>); cursor: pointer;">
+				<a class="borderB" href="seat?code=<%= movies[i].id %>" style="display:block; overflow: hidden; position: relative;">
+					<img src="<%= movies[i].img %>" 
+						onerror="this.src='<%= movies[i].subImg %>'; this.onerror=null;"> 
+				</a>
+				<h3 style="padding: 1.4rem 1.2rem 1rem;"><%= movies[i].name %></h3>
+			</article>
+		<% } %> 
+			
+		</section>
+	</div>
+</body>
+</html>
