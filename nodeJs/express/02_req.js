@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 
 app.use(express.urlencoded({'extended' : true}));
+// post 요청 시 추가 
 
 app.get('/req/1', (req, res) => {
 	// console.log(req);
