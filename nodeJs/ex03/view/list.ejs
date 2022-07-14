@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students List</title>
+</head>
+<body>
+    <h2 style="background-color: #eee; text-align:center; padding: .4rem 0;">관리 중인 학생들 목록</h2>
+    <% arr.forEach(data => { %>
+        <div style="display: flex; align-items: center; border: 1px solid #eee; margin-bottom: .2rem;">
+            <h3 style="flex: 2; text-align: center;"><%= data.name %> </h3>
+            <ul style="flex: 3">
+                <li>방문 일자: <%= data.date ?? '-' %></li>
+                <li><%= data.comment ?? '-' %></li>
+            </ul>
+        </div>
+    <% }); %>
+</body>
+</html>

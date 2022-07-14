@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>방명록 쓰기</title>
+	<style>
+		form {
+			width: 70%;
+			display: flex;
+			flex-direction: column;
+		}
+	</style>
+</head>
+<body>
+	<form action="/write" method="post">
+		<div>
+			<label for="">이름</label>
+			<input type="text" name="name" placeholder="홍길동">
+		</div>
+		<div>
+			<label for="">비밀번호</label>
+			<input type="password" name="password" placeholder="***">
+		</div>
+		<textarea name="comment" cols="30" rows="10" placeholder="자유롭게 작성하세요"></textarea>
+		<button type="submit">작성하기</button>
+	</form>
+</body>
+</html>
