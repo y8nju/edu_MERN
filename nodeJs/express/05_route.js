@@ -11,9 +11,9 @@ app.route('game')
 	.get((req,res) => {
 		res.send('[GET] / GAME')
 	})
-	.post((req, res)) => {
+	.post((req, res) => {
 		res.send('[POST] /GAME')
-	}
+	})
 
 // app.get('/game', (req, res) => {
 
