@@ -27,13 +27,15 @@
 		form > div {
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
 		}
 		form label {
-			flex: 1;
+			width: 15%;
 			font-weight: bold;
 		}
 		form input {
-			flex: 3;
+			width: 82%;
 			font-size: .9rem;
 			height: 1.4rem;
 		}
@@ -59,6 +61,12 @@
 		input::placeholder, textarea::placeholder {
 			color: #b1b1b1;
 		}
+		.msg {
+			width: 83.5%;
+			font-size: .8rem;
+			color: #cf4e49;
+			margin: .2rem 0 0 auto;
+		}
 	</style>
 </head>
 <body>
@@ -66,12 +74,13 @@
 		<input type="hidden" name="id" value="<%= visite._id.toString() %>">
 		<input type="hidden" name="date" value="<%= visite.date.toLocaleString() %>">
 		<div>
-			<label for="">이름</label>
+			<label>이름</label>
 			<input type="text" name="name" value="<%= visite.name %>">
 		</div>
 		<div>
-			<label for="">비밀번호</label>
-			<input type="password" name="password" value="<%= visite.password %>">
+			<label>비밀번호</label>
+			<input type="password" name="password" placeholder="비밀번호를 입력하세요">
+			<div class="msg"><%= msg %></div>
 		</div>
 		<textarea name="comment" cols="30" rows="10"><%= visite.comment %></textarea>
 		<button type="submit">수정하기<s/button>

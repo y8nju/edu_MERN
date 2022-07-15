@@ -39,15 +39,16 @@
 </head>
 <body>
 	<table>
+		<input type="hidden" name="id" value="<%= visite._id.toString() %>">
 		<tr>
 			<td style="width: 20%; text-align: center; border: none;">이름</td>
-			<td><%= visite.name %> </td>
+			<td><%= arr.name %> </td>
 		</tr>
 		<tr>
-			<td colspan="2" style="height: 150px; text-align: center;"><%= visite.comment %></td>
+			<td colspan="2" style="height: 150px; text-align: center;"><%= arr.comment %></td>
 		</tr>
 		<tr>
-			<td colspan="2" style="font-size: .8rem; text-align: right; border:none;"><%= visite.date.toLocaleString() %></td>
+			<td colspan="2" style="font-size: .8rem; text-align: right; border:none;"><%= arr.date.toLocaleString() %></td>
 		</tr>
 	</table>
 	<a href="/list">방명록 목록</a>
