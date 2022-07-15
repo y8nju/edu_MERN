@@ -39,36 +39,51 @@ router.route('/write')
 		}
 	});
 
-	router.get('/list', async (req, res) => {
-		let arr = await visiteBook.findAll();
-		res.render('list', {arr});
-	});
-	router.get('/delete', async (req, res) => {
-		let result = await visiteBook.deleteById(req.query.id);
-		res.redirect('/list')
-	});
+router.get('/list', async (req, res) => {
+	let arr = await visiteBook.findAll();
+	res.render('list', {arr});
+});
 
-	router.route('/update')
+
+router.route('/delete')
+	.get(async (req, res) => {
+		let visite = await visiteBook.findById(req.query.id);
+		let activeUrl = '/delete'
+		res.render('passwordChk', {visite, activeUrl, msg: ""});	
+		console.log(visite.password)
+	})
+	.post(async (req, res) => {
+		let visite = await visiteBook.findById(req.body.id);
+		let activeUrl = '/delete'
+		if(visite.password === req.body.password) {
+			let result = await visiteBook.deleteById(req.body.id);
+			res.redirect("/list");
+		}else {
+			res.render('passwordChk', {visite, activeUrl, msg: "비밀번호가 일치하지 않습니다"});	
+		}
+	});
+router.route('/update')
 	.get(async (req, res) => {
 		let visite = await visiteBook.findById(req.query.id);
 		res.render('update', {visite});
 		console.table(visite);
 	})
 	.post( async (req, res) => { 
-		let arr = {
+		let visite = {
 			_id: req.body.id,
 			name : req.body.name,
 			password : req.body.password,
 			comment: req.body.comment,
+			date: req.body.date
 		};
 		
-		let result = await visiteBook.updateById(req.body.id, arr);
+		let result = await visiteBook.updateById(req.body.id, visite);
 		
-		res.render('updateChk', {arr});
+		res.render('writeChk', {visite});
 		
 		// res.redirect('list');
 		console.log(req.body.id);
-		console.table(arr);
+		console.table(visite);
 	});
 
 module.exports = router;

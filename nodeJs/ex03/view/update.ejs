@@ -63,7 +63,8 @@
 </head>
 <body>
 	<form action="/update" method="post">
-		<input type="hidden" name="id" value="<%=visite._id.toString()  %>">
+		<input type="hidden" name="id" value="<%= visite._id.toString() %>">
+		<input type="hidden" name="date" value="<%= visite.date.toLocaleString() %>">
 		<div>
 			<label for="">이름</label>
 			<input type="text" name="name" value="<%= visite.name %>">
