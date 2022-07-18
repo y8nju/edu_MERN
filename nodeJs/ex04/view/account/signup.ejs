@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	<div id="wrap">
+		<main>
+			<h1>회원가입</h1>
+			<form action="/account/signup" method="post">
+				<div class="inpWrap">
+					<div>
+						<label>이메일</label>
+						<input type="email" name="id" placeholder="이메일을 입력하세요">
+						<p><%= msg %> </p>
+						<!-- msg의 유무에 따라 if로 처리하자 -->
+					</div>
+					<div>
+						<label>비밀번호</label>
+						<input type="password" name="password" placeholder="비밀번호를 입력하세요">
+					</div>
+					<div>
+						<label>이름</label>
+						<input type="text" name="name">
+					</div>
+					<div>
+						<label>연락처</label>
+						<input type="number" name="contact">
+					</div>
+					<div>
+						<label>생년월일</label>
+						<input type="date" name="birth">
+					</div>
+				</div>
+				<button>회원가입</button>
+			</form>
+		</main>
+	</div>
+</body>
+</html>

@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 
@@ -78,7 +77,7 @@ router.route('/update')
 		};
 		console.log(visite.password, arr.password);
 		if(visite.password === arr.password) {
-			// let result = await visiteBook.updateById(req.body.id, arr);
+			let result = await visiteBook.updateById(req.body.id, arr);
 			res.render('writeChk', {visite, arr});
 		}else {
 			res.render('update', {visite, msg: "비밀번호가 일치하지 않습니다"});
