@@ -1,43 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>회원가입 | #일상</title>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/account/account.css">
 </head>
 <body>
-	<div id="wrap">
-		<main>
+	<%- include("../common/header.ejs") %> 
+	<main>
+		<div id="signup">
 			<h1>회원가입</h1>
-			<form action="/account/signup" method="post">
-				<div class="inpWrap">
-					<div>
-						<label>이메일</label>
-						<input type="email" name="id" placeholder="이메일을 입력하세요">
-						<p><%= msg %> </p>
-						<!-- msg의 유무에 따라 if로 처리하자 -->
-					</div>
-					<div>
-						<label>비밀번호</label>
-						<input type="password" name="password" placeholder="비밀번호를 입력하세요">
-					</div>
-					<div>
-						<label>이름</label>
-						<input type="text" name="name">
-					</div>
-					<div>
-						<label>연락처</label>
-						<input type="number" name="contact">
-					</div>
-					<div>
-						<label>생년월일</label>
-						<input type="date" name="birth">
-					</div>
+			<form action="/account/signup" method="post" class="signupForm" onSubmit="return false;">
+				<div>
+					<label>이메일</label>
+					<input type="email" name="id" placeholder="이메일을 입력하세요">
+					<p class="errorMsg"><%= msg %> </p>
 				</div>
-				<button>회원가입</button>
+				<div>
+					<label>비밀번호</label>
+					<input type="password" name="password" class="pass" placeholder="비밀번호를 입력하세요" onchange="test();">
+				</div>
+				<div>
+					<label>비밀번호 확인</label>
+					<input type="password" class="passChk" placeholder="비밀번호를 한 번 더 입력하세요" onchange="test();">
+					<p class="errorMsg passMsg"></p>
+				</div>
+				<div>
+					<label>이름</label>
+					<input type="text" name="name" placeholder="이름을 입력하세요">
+				</div>
+				<div>
+					<label>연락처</label>
+					<input type="number" name="contact" placeholder="01012345678">
+				</div>
+				<div>
+					<label>생년월일</label>
+					<input type="text" name="birth" placeholder="날짜를 선택하세요" onfocus="(this.type = 'date')" >
+				</div>
+				<button type="button" class="submitBtn" onclick="submit()">회원가입</button>
 			</form>
-		</main>
-	</div>
+		</div>
+	</main>
+	<script>
+		function test() {
+			let pass = document.querySelector('.pass');
+			let passChk = document.querySelector('.passChk');
+			let passMsg = document.querySelector('.passMsg');
+			if(passChk.value) {
+				if(pass.value !== passChk.value) {
+					passMsg.innerHTML = '⩗ 비밀번호가 일치하지 않습니다';
+					passMsg.style.color = 'var(--errorColor)';
+				} else {
+					passMsg.innerHTML = '⩗ 비밀번호가 일치합니다'
+					passMsg.style.color = 'var(--successColor)';
+				}
+			} else {
+				passMsg.innerHTML = '';
+			}
+		}
+		function submit() {
+			let inp = document.querySelectorAll('input');
+			let i = 0;
+			while(i <= inp.length) {
+				console.log(inp[i].value);
+				i++
+			}
+
+			// for(let i = 0; i < inp.length; i++) {
+			// 	if(!inp[i].value) {
+			// 		return false;
+            //     }else if()
+			// 	// document.querySelector('.submitBtn').setAttribute('type', 'submit');
+			// }
+		}
+	</script>
 </body>
 </html>

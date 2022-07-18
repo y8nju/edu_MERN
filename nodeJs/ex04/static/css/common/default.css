@@ -1,0 +1,56 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+	--gray: #bdbcbc;
+	--gary999: #999;
+	--gary777: #777;
+	--errorColor: #f96464;
+	--ongolingColor: #08c38f;
+	--successColor: #007aff;
+}
+
+* {
+	box-sizing: border-box;
+}
+h1 {
+	margin-bottom: 1.8rem;
+}
+p {
+	margin: 0;
+}
+body {
+	font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+	color: #333;
+}
+main {
+	width: 100vw;
+	height: auto;
+	display: flex;
+	justify-content: center;
+	margin-top: 3rem;
+}
+input, textarea, select {
+	border: 1px solid #ddd;
+	border-radius: .5rem;
+	color: #333;
+}
+input::placeholder, textarea::placeholder, select::placeholder {
+	color: var(--gary999);
+}
+/* input::-webkit-datetime-edit {
+	color: var(--gary999);
+} */
+
+input:focus, textarea:focus, select:focus {
+	outline-color: var(--gary999);
+}
+button, .btn {
+	cursor: pointer;
+	display: block;
+	text-align: center;
+}
+.errorMsg {
+	font-size: .8rem;
+	line-height: 1;
+	color: var(--errorColor);
+}

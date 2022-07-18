@@ -11,13 +11,13 @@ router.route('/signin')
 		console.table(getId);
 
 		if(!getId) {
-			res.render('signin', {msg: '아이디가 존재하지 않습니다'})
+			res.render('account/signin', {msg: '⩗ 아이디가 존재하지 않습니다'})
 		}else {
 			if(getId.password === req.body.password) {
 				req.session.authUser = getId;
 				res.redirect('/user');
 			} else {
-				res.render('account/signin', {msg: '계정과 비밀번호를 확인하세요'});
+				res.render('account/signin', {msg: '⩗ 계정과 비밀번호를 확인하세요'});
 			}
 		}
 	})
@@ -41,7 +41,7 @@ router.route('/signup')
 		}
 		let getId = await accounts.findById(req.body.id);
 		if(getId){
-			res.render('account/signup', {msg: '이미 사용 중인 아이디입니다'})
+			res.render('account/signup', {msg: '⩗ 이미 사용 중인 아이디입니다'})
 		} else {
 			await accounts.insertOne(accuontData);
 			// console.table(result)

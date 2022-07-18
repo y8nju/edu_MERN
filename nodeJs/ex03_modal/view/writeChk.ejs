@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>작성한 글 확인하기</title>
+	<style>
+		body {
+			background-color: #f1f3f4;
+			color: #333;
+			padding: 2rem;
+		}
+		table {
+			width: 80%;
+			max-width: 700px;
+			background-color: #fff;
+			border-spacing: 1px .4rem;
+			border-radius: .2rem;
+			margin: 0 auto;
+			padding:1rem;
+		}
+		td {
+			border: 1px solid #eee;
+			border-radius: .2rem;
+			padding:.2rem;
+		}
+		a {
+			width:fit-content;
+			display: block;
+			text-decoration: none;
+			border-radius: .2rem;
+			background-color: #4a6ade;
+    		color: #fff;
+			margin: 1.5rem auto 0;
+			padding: .4rem;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<input type="hidden" name="id" value="<%= visite._id.toString() %>">
+		<tr>
+			<td style="width: 20%; text-align: center; border: none;">이름</td>
+			<td><%= arr.name %> </td>
+		</tr>
+		<tr>
+			<td colspan="2" style="height: 150px; text-align: center;"><%= arr.comment %></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="font-size: .8rem; text-align: right; border:none;"><%= arr.date.toLocaleString() %></td>
+		</tr>
+	</table>
+	<a href="/list">방명록 목록</a>
+</body>
+</html>

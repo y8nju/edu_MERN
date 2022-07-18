@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>방명록 수정하기</title>
+	<style>
+		body {
+			background-color: #f1f3f4;
+			color: #333;
+			padding: 2rem;
+		}
+		form {
+			width: 80%;
+			max-width: 700px;
+			display: flex;
+			flex-direction: column;
+			border-radius: .2rem;
+			background-color: #fff;
+			padding: 1.2rem 1rem;
+			margin: 1rem auto 0;
+		}
+		form > * {
+			margin-bottom: .6rem;
+		}
+		form > div {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+		}
+		form label {
+			width: 15%;
+			font-weight: bold;
+		}
+		form input {
+			width: 82%;
+			font-size: .9rem;
+			height: 1.4rem;
+		}
+		form textarea {
+			resize: none;
+		}
+		form button {
+			font-size: 1rem;
+			font-weight: bold;
+			color: #4a6ade;
+			background-color: #4a6ade1a;
+			margin-bottom: 0;
+			padding: 0.6rem;
+		}
+		input, button, textarea {
+			border: 1px solid #ddd;
+			border-radius: .2rem;
+			padding: .3rem;
+		}
+		input:focus, button:focus, textarea:focus {
+			outline: 2px solid powderblue;
+		}
+		input::placeholder, textarea::placeholder {
+			color: #b1b1b1;
+		}
+		.msg {
+			width: 83.5%;
+			font-size: .8rem;
+			color: #cf4e49;
+			margin: .2rem 0 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<form action="/update" method="post">
+		<input type="hidden" name="id" value="<%= visite._id.toString() %>">
+		<input type="hidden" name="date" value="<%= visite.date.toLocaleString() %>">
+		<div>
+			<label>이름</label>
+			<input type="text" name="name" value="<%= visite.name %>">
+		</div>
+		<div>
+			<label>비밀번호</label>
+			<input type="password" name="password" placeholder="비밀번호를 입력하세요">
+			<div class="msg"><%= msg %></div>
+		</div>
+		<textarea name="comment" cols="30" rows="10"><%= visite.comment %></textarea>
+		<button type="submit">수정하기<s/button>
+	</form>
+</body>
+</html>

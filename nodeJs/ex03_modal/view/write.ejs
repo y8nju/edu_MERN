@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>방명록 쓰기</title>
+	<style>
+		@font-face {
+			font-family: 'GmarketSansLight';
+			src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+		}
+		body {
+			background-color: #f1f3f4;
+			font-family: 'GmarketSansLight';
+			color: #333;
+			padding: 2rem;
+		}
+		form {
+			min-width: 400px;
+			width: 70%;
+			max-width: 600px;
+			display: flex;
+			flex-direction: column;
+			border-radius: .2rem;
+			background-color: #fff;
+			padding: 1.2rem 1rem;
+			margin: 1rem auto 0;
+		}
+		form > * {
+			margin-bottom: .6rem;
+		}
+		form > div {
+			display: flex;
+			align-items: center;
+		}
+		form label {
+			flex: 1;
+			font-weight: bold;
+		}
+		form input {
+			flex: 3;
+			font-size: .9rem;
+			height: 1.4rem;
+		}
+		form textarea {
+			resize: none;
+		}
+		form button {
+			font-size: 1rem;
+			font-weight: bold;
+			color: #4a6ade;
+			background-color: #4a6ade1a;
+			margin-bottom: 0;
+			padding: 0.6rem;
+		}
+		input, button, textarea {
+			font-family: 'GmarketSansLight';
+			border: 1px solid #ddd;
+			border-radius: .2rem;
+			padding: .3rem;
+		}
+		input:focus, button:focus, textarea:focus {
+			outline: 2px solid powderblue;
+		}
+		input::placeholder, textarea::placeholder {
+			color: #b1b1b1;
+		}
+	</style>
+</head>
+<body>
+	<form action="/write" method="post">
+		<div>
+			<label>이름</label>
+			<input type="text" name="name" placeholder="홍길동">
+		</div>
+		<div>
+			<label>비밀번호</label>
+			<input type="password" name="password" placeholder="***">
+		</div>
+		<textarea name="comment" cols="30" rows="10" placeholder="자유롭게 작성하세요"></textarea>
+		<button type="submit">작성하기</button>
+	</form>
+</body>
+</html>
