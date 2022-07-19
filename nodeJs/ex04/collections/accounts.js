@@ -13,9 +13,16 @@ async function findAll() {
 	return await connect().find().toArray(); 
 }
 
-async function findById(id) {
-    return await connect().findOne({id : id});
+async function findById(target) {
+    return await connect().findOne({id : target});
+}
+
+async function updateUserImg(userId, url) {
+	return await connect().updateOne(
+		{id: userId}, 
+		{$set: {image: url}}
+	);
 }
 module.exports = {
-	insertOne, findAll, findById,
+	insertOne, findAll, findById, updateUserImg
 };

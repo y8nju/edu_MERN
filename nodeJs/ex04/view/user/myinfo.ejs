@@ -1,13 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>마이페이지 | #일상</title>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<!-- <link rel="stylesheet" href="/css/account/account.css"> -->
+	<style>
+		.userProfileImg {
+			width: 10rem; border-radius: 50%; border: 1px solid #ddd; display: block; margin-bottom: .4rem
+		}
+		input#profile::file-selector-button {
+			display: none;
+		}
+	</style>
 </head>
 <body>
-    마이페이지
-    <%= user.id %> 
+	<%- include("../common/header.ejs") %> 
+	<main>
+		<div id="myinfo">
+			<h1>마이페이지</h1>
+			<section class="profileSection">
+				<form action="/user/myinfo" method="post" enctype="multipart/form-data">
+					<label for="profile" style="cursor: pointer;">
+						<img src="<%=user.image ?? '/images/user/userProfile.png' %>" alt="user profile image" class="userProfileImg">
+						<span class="newFileName"></span>
+						<input type="file" name="profile" id="profile" accept="image/*" onchange="preview(event)">
+					</label>
+					<button>변경하기</button>
+				</form>
+				<h3><%= user.name %> </h3>
+				<small><%= user.id %> </small>
+			</section>
+		</div>
+	</main>
+	<script>
+		function preview(evt) {
+			if(evt.target.files && evt.target.files[0]) {
+				// image preview
+				console.log(evt.target.files[0]);
+				let reader = new FileReader();	// browser host 객체
+				reader.readAsDataURL(evt.target.files[0]);
+				reader.onload = function(rst) {
+					console.log(rst.target.result);
+					document.querySelector('.userProfileImg').src = rst.target.result;
+				}
+				// image file name preview
+				// let profileImg = document.querySelector('#profile').value;
+				// let fileName = profileImg.split('\\').reverse()[0]
+				// let newFileName = document.querySelector('.newFileName');
+				// newFileName.innerHTML = fileName;
+			}
+		}
+	</script>
 </body>
 </html>
