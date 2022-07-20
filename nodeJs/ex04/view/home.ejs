@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HOME | #일상</title>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/article/article.css">
+	<style>
+	</style>
+</head>
+<body>
+	<%- include("./common/header.ejs") %> 
+	<main>
+		<div id="home">
+			<section class="postWriteSection card row">
+				<div class="userInfo">
+					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg">
+				</div>
+				<form action="/article/upload" method="post" enctype="multipart/form-data" class="col writeForm">
+					<textarea name="message" id="" cols="30" rows="10"></textarea>
+					<div class="previewWrap">
+					</div>
+					<div class="btnWrap row">
+						<label>
+							<input type="checkbox" name="type" value="private"><span>비공개</span>
+						</label>
+						<input type="file" name="attaches" accept="image/*" onchange="preview(event)" multiple>
+						<button>전송</button>
+					</div>
+				</form>
+			</section>
+			<section class="postListSection">
+				<% postList.forEach(data => {%> 
+					<% if(data.type === 'public') {%> 
+						<article class="postcontainer card col">
+						<div class="writerInfo row">
+							<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+							<div>
+								<p><%= data.writerId %></p>
+								<p><span><%= data.writerName %></span><span><%= data.createAt %></span></p>
+							</div>
+						</div>
+						<div class="content">
+							<div class="message"><%= data.post %></div>
+							<div class="imageWrap row">
+								<% data.attachs.forEach(elm => { %> 
+									<img src="<%= elm %> " alt="">
+								<% }) %> 
+							</div>
+						</div>
+						<div class="commentWrap">
+							코멘트 영역
+						</div>
+					</article>
+				<% } }) %>
+			</section>
+		</div>
+	</main>
+	<script>
+		function preview(evt) {
+				document.querySelector(".previewWrap").innerHTML ="";
+				if (evt.target.files) {
+					for (let i = 0; i < evt.target.files.length; i++) {
+						let reader = new FileReader();
+						reader.readAsDataURL(evt.target.files[i]);
+						reader.onload = function(rst){
+							const img = document.createElement("img");
+							img.src = rst.target.result;
+							document.querySelector(".previewWrap").appendChild(img);
+						}
+					}
+				}
+			}
+	</script>
+</body>
+</html

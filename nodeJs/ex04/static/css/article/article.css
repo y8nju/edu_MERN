@@ -1,0 +1,38 @@
+body {
+	background-color: var(--bg);
+}
+.card {
+	border-radius: .4rem;
+	background-color: #fff;
+	padding: 1rem 2rem;
+	margin-bottom: 1rem;
+}
+.userProfileImg {
+	width: 4rem;
+	height: 4rem;	
+	margin-right: 1rem;
+}
+#home {
+	width: 700px;
+}
+.postWriteSection .writeForm {
+	width: 100%;
+}
+.postWriteSection textarea {
+	border: none;
+	background-color: #f9f9f9;
+}
+.postWriteSection .previewWrap img {
+	height: 5rem;
+}
+.postWriteSection .btnWrap {
+	justify-content: space-between;
+}
+.imageWrap {
+	width: 100%;
+	flex-wrap: wrap;
+	gap: .2rem;
+}
+.imageWrap > img {
+	flex-grow: 1;
+}

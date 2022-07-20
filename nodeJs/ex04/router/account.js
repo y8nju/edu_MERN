@@ -15,7 +15,7 @@ router.route('/signin')
 		}else {
 			if(getId.password === req.body.password) {
 				req.session.authUser = getId;
-				res.redirect('/user');
+				res.redirect('/article/home');
 			} else {
 				res.render('account/signin', {msg: '⩗ 계정과 비밀번호를 확인하세요'});
 			}

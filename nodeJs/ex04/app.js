@@ -10,7 +10,7 @@ const session = require('express-session');
 const morgan = require('morgan');
 const account = require('./router/account');
 const user = require('./router/user');
-const { response } = require('express');
+const article = require('./router/article');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -30,6 +30,7 @@ app.get('/', (req, res) => res.redirect('/account/signin'));
 
 app.use('/account', account);
 app.use('/user', user);
+app.use('/article', article)
 
 
 

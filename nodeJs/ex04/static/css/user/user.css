@@ -1,0 +1,23 @@
+.profileSection .userProfileImg {
+	width: 10rem;
+	display: block;
+	border: 1px solid #ddd;
+	margin-bottom: .4rem
+}
+.profileSection  input#profile {
+	width: 1px;
+	height: 1px;
+	border: transparent;
+}
+.profileSection  input#profile::file-selector-button {
+	display: none;
+}
+.profileSection .updateBtn {
+	font-size: .9rem;
+    border: 1px solid #ddd;
+    border-radius: 0.2rem;
+	color: var(--gary777);
+    margin: 0 auto;
+    padding: .2rem .6rem;
+	display: none;
+}

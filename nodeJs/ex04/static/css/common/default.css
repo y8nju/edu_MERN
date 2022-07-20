@@ -7,6 +7,7 @@
 	--errorColor: #f96464;
 	--ongolingColor: #08c38f;
 	--successColor: #007aff;
+	--bg: #ededed;
 }
 
 * {
@@ -37,20 +38,30 @@ input, textarea, select {
 input::placeholder, textarea::placeholder, select::placeholder {
 	color: var(--gary999);
 }
-/* input::-webkit-datetime-edit {
-	color: var(--gary999);
-} */
-
 input:focus, textarea:focus, select:focus {
 	outline-color: var(--gary999);
+}
+textarea {
+	resize: none;
 }
 button, .btn {
 	cursor: pointer;
 	display: block;
 	text-align: center;
+	line-height: 1;
+}
+.row {
+	display: flex;
+}
+.col {
+	display: flex;
+	flex-direction: column;
 }
 .errorMsg {
 	font-size: .8rem;
 	line-height: 1;
 	color: var(--errorColor);
+}
+.userProfileImg {
+	border-radius: 50%;
 }
