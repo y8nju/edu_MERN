@@ -1,17 +1,12 @@
-@font-face {
-	font-family: 'EarlyFontDiary';
-	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
-	font-weight: normal;
-	font-style: normal;
-}
 header {
 	height: 80px;
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 	font-family: 'EarlyFontDiary';
 	text-align: center;
 	background-color: #fff;
+	padding: 0 2rem;
 }
 .logo {
 	font-size: 1.6rem;
@@ -19,4 +14,28 @@ header {
 .logo > i {
 	font-style: normal;
 	color: var(--ongolingColor);
+}
+.userInfoLink {
+	align-items: flex-end;
+	font-family: Pretendard;
+	font-size: .9rem;
+	border-radius: 3.3rem;
+	margin-right: -1rem;
+	padding: 0.4rem 1rem;
+	cursor: pointer;
+	transition: all .3s;
+}
+.userInfoLink:hover, .userInfoLink:active {
+	background-color: #eee;
+}
+.userInfoLink .userId {
+	font-weight: 600;
+	color: var(--gray777);
+	margin-bottom: 0.4rem;
+}
+.userInfoLink .userProfileImg {
+	width: 3rem;
+	height: 3rem;
+	margin-right: 0;
+	margin-left: .4rem;
 }

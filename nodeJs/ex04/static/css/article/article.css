@@ -1,6 +1,10 @@
 body {
 	background-color: var(--bg);
 }
+i {
+	font-size: .9rem;
+	vertical-align: middle;
+}
 .card {
 	border-radius: .4rem;
 	background-color: #fff;
@@ -15,24 +19,99 @@ body {
 #home {
 	width: 700px;
 }
-.postWriteSection .writeForm {
+
+/* .postWriteSection */
+.writeForm {
 	width: 100%;
 }
-.postWriteSection textarea {
+textarea {
+	height: 5rem;
 	border: none;
 	background-color: #f9f9f9;
+	padding: 0.5rem;
 }
-.postWriteSection .previewWrap img {
+.previewWrap img {
 	height: 5rem;
+	border: 1px solid #ddd;
+	border-radius: 0.2rem;
+	margin: 1rem 0.4rem 0 0;
 }
-.postWriteSection .btnWrap {
-	justify-content: space-between;
+.btnWrap {
+	justify-content: flex-end;
+	font-size: .9rem;
+	margin-top: .4rem;
 }
-.imageWrap {
+.btnWrap label {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+.btnWrap .btn {
+	border: none;
+	color: var(--successColor);
+	background-color: transparent;
+	margin-left: .4rem;
+	padding: .4rem;
+}
+.btnWrap .btn:hover {
+	background-color: #007aff17;
+	background-color: #007aff17;
+	border-radius: 1rem;
+}
+.btnWrap .privatChk {
+	width: 1rem;
+	height: 1rem;
+	margin-right: .2rem;
+}
+.btnWrap .privatChk:checked + span {
+	color: var(--successColor)
+}
+.btnWrap input[type="file"] {
+	width: 1px;
+	height: 1px;
+	border: transparent;
+}
+/* postListSection */
+.postcontainer > div {
+	margin-bottom: 1rem
+}
+.postcontainer > div:last-child {
+	margin-bottom: 0;
+}
+.writerInfo {
+	align-items: flex-end;
+}
+.writerInfo .writerId {
+	font-weight: 600;
+	color: var(--gray777);
+}
+.writerInfo .createAt {
+	font-size: .9rem;
+	color: var(--gray999);
+	margin: 0.4rem 0;
+}
+.imageContainer {
+	position: relative;
+	width: 100%;
+	margin-top: 1rem;
+}
+.imageContainer .imageWrap {
 	width: 100%;
 	flex-wrap: wrap;
 	gap: .2rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
-.imageWrap > img {
+.imageContainer .imageWrap div {
 	flex-grow: 1;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+.imageContainer .imageWrap img {
+	vertical-align: bottom;
+	display: none;
 }

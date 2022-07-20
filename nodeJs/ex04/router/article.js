@@ -25,7 +25,7 @@ router.get('/home', async (req, res) => {
 const upload = multer({
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			const uploadPath = path.join(__dirname, '..', 'static', 'images', 'post', req.session.authUser.id.split('@')[0]);
+			const uploadPath = path.join(__dirname, '..', 'static', 'images', 'post', req.session.authUser.id);
 			if(!fs.existsSync(uploadPath)){
 				fs.mkdirSync(uploadPath);
 			}
@@ -43,7 +43,7 @@ router.post('/upload', upload.array('attaches'), async (req, res) => {
 		const user = req.session.authUser;
 		const attachs = [];
 		req.files.forEach (arr => {
-			let url = `/images/post/${req.session.authUser.id.split('@')[0]}/${arr.filename}`;
+			let url = `/images/post/${req.session.authUser.id}/${arr.filename}`;
 			attachs.push(url);
 		})
 		const articleData = {

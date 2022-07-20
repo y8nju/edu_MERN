@@ -17,14 +17,14 @@ router.use((req, res, next) => {
 const profileUpload = multer({
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			const uploadPath = path.join(__dirname, '..', 'static', 'images', 'user', req.session.authUser.id.split('@')[0]);
+			const uploadPath = path.join(__dirname, '..', 'static', 'images', 'user', req.session.authUser.id);
 			if(!fs.existsSync(uploadPath)){
 				fs.mkdirSync(uploadPath);
 			}
 			cb(null, uploadPath);
 		},
 		filename: (req, file, cb) => {
-			let profileName = req.session.authUser.id.split('@')[0] + Date.now();
+			let profileName = req.session.authUser.id + Date.now();
 			cb(null, profileName);
 		}
 	})
@@ -38,7 +38,7 @@ router.route('/myinfo')
 		res.render('user/myinfo', {user : req.session.authUser});
 	})
 	.post(profileUpload.single('profile'), async (req, res) => {
-		const url = `/images/user/${req.session.authUser.id.split('@')[0]}/${req.file.filename}`;
+		const url = `/images/user/${req.session.authUser.id}/${req.file.filename}`;
 		let result = await account.updateUserImg(req.session.authUser.id, url);
 		req.session.authUser = await account.findById(req.session.authUser.id);
 		res.render('user/myinfo', {user : req.session.authUser});

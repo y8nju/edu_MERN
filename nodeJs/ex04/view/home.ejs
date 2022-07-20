@@ -8,10 +8,9 @@
 	<title>HOME | #일상</title>
 	<link rel="stylesheet" href="/css/common/normalize.css">
 	<link rel="stylesheet" href="/css/common/default.css">
-	<link rel="stylesheet" href="/css/common/header.css">
 	<link rel="stylesheet" href="/css/article/article.css">
-	<style>
-	</style>
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
 <body>
 	<%- include("./common/header.ejs") %> 
@@ -19,18 +18,21 @@
 		<div id="home">
 			<section class="postWriteSection card row">
 				<div class="userInfo">
-					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg">
+					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 				</div>
 				<form action="/article/upload" method="post" enctype="multipart/form-data" class="col writeForm">
-					<textarea name="message" id="" cols="30" rows="10"></textarea>
+					<textarea name="message" placeholder="오늘 하루는 어떠셨나요?"></textarea>
 					<div class="previewWrap">
 					</div>
 					<div class="btnWrap row">
-						<label>
-							<input type="checkbox" name="type" value="private"><span>비공개</span>
+						<label style="margin-right: auto;">
+							<input type="checkbox" name="type" value="private" class="privatChk"><span>비공개</span>
 						</label>
-						<input type="file" name="attaches" accept="image/*" onchange="preview(event)" multiple>
-						<button>전송</button>
+						<label for="attaches">
+							<span class="btn" type="button"><i class="fi fi-rr-picture"></i></span>
+							<input type="file" name="attaches" id="attaches" accept="image/*" onchange="preview(event)" multiple>
+						</label>
+						<button class="btn"><i class="fi fi-rr-interface"></i> 전송</button>
 					</div>
 				</form>
 			</section>
@@ -38,44 +40,60 @@
 				<% postList.forEach(data => {%> 
 					<% if(data.type === 'public') {%> 
 						<article class="postcontainer card col">
-						<div class="writerInfo row">
-							<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
-							<div>
-								<p><%= data.writerId %></p>
-								<p><span><%= data.writerName %></span><span><%= data.createAt %></span></p>
+							<div class="writerInfo row">
+								<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+								<div>
+									<p class="writerId"><span>@<%= data.writerId %></span></p>
+									<p class="createAt"><span><%= data.createAt.toLocaleString() %></span></p>
+								</div>
 							</div>
-						</div>
-						<div class="content">
-							<div class="message"><%= data.post %></div>
-							<div class="imageWrap row">
-								<% data.attachs.forEach(elm => { %> 
-									<img src="<%= elm %> " alt="">
-								<% }) %> 
+							<div class="content">
+								<div class="message"><%= data.post %></div>
+								<div class="imageContainer">
+									<div style="padding-bottom: 200px;"></div>
+									<div class="imageWrap row">
+										<% data.attachs.forEach(elm => { %> 
+											<div class="img" style="background-image: url('<%= elm %>');">
+											<img src="<%= elm %>" alt=""></div>
+										<% }) %> 
+									</div>
+								</div>
 							</div>
-						</div>
-						<div class="commentWrap">
-							코멘트 영역
-						</div>
-					</article>
+							<div class="commentWrap">
+								코멘트 영역
+							</div>
+						</article>
 				<% } }) %>
 			</section>
 		</div>
 	</main>
 	<script>
 		function preview(evt) {
-				document.querySelector(".previewWrap").innerHTML ="";
-				if (evt.target.files) {
-					for (let i = 0; i < evt.target.files.length; i++) {
-						let reader = new FileReader();
-						reader.readAsDataURL(evt.target.files[i]);
-						reader.onload = function(rst){
-							const img = document.createElement("img");
-							img.src = rst.target.result;
-							document.querySelector(".previewWrap").appendChild(img);
-						}
+			document.querySelector(".previewWrap").innerHTML ="";
+			if (evt.target.files) {
+				for (let i = 0; i < evt.target.files.length; i++) {
+					let reader = new FileReader();
+					reader.readAsDataURL(evt.target.files[i]);
+					reader.onload = function(rst){
+						const img = document.createElement("img");
+						img.src = rst.target.result;
+						document.querySelector(".previewWrap").appendChild(img);
 					}
 				}
 			}
+		}
+		function userInfoLink() {
+			let userInfoLink = document.querySelector('.right');
+			let html = `
+				<div class="userInfoLink row" onclick="location.href='/user'">
+					<div>
+						<p class="userId">@<%= user.id %></p>
+					</div>
+					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+					</div>`
+			userInfoLink.innerHTML = html;
+			}
+		userInfoLink()
 	</script>
 </body>
 </html

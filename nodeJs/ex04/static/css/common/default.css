@@ -1,9 +1,15 @@
+@font-face {
+	font-family: 'EarlyFontDiary';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
+}
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 :root {
 	--gray: #bdbcbc;
-	--gary999: #999;
-	--gary777: #777;
+	--gray999: #999;
+	--gray777: #777;
 	--errorColor: #f96464;
 	--ongolingColor: #08c38f;
 	--successColor: #007aff;
@@ -13,15 +19,19 @@
 * {
 	box-sizing: border-box;
 }
+body {
+	font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+	color: #333;
+}
+a:link, a:visited, a:active {
+	color: #333;
+	text-decoration: none;
+}
 h1 {
 	margin-bottom: 1.8rem;
 }
 p {
 	margin: 0;
-}
-body {
-	font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
-	color: #333;
 }
 main {
 	width: 100vw;
@@ -36,10 +46,10 @@ input, textarea, select {
 	color: #333;
 }
 input::placeholder, textarea::placeholder, select::placeholder {
-	color: var(--gary999);
+	color: var(--gray999);
 }
 input:focus, textarea:focus, select:focus {
-	outline-color: var(--gary999);
+	outline-color: var(--gray999);
 }
 textarea {
 	resize: none;

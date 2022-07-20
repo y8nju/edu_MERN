@@ -32,6 +32,7 @@ router.route('/signup')
 			id: req.body.id,
 			password: req.body.password,
 			name: req.body.name,
+			email: req.body.email,
 			contact: req.body.contact,
 			birth: {
 				year: birthDay[0],
