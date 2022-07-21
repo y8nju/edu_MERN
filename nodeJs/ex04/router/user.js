@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path')
 
 const account = require('../collections/accounts');
+const articles = require('../collections/articles')
 
 router.use((req, res, next) => {
 	if(!req.session.authUser) {
@@ -34,8 +35,10 @@ router.route('/')
 	.post((req, res) => res.redirect('user/myinfo'));
 
 router.route('/myinfo')
-	.get ((req, res) => {
-		res.render('user/myinfo', {user : req.session.authUser});
+	.get (async (req, res) => {
+		let user = req.session.authUser;
+		let postList = await articles.getByWriter(user.id);
+		res.render('user/myinfo', {user, postList});
 	})
 	.post(profileUpload.single('profile'), async (req, res) => {
 		const url = `/images/user/${req.session.authUser.id}/${req.file.filename}`;

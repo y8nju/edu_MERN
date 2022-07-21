@@ -64,7 +64,11 @@ router.post('/upload', upload.array('attaches'), async (req, res) => {
 		await articles.add(articleData);
 		res.redirect('/article/home' )
 	})
+
 router.get('/view', async (req, res) => {
+	const user = req.session.authUser;
 	let found = await articles.findById(req.query.articleId);
+	res.render('article/view', {user, found})
+	console.table(found)
 })
 module.exports = router;

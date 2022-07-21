@@ -14,8 +14,11 @@
 	--ongolingColor: #08c38f;
 	--successColor: #007aff;
 	--bg: #ededed;
+	--bgLight: #f9f9f9;
 
 	--headerHeight: 80px;
+
+	--border: 1px solid #ddd;
 }
 
 * {
@@ -45,10 +48,10 @@ main {
 	height: auto;
 	display: flex;
 	justify-content: center;
-	margin-top: 3rem;
+	margin-top: 2rem;
 }
 input, textarea, select {
-	border: 1px solid #ddd;
+	border: var(--border);
 	border-radius: .5rem;
 	color: #333;
 }

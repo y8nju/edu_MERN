@@ -6,10 +6,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>회원가입 | #일상</title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
 	<link rel="stylesheet" href="/css/common/normalize.css">
 	<link rel="stylesheet" href="/css/common/default.css">
-	<link rel="stylesheet" href="/css/common/header.css">
 	<link rel="stylesheet" href="/css/account/account.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 </head>
 <body>
 	<%- include("../common/header.ejs") %> 
@@ -52,6 +54,8 @@
 		</div>
 	</main>
 	<script>
+		login();
+
 		function test() {
 			let pass = document.querySelector('.pass');
 			let passChk = document.querySelector('.passChk');
@@ -89,6 +93,13 @@
 				console.log(inp[i].value);
 				i++
 			}
+		}
+		function login() {
+			let userInfoLink = document.querySelector('.headerRight');
+			let html = `
+				<a href="/account/signin" class="loginoutLink"><button type="button"><i class="fi fi-rr-sign-in-alt"></i> Login</button></a>
+			`
+			userInfoLink.innerHTML = html;
 		}
 	</script>
 </body>

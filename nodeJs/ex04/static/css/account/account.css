@@ -1,12 +1,14 @@
 input {
 	width: 100%;
-	font-size: 1rem;
+	font-size: .9rem;
 	line-height: 1;
-	padding: 0.8rem 1rem;
+	padding: .6rem .9rem;
 }
 label {
 	display: inline-block;
-	margin-bottom: 0.4rem;
+	margin-bottom: .4rem;
+	color: var(--gray777);
+	font-weight: 600;
 }
 button {
 	width: 100%;
@@ -39,20 +41,26 @@ button:active {
 }
 #signin .signForm > div,
 #signup .signupForm > div  {
-	margin: 1.2rem 0;
+	margin: 1.1rem 0;
+	font-size: .9rem;
 }
 #signup .signupForm .errorMsg {
 	margin-top: .4rem;
 }
 
+#signComplete h1 {
+	margin-bottom: 3rem;
+}
 #signComplete .textContent {
-    text-align: center;
-	line-height: 1.5;
+	text-align: center;
+	line-height: 2;
 }
 #signComplete .userId {
 	color: var(--successColor);
 }
-.signinBtn {
+#signComplete .signinBtn {
+	width: fit-content;
 	text-decoration: none;
-	margin-top: 1.8rem;
+	margin: 2rem auto;
+	padding: 0.9rem 1.4rem;
 }

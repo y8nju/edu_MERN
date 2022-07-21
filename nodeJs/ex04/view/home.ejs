@@ -6,6 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>HOME | #일상</title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
 	<link rel="stylesheet" href="/css/common/normalize.css">
 	<link rel="stylesheet" href="/css/common/default.css">
 	<link rel="stylesheet" href="/css/article/article.css">
@@ -38,13 +39,16 @@
 			</section>
 			<section class="postListSection">
 				<% postList.forEach(data => {%> 
-					<article class="postcontainer card col">
+					<article class="postcontainer card col" onclick="location.href='/article/view?articleId=<%= data._id.toString() %>'">
 						<div class="writerInfo row">
 							<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 							<div>
 								<p class="writerId"><span>@<%= data.writerId %></span></p>
 								<p class="createAt"><span><%= data.createAt.toLocaleString() %></span></p>
 							</div>
+							<% if(data.type == 'private') {%> 
+								<div class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></div>
+							<% } %> 
 						</div>
 						<div class="content">
 							<div class="message"><%= data.post %></div>
@@ -61,7 +65,11 @@
 							<%}%>
 						</div>
 						<div class="commentWrap">
-							코멘트 영역
+							<div class="responseArea">
+								<div>
+									<span>댓글</span> <span><%= data.comments.length %></span>
+								</div>
+							</div>
 						</div>
 					</article>
 				<% }) %>

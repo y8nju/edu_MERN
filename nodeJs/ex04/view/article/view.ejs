@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HOME | #일상</title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/article/article.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+<body>
+	<%- include("../common/header.ejs") %> 
+	<main>
+		<div id="view">
+			<div>
+				<article class="postcontainer card col">
+					<div class="writerInfo row">
+						<img src="<%= found.writerImage %>" alt="<%= found.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+						<div>
+							<p class="writerId"><span>@<%= found.writerId %></span></p>
+							<p class="createAt"><span><%= found.createAt.toLocaleString() %></span></p>
+						</div>
+						<% if(found.type == 'private') {%> 
+							<div class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></div>
+						<% } %> 
+					</div>
+					<div class="content">
+						<div class="message"><%= found.post %></div>
+						<%if(found.attachs[0]) { %>
+							<div class="imageContainer">
+								<div style="padding-bottom: 200px;"></div>
+								<div class="imageWrap row">
+									<% found.attachs.forEach(elm => { %> 
+										<div class="img" style="background-image: url('<%= elm %>');">
+										<img src="<%= elm %>" alt=""></div>
+									<% }) %> 
+								</div>
+							</div>
+						<%}%>
+					</div>
+					<div class="commentWrap">
+						<div class="responseArea">
+							<div>
+								<span>댓글</span> <span><%= found.comments.length %></span>
+							</div>
+						</div>
+						<div class="cmmentWriteArea row">
+							<div>
+								<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+							</div>
+							<div>
+								<form action="">
+									<input type="text" placeholder="댓글을 입력하세요">
+								</form>
+							</div>
+						</div>
+						<div class="commnetsList">
+							코멘트 리스트 영역
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+	</main>
+	<script>
+		userInfoLink();
+		imageContainerVisible();
+		
+		function preview(evt) {
+			document.querySelector(".previewWrap").innerHTML ="";
+			if (evt.target.files) {
+				for (let i = 0; i < evt.target.files.length; i++) {
+					let reader = new FileReader();
+					reader.readAsDataURL(evt.target.files[i]);
+					reader.onload = function(rst){
+						const img = document.createElement("img");
+						img.src = rst.target.result;
+						document.querySelector(".previewWrap").appendChild(img);
+					}
+				}
+			}
+		}
+		function userInfoLink() {
+			let userInfoLink = document.querySelector('.headerRight');
+			let html = `
+				<div class="userInfoLink row" onclick="location.href='/user'">
+					<div>
+						<p class="userId">@<%= user.id %></p>
+					</div>
+					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+					</div>`
+			userInfoLink.innerHTML = html;
+		}
+	</script>
+</body>
+</html

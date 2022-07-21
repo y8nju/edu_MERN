@@ -21,5 +21,5 @@ module.exports.getByWriter = async function(writerId) {
 	return await connect().find({writerId : writerId }).sort("createdAt", -1).toArray();
 }
 module.exports.findById = async function(target) {
-	return await connect().findOne({id : target});
+	return await connect().findOne({_id : new mongodb.ObjectId(target)});
 }

@@ -25,6 +25,7 @@ header {
 	font-size: 1.6rem;
 }
 .logo > i {
+	font-size: 1.6rem;
 	font-style: normal;
 	color: var(--ongolingColor);
 }
@@ -38,7 +39,6 @@ header {
 .userInfoLink {
 	align-items: flex-end;
 	border-radius: 3.3rem;
-	margin-right: -1rem;
 	padding: 0.4rem 1rem;
 	transition: all .3s;
 }
@@ -56,18 +56,18 @@ header {
 	margin-right: 0;
 	margin-left: .4rem;
 }
-.logoutLink {
+.loginoutLink {
 	display: inline-block;
 	border-radius: 1rem;
 	padding: .4rem .8rem .4rem 1rem ;
 	transition: all .3s;
 }
-.logoutLink button {
+.loginoutLink button {
 	border: none;
 	color: var(--gray777);
 	background-color: transparent;
 	padding: 0;
 }
-.logoutLink:hover, .logoutLink:active {
+.loginoutLink:hover, .loginoutLink:active {
 	background-color: #eee;
 }
