@@ -1,12 +1,25 @@
 header {
-	height: 80px;
+	width: 100vw;
+	height: var(--headerHeight);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	position: fixed;
+	top: 0; 
+	left: 0;
 	font-family: 'EarlyFontDiary';
 	text-align: center;
 	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 	padding: 0 2rem;
+	z-index: 100;
+}
+
+/* headerCenter */
+.headerCenter {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
 }
 .logo {
 	font-size: 1.6rem;
@@ -15,14 +28,18 @@ header {
 	font-style: normal;
 	color: var(--ongolingColor);
 }
-.userInfoLink {
-	align-items: flex-end;
+
+/* headerRight */
+.headerRight {
 	font-family: Pretendard;
 	font-size: .9rem;
+	cursor: pointer;
+}
+.userInfoLink {
+	align-items: flex-end;
 	border-radius: 3.3rem;
 	margin-right: -1rem;
 	padding: 0.4rem 1rem;
-	cursor: pointer;
 	transition: all .3s;
 }
 .userInfoLink:hover, .userInfoLink:active {
@@ -38,4 +55,19 @@ header {
 	height: 3rem;
 	margin-right: 0;
 	margin-left: .4rem;
+}
+.logoutLink {
+	display: inline-block;
+	border-radius: 1rem;
+	padding: .4rem .8rem .4rem 1rem ;
+	transition: all .3s;
+}
+.logoutLink button {
+	border: none;
+	color: var(--gray777);
+	background-color: transparent;
+	padding: 0;
+}
+.logoutLink:hover, .logoutLink:active {
+	background-color: #eee;
 }

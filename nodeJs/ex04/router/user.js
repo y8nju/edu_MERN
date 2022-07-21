@@ -44,4 +44,9 @@ router.route('/myinfo')
 		res.render('user/myinfo', {user : req.session.authUser});
 	})
 
+router.get("/exit", (req, resp)=>{
+	req.session.destroy();
+	resp.redirect("/");
+});
+
 module.exports = router;

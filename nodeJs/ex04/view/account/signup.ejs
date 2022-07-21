@@ -19,8 +19,8 @@
 			<form action="/account/signup" method="post" class="signupForm">
 				<div>
 					<label>아이디</label>
-					<input type="text" name="id" placeholder="아이디를 입력하세요">
-					<p class="errorMsg"><%= msg %> </p>
+					<input type="text" name="id" class="id" placeholder="아이디를 입력하세요" onchange="idCheck(event);">
+					<p class="errorMsg idErr"><%= msg %> </p>
 				</div>
 				<div>
 					<label>비밀번호</label>
@@ -38,7 +38,6 @@
 				<div>
 					<label>이메일</label>
 					<input type="email" name="email" placeholder="이메일을 입력하세요">
-					<p class="errorMsg"><%= msg %> </p>
 				</div>
 				<div>
 					<label>연락처</label>
@@ -69,6 +68,20 @@
 				passMsg.innerHTML = '';
 			}
 		}
+		async function idCheck(evt) {
+			let value = document.querySelector('.id').value;
+			let idErr = document.querySelector('.idErr');
+			let response = await fetch(`/api/idCheck?id=${value}`, {method :"get"});
+			let result = await response.json();
+			console.log(result);
+			if(result.success) {
+				idErr.innerHTML = '⩗ 사용할 수 있는 아이디입니다';
+				idErr.style.color = 'var(--successColor)';
+			}else {
+				idErr.innerHTML = '⩗ 이미 사용 중인 아이디입니다';
+				idErr.style.color = 'var(--errorColor)';
+			}
+		}
 		function submit() {
 			let inp = document.querySelectorAll('input');
 			let i = 0;
@@ -76,13 +89,6 @@
 				console.log(inp[i].value);
 				i++
 			}
-
-			// for(let i = 0; i < inp.length; i++) {
-			// 	if(!inp[i].value) {
-			// 		return false;
-            //     }else if()
-			// 	// document.querySelector('.submitBtn').setAttribute('type', 'submit');
-			// }
 		}
 	</script>
 </body>

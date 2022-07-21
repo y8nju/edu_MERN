@@ -5,17 +5,21 @@ function connect() {
 	return new mongodb.MongoClient(uri).db('study').collection("articles");
 }
 
-async function add(article) {
+module.exports.add = async function(article) {
 	return await connect().insertOne(article);
 }
 
-async function findAll() {
+module.exports.findAll = async function() {
 	return await connect().find({}).sort('createAt', -1).toArray(); 
 }
+module.exports.getVisibleSome = async function(userId) {
+	const query = {"$or" : [{writerId : userId },  {  type : "public" } ] };
+	return await connect().find(query).sort("createdAt", -1).toArray();
+}
 
-async function findById(target) {
+module.exports.getByWriter = async function(writerId) {
+	return await connect().find({writerId : writerId }).sort("createdAt", -1).toArray();
+}
+module.exports.findById = async function(target) {
 	return await connect().findOne({id : target});
 }
-module.exports = {
-	add, findAll, findById
-};

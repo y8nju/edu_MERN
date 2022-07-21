@@ -38,17 +38,17 @@
 			</section>
 			<section class="postListSection">
 				<% postList.forEach(data => {%> 
-					<% if(data.type === 'public') {%> 
-						<article class="postcontainer card col">
-							<div class="writerInfo row">
-								<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
-								<div>
-									<p class="writerId"><span>@<%= data.writerId %></span></p>
-									<p class="createAt"><span><%= data.createAt.toLocaleString() %></span></p>
-								</div>
+					<article class="postcontainer card col">
+						<div class="writerInfo row">
+							<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+							<div>
+								<p class="writerId"><span>@<%= data.writerId %></span></p>
+								<p class="createAt"><span><%= data.createAt.toLocaleString() %></span></p>
 							</div>
-							<div class="content">
-								<div class="message"><%= data.post %></div>
+						</div>
+						<div class="content">
+							<div class="message"><%= data.post %></div>
+							<%if(data.attachs[0]) { %>
 								<div class="imageContainer">
 									<div style="padding-bottom: 200px;"></div>
 									<div class="imageWrap row">
@@ -58,16 +58,20 @@
 										<% }) %> 
 									</div>
 								</div>
-							</div>
-							<div class="commentWrap">
-								코멘트 영역
-							</div>
-						</article>
-				<% } }) %>
+							<%}%>
+						</div>
+						<div class="commentWrap">
+							코멘트 영역
+						</div>
+					</article>
+				<% }) %>
 			</section>
 		</div>
 	</main>
 	<script>
+		userInfoLink();
+		imageContainerVisible();
+		
 		function preview(evt) {
 			document.querySelector(".previewWrap").innerHTML ="";
 			if (evt.target.files) {
@@ -83,7 +87,7 @@
 			}
 		}
 		function userInfoLink() {
-			let userInfoLink = document.querySelector('.right');
+			let userInfoLink = document.querySelector('.headerRight');
 			let html = `
 				<div class="userInfoLink row" onclick="location.href='/user'">
 					<div>
@@ -92,8 +96,7 @@
 					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 					</div>`
 			userInfoLink.innerHTML = html;
-			}
-		userInfoLink()
+		}
 	</script>
 </body>
 </html

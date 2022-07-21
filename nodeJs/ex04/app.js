@@ -11,6 +11,7 @@ const morgan = require('morgan');
 const account = require('./router/account');
 const user = require('./router/user');
 const article = require('./router/article');
+const apiRoute = require('./router/apiRoute');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -29,6 +30,7 @@ app.use((err, req, res, next) => {
 app.get('/', (req, res) => res.redirect('/account/signin'));
 
 app.use('/account', account);
+app.use('/api', apiRoute);
 app.use('/user', user);
 app.use('/article', article)
 

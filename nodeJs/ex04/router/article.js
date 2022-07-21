@@ -19,6 +19,11 @@ router.route('/')
 
 router.get('/home', async (req, res) => {
 	let postList = await articles.findAll();
+	postList = postList ?? [];
+	postList = postList.filter(elm => {
+		return elm.type === 'public' || elm.writerId == req.session.authUser.id
+	})
+	// let postList = await articles.getVisibleSome(req.session.authUser.id);
 	res.render('home', {user: req.session.authUser, postList});
 });
 

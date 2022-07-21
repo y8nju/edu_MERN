@@ -3,7 +3,6 @@ body {
 }
 i {
 	font-size: .9rem;
-	vertical-align: middle;
 }
 .card {
 	border-radius: .4rem;
@@ -71,7 +70,14 @@ textarea {
 	height: 1px;
 	border: transparent;
 }
+
 /* postListSection */
+.postcontainer {
+	cursor: pointer;
+}
+.postcontainer:hover {
+	background-color: #f9f9f9;
+}
 .postcontainer > div {
 	margin-bottom: 1rem
 }
@@ -90,10 +96,14 @@ textarea {
 	color: var(--gray999);
 	margin: 0.4rem 0;
 }
+.message {
+	white-space: pre-wrap;
+}
 .imageContainer {
 	position: relative;
 	width: 100%;
 	margin-top: 1rem;
+	overflow: hidden;
 }
 .imageContainer .imageWrap {
 	width: 100%;
@@ -106,6 +116,7 @@ textarea {
 	right: 0;
 }
 .imageContainer .imageWrap div {
+	height: 100%;
 	flex-grow: 1;
 	background-repeat: no-repeat;
 	background-size: cover;
