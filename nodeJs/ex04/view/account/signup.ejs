@@ -73,17 +73,18 @@
 			}
 		}
 		async function idCheck(evt) {
-			let value = document.querySelector('.id').value;
-			let idErr = document.querySelector('.idErr');
-			let response = await fetch(`/api/idCheck?id=${value}`, {method :"get"});
-			let result = await response.json();
-			console.log(result);
-			if(result.success) {
-				idErr.innerHTML = '⩗ 사용할 수 있는 아이디입니다';
-				idErr.style.color = 'var(--successColor)';
-			}else {
-				idErr.innerHTML = '⩗ 이미 사용 중인 아이디입니다';
-				idErr.style.color = 'var(--errorColor)';
+			if(evt.target.value.trim().length > 0) {
+				let idErr = document.querySelector('.idErr');
+				let response = await fetch('/api/idCheck?id=' + evt.target.value, {method :"get"});
+				let result = await response.json();
+				if(result.success) {
+					idErr.innerHTML = '⩗ 사용할 수 있는 아이디입니다';
+					idErr.style.color = 'var(--successColor)';
+				}else {
+					idErr.innerHTML = '⩗ 이미 사용 중인 아이디입니다';
+					idErr.style.color = 'var(--errorColor)';
+				}
+				console.log(result, [evt.target.value]);
 			}
 		}
 		function submit() {

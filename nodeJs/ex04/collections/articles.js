@@ -23,3 +23,9 @@ module.exports.getByWriter = async function(writerId) {
 module.exports.findById = async function(target) {
 	return await connect().findOne({_id : new mongodb.ObjectId(target)});
 }
+module.exports.addComment = async function(targetId, comment) {
+	return await connect().updateOne(
+		{_id : new mongodb.ObjectId(targetId)},
+		{$push: {comments: comment}}
+	);
+}

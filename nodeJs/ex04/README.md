@@ -65,6 +65,22 @@
 * 쿼리로 넘어온 articleID에 해당하는 문서 상세보기를 만들면 된다
 * /article/home에서 개별 아티클 마다 <a href="/article/view?articleId=<%=elm._id.toString()"%>
 
+### 댓글
+---
+```
+article {
+  comments:[{댓글}, {댓글}]
+}
+```
+comments: {
+  {_id / commenterId / commenterName / commneterImage / message / createdAt}
+  }
+_id 👉uuid or objectId
+```
+function pushComment(targetId, data){
+  db.articles.update({_id: new mongodb.ObjectId()})
+}
+```
 
 
 

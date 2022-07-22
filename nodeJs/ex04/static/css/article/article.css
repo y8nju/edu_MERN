@@ -15,6 +15,11 @@ i {
 	height: 4rem;	
 	margin-right: 1rem;
 }
+.createAt {
+	font-size: .9rem;
+	color: var(--gray999);
+	margin: 0.4rem 0;
+}
 #home, #view {
 	width: 700px;
 }
@@ -87,22 +92,20 @@ textarea {
 	font-weight: 600;
 	color: var(--gray777);
 }
-.writerInfo .createAt {
-	font-size: .9rem;
-	color: var(--gray999);
-	margin: 0.4rem 0;
-}
 .writerInfo .isPraivate {
-	width: 1.5rem;
-	height: 1.5rem;
-	position: absolute;
-	top: 0;
-	right: -0.9rem;
+	width: 1.2rem;
+	height: 1.2rem;
+	display: inline-block;
 	text-align: center;
-	line-height: 1.4rem;
+	line-height: 1.1rem;
 	border-radius: 50%;
 	background-color: var(--gray);
 	color: #fff;
+}
+.writerInfo .isPraivate i {
+	height: .8rem;
+	display: inline-block;
+	font-size: .8rem;
 }
 .content {
 	margin-bottom: 1.2rem;
@@ -161,11 +164,33 @@ textarea {
 	border-bottom: var(--border);
 	padding: .5rem .1rem;
 }
-#view .cmmentWriteArea {
-	align-items: center;
+#view .commentWriteArea {
 	padding: .5rem .1rem;
 }
-#view .cmmentWriteArea .userProfileImg {
-	width: 2rem;
-	height: 2rem;
+#view .commentWriteArea .userProfileImg {
+	width: 2.1rem;
+	height: 2.1rem;
+	vertical-align: middle;
+}
+#view .commentWriteArea .commentWrite {
+	width: 100%;
+	height: 3rem;
+	font-size: .9rem;
+	line-height: 1;
+	padding: .4rem .9rem;
+}
+#view .commentWriteArea button {
+	font-size: .8rem;
+	line-height: 1.3rem;
+	letter-spacing: -1px;
+	border: var(--border);
+	border-radius: 1rem;
+	color: var(--gray777);
+	background-color: #fff;
+	margin-left: 1rem;
+	padding: 0.2rem 0.6rem;
+	transition: all .3s;
+}
+#view .commentWriteArea button:hover {
+	background-color: var(--bgLight);
 }

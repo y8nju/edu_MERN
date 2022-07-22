@@ -85,3 +85,6 @@ button, .btn {
 .userProfileImg {
 	border-radius: 50%;
 }
+.grow1 {
+	flex-grow: 1;
+}

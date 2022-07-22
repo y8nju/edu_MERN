@@ -33,9 +33,6 @@
 	padding: .2rem .6rem;
 	display: none;
 }
-.infoContainer {
-	flex-grow: 1;
-}
 .infoContainer .userInfo {
 	align-items: center;
 	line-height: 1;

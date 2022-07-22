@@ -43,12 +43,14 @@
 						<div class="writerInfo row">
 							<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 							<div>
-								<p class="writerId"><span>@<%= data.writerId %></span></p>
+								<p class="writerId">
+									<span>@<%= data.writerId %></span>
+									<% if(data.type == 'private') {%> 
+										<span class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></span>
+									<% } %> 
+								</p>
 								<p class="createAt"><span><%= data.createAt.toLocaleString() %></span></p>
 							</div>
-							<% if(data.type == 'private') {%> 
-								<div class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></div>
-							<% } %> 
 						</div>
 						<div class="content">
 							<div class="message"><%= data.post %></div>
@@ -78,7 +80,6 @@
 	</main>
 	<script>
 		userInfoLink();
-		imageContainerVisible();
 		
 		function preview(evt) {
 			document.querySelector(".previewWrap").innerHTML ="";

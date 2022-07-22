@@ -22,12 +22,14 @@
 					<div class="writerInfo row">
 						<img src="<%= found.writerImage %>" alt="<%= found.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 						<div>
-							<p class="writerId"><span>@<%= found.writerId %></span></p>
+							<p class="writerId">
+								<span>@<%= found.writerId %></span>
+								<% if(found.type == 'private') {%> 
+									<span class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></span>
+								<% } %> 
+							</p>
 							<p class="createAt"><span><%= found.createAt.toLocaleString() %></span></p>
 						</div>
-						<% if(found.type == 'private') {%> 
-							<div class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></div>
-						<% } %> 
 					</div>
 					<div class="content">
 						<div class="message"><%= found.post %></div>
@@ -46,21 +48,33 @@
 					<div class="commentWrap">
 						<div class="responseArea">
 							<div>
-								<span>댓글</span> <span><%= found.comments.length %></span>
+								<span>댓글</span> <span class="cnt"><%= found.comments.length %></span>
 							</div>
 						</div>
-						<div class="cmmentWriteArea row">
+						<div class="commentWriteArea row">
 							<div>
 								<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 							</div>
+							<div class="grow1">
+									<textarea name="commentWrite" class="commentWrite" placeholder="댓글을 입력하세요"></textarea>
+							</div>
 							<div>
-								<form action="">
-									<input type="text" placeholder="댓글을 입력하세요">
-								</form>
+								<button data-targetid="<%= found._id.toString() %>" onclick="sendAddReq(event);">send</button>
 							</div>
 						</div>
-						<div class="commnetsList">
-							코멘트 리스트 영역
+						<div class="commentsList">
+							<% found.comments.forEach(elm => { %> 
+								<div class="row">
+									<div>
+										<img src="<%= elm.commneterImage %> " alt="<%= elm.commenterId %> image" class="userProfileImg">
+										<p><%= elm.commenterId %></p>
+									</div>
+									<div>
+										<div><%= elm.commnetMessage %></div>
+										<p class="createAt"><%= elm.createdAt.toLocaleString() %> </p>
+									</div>
+								</div>
+							<% }) %> 
 						</div>
 					</div>
 				</article>
@@ -69,7 +83,7 @@
 	</main>
 	<script>
 		userInfoLink();
-		imageContainerVisible();
+		// imageContainerVisible();
 		
 		function preview(evt) {
 			document.querySelector(".previewWrap").innerHTML ="";
@@ -96,6 +110,39 @@
 					</div>`
 			userInfoLink.innerHTML = html;
 		}
+		
+		async function sendAddReq(evt) {
+			let targetId = evt.target.dataset.targetid;
+			let message = document.querySelector('.commentWrite').value;
+			console.log(targetId, message);
+			const data = { targetId, message}
+			let response = await fetch('/api/comment', {
+				method: 'post',
+				body: JSON.stringify(data),
+				headers: {"Content-type" : "application/json"}
+			})
+			let result = await response.json();
+			if(result.success) {
+				let comment = result.comment;
+				let lastComment = comment.reverse()[0];
+				document.querySelector('.cnt').innerHTML = comment.length;
+				let html = `
+					<div class="row">
+						<div>
+							<img src="${lastComment.commneterImage}" alt="${lastComment.commenterId} image" class="userProfileImg">
+							<p>${lastComment.commenterId}</p>
+						</div>
+						<div>
+							<div>${lastComment.commnetMessage}</div>
+							<p class="createAt">${lastComment.createdAt.toLocaleString()}</p>
+						</div>
+					</div>
+				`
+				document.querySelector('.commentsList').insertAdjacentHTML(
+					'beforeend', html
+				);
+			}
+		}
 	</script>
 </body>
-</html
+</html>

@@ -41,9 +41,7 @@ router.route('/signup')
 			}
 		}
 		let getId = await accounts.findById(req.body.id);
-		if(getId){
-			res.render('account/signup', {msg: '⩗ 이미 사용 중인 아이디입니다'})
-		} else {
+		if(!getId){
 			await accounts.insertOne(accuontData);
 			// console.table(result)
 			res.render('account/signComplete', {accuontData});

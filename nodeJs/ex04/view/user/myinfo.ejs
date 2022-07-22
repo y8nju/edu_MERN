@@ -27,7 +27,7 @@
 					</label>
 					<button class="btn updateBtn">변경하기</button>
 				</form>
-				<div class="infoContainer">
+				<div class="infoContainer grow1">
 					<div class="userInfo row">
 						<h2 class="userId">@<%= user.id %></h2>
 						<span class="userName"><%= user.name %></span>
@@ -44,12 +44,14 @@
 						<div class="writerInfo row">
 							<img src="<%= data.writerImage %>" alt="<%= data.writerId %> image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
 							<div>
-								<p class="writerId"><span>@<%= data.writerId %></span></p>
+								<p class="writerId">
+									<span>@<%= data.writerId %></span>
+									<% if(data.type == 'private') {%> 
+										<span class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></span>
+									<% } %> 
+								</p>
 								<p class="createAt"><span><%= data.createAt.toLocaleString() %></span></p>
 							</div>
-							<% if(data.type == 'private') {%> 
-								<div class="isPraivate"><i class="fi fi-rr-eye-crossed"></i></div>
-							<% } %> 
 						</div>
 						<div class="content">
 							<div class="message"><%= data.post %></div>

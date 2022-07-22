@@ -19,6 +19,7 @@ app.set('views', path.join(__dirname, 'view'));
 
 app.use(morgan("short"));
 app.use(express.urlencoded({'extended': true}));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(session({secret: "P@ssw0rd", resave: true, saveUninitialized: true}));
 

@@ -69,6 +69,6 @@ router.get('/view', async (req, res) => {
 	const user = req.session.authUser;
 	let found = await articles.findById(req.query.articleId);
 	res.render('article/view', {user, found})
-	console.table(found)
+	console.table(found.comments)
 })
 module.exports = router;
