@@ -64,14 +64,16 @@
 						</div>
 						<div class="commentsList">
 							<% found.comments.forEach(elm => { %> 
-								<div class="row">
+								<div class="row comment">
 									<div>
 										<img src="<%= elm.commneterImage %> " alt="<%= elm.commenterId %> image" class="userProfileImg">
-										<p><%= elm.commenterId %></p>
 									</div>
-									<div>
-										<div><%= elm.commnetMessage %></div>
-										<p class="createAt"><%= elm.createdAt.toLocaleString() %> </p>
+									<div class="grow1 messageArea">
+										<div>
+											<span class="commenterId"><%= elm.commenterId %></span>
+											<span class="createAt"><%= elm.createdAt.toLocaleString() %> </span>
+										</div>
+										<div class="commnetMessage"><%= elm.commnetMessage %></div>
 									</div>
 								</div>
 							<% }) %> 
@@ -127,14 +129,16 @@
 				let lastComment = comment.reverse()[0];
 				document.querySelector('.cnt').innerHTML = comment.length;
 				let html = `
-					<div class="row">
+					<div class="row comment">
 						<div>
 							<img src="${lastComment.commneterImage}" alt="${lastComment.commenterId} image" class="userProfileImg">
-							<p>${lastComment.commenterId}</p>
-						</div>
-						<div>
-							<div>${lastComment.commnetMessage}</div>
-							<p class="createAt">${lastComment.createdAt.toLocaleString()}</p>
+							</div>
+						<div class="grow1">
+							<div>
+								<span class="commenterId">${lastComment.commenterId}</span>
+								<sapn class="createAt">${lastComment.createdAt.toLocaleString()}</sapn>
+							</div>
+							<div class="commnetMessage">${lastComment.commnetMessage}</div>
 						</div>
 					</div>
 				`
