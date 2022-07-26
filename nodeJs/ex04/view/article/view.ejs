@@ -32,11 +32,11 @@
 						</div>
 						<% if(found.writerId == user.id) {%> 
 							<div class="more">
-								<button type="button" onclick="moreContent(this)"><i class="fi fi-rr-menu-dots"></i></button>
-									<div class="moreContent col">
-										<div><button  onclick="location.href='/article/update?articleId=<%= found._id.toString()%>'" class="postModify"><i class="fi fi-rr-edit"></i>수정하기</button></div>
-										<div><button href="" class="postDelete" onclick="isModal('flex')"><i class="fi fi-rr-trash"></i>삭제하기</button></div>
-									</div>
+								<button type="button" onclick="moreContent(this)" class="moreBtn"><i class="fi fi-rr-menu-dots"></i></button>
+								<div class="moreContent col">
+									<div><button onclick="location.href='/article/modify?articleId=<%= found._id.toString()%>'" class="postModify"><i class="fi fi-rr-edit"></i>수정하기</button></div>
+									<div><button href="" class="postDelete" onclick="isModal('flex')"><i class="fi fi-rr-trash"></i>삭제하기</button></div>
+								</div>
 							</div>
 						<% } %> 
 					</div>

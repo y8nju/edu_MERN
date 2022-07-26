@@ -29,7 +29,7 @@ i {
 	color: var(--successColor)
 }
 
-#home, #view, #update {
+#home, #view, #modify {
 	width: 700px;
 }
 
@@ -97,7 +97,6 @@ textarea {
 	height: 1.2rem;
 	display: inline-block;
 	text-align: center;
-	line-height: 1.1rem;
 	border-radius: 50%;
 	background-color: var(--gray);
 	color: #fff;
@@ -106,6 +105,7 @@ textarea {
 	height: .8rem;
 	display: inline-block;
 	font-size: .8rem;
+	vertical-align: middle;
 }
 .writerInfo .more {
 	position: relative;
@@ -117,7 +117,6 @@ textarea {
 	border: none;
 	color: var(--gray777);
 	background-color: transparent;
-	margin-left: .4rem;
 	padding: .4rem;
 
 }
@@ -130,6 +129,7 @@ textarea {
 	top: 2rem;
 	right: 0;
 	z-index: 10;
+	font-size: .9rem;
 	white-space: nowrap;
 	border: var(--border);
 	border-radius: .2rem;
@@ -141,13 +141,16 @@ textarea {
 	visibility: visible;
 }
 .writerInfo .moreContent > div {
-	padding: .4rem;
+	padding: .4rem 0;
 }
 .writerInfo .moreContent > div:first-child {
 	border-bottom: var(--border);
 }
 .writerInfo .moreContent button {
 	color: var(--gray777);
+}
+.writerInfo .moreContent button i {
+	margin-right: .4rem;
 }
 
 .content {
@@ -244,7 +247,7 @@ textarea {
 	background-color: var(--bgLight);
 	padding: .4rem .9rem;
 	
-    border-radius: 0.5rem;
+	border-radius: 0.5rem;
 }
 #view .commentsList .commenterId {
 	font-size: .9rem;
@@ -260,80 +263,82 @@ textarea {
 	margin-top: .4rem;
 }
 
-/* update */
-#update .postcontainer {
+/* modify */
+#modify .postcontainer {
 	cursor: auto;
+	padding-top: 1.2rem;
 }
-#update .postcontainer:hover {
+#modify .postcontainer:hover {
 	background-color: #fff;
 }
-#update h3 {
+#modify h3 {
 	border-bottom: var(--border);
 	text-align: center;
 	padding: .2rem 0 1rem;
 	margin: 0 0 1rem;
 	color: var(--gray777);
 }
-#update .writerInfo label {
+#modify .writerInfo label {
 	align-items: center;
 	cursor: pointer;
 	margin: .4rem 0;
 }
-#update .imageContainer {
+#modify .imageContainer {
 	margin-top: 1rem
 }
-#update .previewWrap {
+#modify .previewWrap {
 	width: 100%;
 	display: flex;
-    flex-wrap: wrap;
-    gap: 0.2rem;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+	flex-wrap: wrap;
+	gap: 0.2rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
-#update .previewWrap div {
+#modify .previewWrap div {
 	height: 100%;
 	flex-grow: 1;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
 }
-#update .previewWrap img {
+#modify .previewWrap img {
 	visibility: hidden;
 }
-#update input[type="file"] {
+#modify input[type="file"] {
 	width: 1px;
 	height: 1px;
 	border: transparent;
 }
-#update .fileModify {
+#modify .fileModify {
 	justify-content: flex-end;
 	margin-top: .4rem;
 }
-#update .fileBtn {
+#modify .fileBtn {
 	font-size: .9rem;
 	color: var(--successColor);
 	padding: .4rem;
 }
-#update .fileBtn:hover {
+#modify .fileBtn:hover {
 	background-color: #007aff17;
 	border-radius: 1rem;
 }
-#update .modifyBtn {
+#modify .modifyBtn {
 	width: 100%;
 	border: transparent;
 	border-radius: 2rem;
 	color: #fff;
 	background-color: var(--gray);
+	margin-top:1.2rem;
 	padding: .9rem;
 	transition: all .3s;
 }
-#update .modifyBtn:hover {
+#modify .modifyBtn:hover {
 	background-color: var(--gray777);
 }
-#update .modifyBtn:active {
+#modify .modifyBtn:active {
 	border-radius: .5rem;
 }
 
@@ -370,9 +375,12 @@ textarea {
 	color: #fff;
 	padding: .4rem .6rem;
 }
-.closeBtn {
-	background-color: var(--gray999);
+#modal .modalFooter .closeBtn {
+	background-color: var(--gray);
 }
-.confirmBtn {
-	background-color: var(--ongolingColor);
+#modal .modalFooter .confirmBtn {
+	background-color: var(--successColor);
+}
+#modal .modalFooter button:last-child {
+	margin-left: .6rem;
 }

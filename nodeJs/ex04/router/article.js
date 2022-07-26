@@ -62,24 +62,42 @@ router.post('/upload', upload.array('attaches'), async (req, res) => {
 			comments: []
 		}
 		await articles.add(articleData);
-		res.redirect('/article/home' )
+		res.redirect('/article/home');
 	})
 
 router.get('/view', async (req, res) => {
 	const user = req.session.authUser;
 	let found = await articles.findById(req.query.articleId);
 	res.render('article/view', {user, found})
-	console.table(found.comments)
 })
 
-router.route('/update')
+router.route('/modify')
 	.get(async(req, res) => {
 		const user = req.session.authUser;
 		let found = await articles.findById(req.query.articleId);
-		res.render('article/update', {user, found});
+		res.render('article/modify', {user, found});
 		console.table(found)
 	})
-	.post(async(req, res) => {
-		res.redirect('/article/view' );
+	.post(upload.array('attaches'), async (req, res) => {
+		const attachs = [];
+		req.files.forEach (arr => {
+			let url = `/images/post/${req.session.authUser.id}/${arr.filename}`;
+			attachs.push(url);
+		})
+		let arr = {
+			_id: req.body.id,
+			message: req.body.message,
+			type: req.body.type ?? 'public',
+			attachs: attachs,
+		}
+		await articles.modifyPost(req.body.id, arr);
+		let found = await articles.findById(req.body.id);
+		const user = req.session.authUser;
+		res.render('article/view', {user, found})
 	})
+
+router.get('/delete', async (req, res) => {
+	await articles.deletePost(req.query.articleId);
+	res.redirect('/article/home')
+})
 module.exports = router;

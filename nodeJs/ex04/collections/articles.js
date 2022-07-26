@@ -34,12 +34,13 @@ module.exports.deletePost = async function(id) {
 	return await connect().deleteOne({_id : new mongodb.ObjectId(id)});
 }
 
-module.exports.updatePost = async function(id, obj) {
+module.exports.modifyPost = async function(id, obj) {
 	return await connect().updateOne(
 		{_id : new mongodb.ObjectId(id)}, 
 		{$set :  {
-			_id: req.body.id,
+			post: obj.message,
+			type: obj.type,
+			attachs: obj.attachs
 		}}
 	);
-	return result;
 }
