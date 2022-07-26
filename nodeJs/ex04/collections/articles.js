@@ -29,3 +29,17 @@ module.exports.addComment = async function(targetId, comment) {
 		{$push: {comments: comment}}
 	);
 }
+
+module.exports.deletePost = async function(id) {
+	return await connect().deleteOne({_id : new mongodb.ObjectId(id)});
+}
+
+module.exports.updatePost = async function(id, obj) {
+	return await connect().updateOne(
+		{_id : new mongodb.ObjectId(id)}, 
+		{$set :  {
+			_id: req.body.id,
+		}}
+	);
+	return result;
+}

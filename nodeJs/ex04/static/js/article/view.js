@@ -1,5 +1,3 @@
-userInfoLink();
-
 function preview(evt) {
 	document.querySelector(".previewWrap").innerHTML ="";
 	if (evt.target.files) {
@@ -13,17 +11,6 @@ function preview(evt) {
 			}
 		}
 	}
-}
-function userInfoLink() {
-	let userInfoLink = document.querySelector('.headerRight');
-	let html = `
-		<div class="userInfoLink row" onclick="location.href='/user'">
-			<div>
-				<p class="userId">@<%= user.id %></p>
-			</div>
-			<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
-			</div>`
-	userInfoLink.innerHTML = html;
 }
 
 async function sendAddReq(evt) {

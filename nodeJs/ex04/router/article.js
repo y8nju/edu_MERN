@@ -71,4 +71,15 @@ router.get('/view', async (req, res) => {
 	res.render('article/view', {user, found})
 	console.table(found.comments)
 })
+
+router.route('/update')
+	.get(async(req, res) => {
+		const user = req.session.authUser;
+		let found = await articles.findById(req.query.articleId);
+		res.render('article/update', {user, found});
+		console.table(found)
+	})
+	.post(async(req, res) => {
+		res.redirect('/article/view' );
+	})
 module.exports = router;

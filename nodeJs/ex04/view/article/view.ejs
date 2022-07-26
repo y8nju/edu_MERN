@@ -30,6 +30,15 @@
 							</p>
 							<p class="createAt"><span><%= found.createAt.toLocaleString() %></span></p>
 						</div>
+						<% if(found.writerId == user.id) {%> 
+							<div class="more">
+								<button type="button" onclick="moreContent(this)"><i class="fi fi-rr-menu-dots"></i></button>
+									<div class="moreContent col">
+										<div><button  onclick="location.href='/article/update?articleId=<%= found._id.toString()%>'" class="postModify"><i class="fi fi-rr-edit"></i>수정하기</button></div>
+										<div><button href="" class="postDelete" onclick="isModal('flex')"><i class="fi fi-rr-trash"></i>삭제하기</button></div>
+									</div>
+							</div>
+						<% } %> 
 					</div>
 					<div class="content">
 						<div class="message"><%= found.post %></div>
@@ -82,7 +91,42 @@
 				</article>
 			</div>
 		</div>
+		<div id="modal">
+			<article class="modalContent card">
+				<div class="modalTitle">
+					<h3>게시물 삭제</h3>
+				</div>
+				<div class="modalBody">
+					<p>게시물을 정말 삭제하시겠습니까?</p>
+				</div>
+				<div class="modalFooter row">
+					<button type="button" class="btn closeBtn" onclick="isModal('none')">취소</button>
+					<button type="button" class="btn confirmBtn" onclick="location.href='/article/delete?articleId=<%= found._id.toString()%>'">삭제</button>
+				</div>
+			</article>
+		</div>
 	</main>
+	<script>
+		userInfoLink();
+		function userInfoLink() {
+			let userInfoLink = document.querySelector('.headerRight');
+			let html = `
+				<div class="userInfoLink row" onclick="location.href='/user'">
+					<div>
+						<p class="userId">@<%= user.id %></p>
+					</div>
+					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+					</div>`
+			userInfoLink.innerHTML = html;
+		}
+		function moreContent(target) {
+			let moreContent = document.querySelector('.moreContent');
+			moreContent.classList.toggle('active');
+		}
+		function isModal(e) {
+			document.querySelector('#modal').style.display = e;
+		}
+	</script>
 	<script src="/js/article/view.js"></script>
 </body>
 </html>

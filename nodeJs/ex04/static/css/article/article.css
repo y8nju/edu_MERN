@@ -20,7 +20,16 @@ i {
 	color: var(--gray999);
 	margin: 0.4rem 0;
 }
-#home, #view {
+.privatChk {
+	width: 1rem;
+	height: 1rem;
+	margin-right: .2rem;
+}
+.privatChk:checked + span {
+	color: var(--successColor)
+}
+
+#home, #view, #update {
 	width: 700px;
 }
 
@@ -59,16 +68,7 @@ textarea {
 }
 .btnWrap .btn:hover {
 	background-color: #007aff17;
-	background-color: #007aff17;
 	border-radius: 1rem;
-}
-.btnWrap .privatChk {
-	width: 1rem;
-	height: 1rem;
-	margin-right: .2rem;
-}
-.btnWrap .privatChk:checked + span {
-	color: var(--successColor)
 }
 .btnWrap input[type="file"] {
 	width: 1px;
@@ -107,6 +107,49 @@ textarea {
 	display: inline-block;
 	font-size: .8rem;
 }
+.writerInfo .more {
+	position: relative;
+	align-self: center;
+	color: var(--gray777);
+	margin-left: auto;
+}
+.writerInfo .more button {
+	border: none;
+	color: var(--gray777);
+	background-color: transparent;
+	margin-left: .4rem;
+	padding: .4rem;
+
+}
+.writerInfo .more button:hover {
+	background-color: var(--bgLight);
+	border-radius: 1rem;
+}
+.writerInfo .moreContent {
+	position: absolute;
+	top: 2rem;
+	right: 0;
+	z-index: 10;
+	white-space: nowrap;
+	border: var(--border);
+	border-radius: .2rem;
+	background-color: var(--bgLight);
+	padding: 0.4rem .8rem;
+	visibility: hidden;
+}
+.writerInfo .moreContent.active {
+	visibility: visible;
+}
+.writerInfo .moreContent > div {
+	padding: .4rem;
+}
+.writerInfo .moreContent > div:first-child {
+	border-bottom: var(--border);
+}
+.writerInfo .moreContent button {
+	color: var(--gray777);
+}
+
 .content {
 	margin-bottom: 1.2rem;
 }
@@ -215,4 +258,121 @@ textarea {
 	font-size: .9rem;
 	white-space: pre-wrap;
 	margin-top: .4rem;
+}
+
+/* update */
+#update .postcontainer {
+	cursor: auto;
+}
+#update .postcontainer:hover {
+	background-color: #fff;
+}
+#update h3 {
+	border-bottom: var(--border);
+	text-align: center;
+	padding: .2rem 0 1rem;
+	margin: 0 0 1rem;
+	color: var(--gray777);
+}
+#update .writerInfo label {
+	align-items: center;
+	cursor: pointer;
+	margin: .4rem 0;
+}
+#update .imageContainer {
+	margin-top: 1rem
+}
+#update .previewWrap {
+	width: 100%;
+	display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#update .previewWrap div {
+	height: 100%;
+	flex-grow: 1;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+#update .previewWrap img {
+	visibility: hidden;
+}
+#update input[type="file"] {
+	width: 1px;
+	height: 1px;
+	border: transparent;
+}
+#update .fileModify {
+	justify-content: flex-end;
+	margin-top: .4rem;
+}
+#update .fileBtn {
+	font-size: .9rem;
+	color: var(--successColor);
+	padding: .4rem;
+}
+#update .fileBtn:hover {
+	background-color: #007aff17;
+	border-radius: 1rem;
+}
+#update .modifyBtn {
+	width: 100%;
+	border: transparent;
+	border-radius: 2rem;
+	color: #fff;
+	background-color: var(--gray);
+	padding: .9rem;
+	transition: all .3s;
+}
+#update .modifyBtn:hover {
+	background-color: var(--gray777);
+}
+#update .modifyBtn:active {
+	border-radius: .5rem;
+}
+
+
+#modal {
+	display: none;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+	background-color: rgba(0, 0, 0, .5);
+}
+#modal .modalContent {
+	min-width: 300px;
+}
+#modal .modalContent > div {
+	padding: .5rem 0;
+}
+#modal h3 {
+	margin: 0;
+}
+#modal .modalFooter {
+	justify-content: flex-end;
+	margin-top: 1rem;
+}
+#modal .modalFooter .btn {
+	font-size: .9rem;
+	border: transparent;
+	border-radius: .2rem;
+	color: #fff;
+	padding: .4rem .6rem;
+}
+.closeBtn {
+	background-color: var(--gray999);
+}
+.confirmBtn {
+	background-color: var(--ongolingColor);
 }

@@ -78,6 +78,20 @@
 			</section>
 		</div>
 	</main>
+	<script>
+		userInfoLink();
+		function userInfoLink() {
+			let userInfoLink = document.querySelector('.headerRight');
+			let html = `
+				<div class="userInfoLink row" onclick="location.href='/user'">
+					<div>
+						<p class="userId">@<%= user.id %></p>
+					</div>
+					<img src="<%=user.image %>" alt="user profile image" class="userProfileImg" onerror="this.src='/images/user/userProfile.png'">
+					</div>`
+			userInfoLink.innerHTML = html;
+		}
+	</script>
 	<script src="/js/article/home.js"></script>
 </body>
 </html
