@@ -1,4 +1,3 @@
-
 const mongodb = require('mongodb');
 const uri = "mongodb+srv://y8nju:5yzi0RPjUsHkeSEb@cluster0.onr4ujj.mongodb.net/?retryWrites=true&w=majority"
 

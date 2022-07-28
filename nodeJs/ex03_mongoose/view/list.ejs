@@ -89,8 +89,6 @@
 	</style>
 </head>
 <body>
-	
-	<%- include("modal.ejs"); %>
 	<section>
 		<h2>방명록 목록</h2>
 		<div class="btnWrap">
@@ -107,14 +105,10 @@
 					<li class="comment"><%= data.comment ?? '-' %></li>
 					<li class="btnWrap">
 						<button class="updateBtn" onclick="location.href='/update?id=<%= data._id.toString()%>'">수정하기</button> 
-						<button class="deleteBtn" onclick="location.href='/delete?id=<%= data._id.toString()%>'">삭제하기</button>
-					</li>
+						<button class="deleteBtn" onclick="location.href='/delete?id=<%= data._id.toString()%>'">삭제하기</button></li>
 				</ul>
 			</article>
 		<% }); %>
 	</section>
-	<script>
-		
-	</script>
 </body>
 </html>

@@ -43,12 +43,16 @@
 			resize: none;
 		}
 		form button {
+			width: 100%;
 			font-size: 1rem;
 			font-weight: bold;
+			margin-bottom: 0;
+			color: #7c7c7c;
+			padding: 0.6rem;
+		} 
+		button.updateBtn {
 			color: #4a6ade;
 			background-color: #4a6ade1a;
-			margin-bottom: 0;
-			padding: 0.6rem;
 		}
 		input, button, textarea {
 			border: 1px solid #ddd;
@@ -83,7 +87,10 @@
 			<div class="msg"><%= msg %></div>
 		</div>
 		<textarea name="comment" cols="30" rows="10"><%= visite.comment %></textarea>
-		<button type="submit">수정하기<s/button>
+		<div>
+			<button type="submit" class="updateBtn">수정하기</button>
+			<!-- <button tyoe="submit" class="cancelBtn">취소하기</button> -->
+		</div>
 	</form>
 </body>
 </html>

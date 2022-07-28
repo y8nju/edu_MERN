@@ -1,12 +1,16 @@
-
 const express = require('express');
 const router = express.Router();
 
 const app = express();
 
-app.use(express.urlencoded({'extended' : true}));
+const visiteBook = require('../model/VisitBook');
+const mongoose = require('mongoose');
+const uri = "mongodb+srv://y8nju:5yzi0RPjUsHkeSEb@cluster0.onr4ujj.mongodb.net/?retryWrites=true&w=majority"
+mongoose.connect(uri, {dbName: 'test'}).catch((err) => {
+	console.log('failed' + err.message);
+})
 
-const visiteBook = require('../collections/visiteBook');
+app.use(express.urlencoded({'extended' : true}));
 
 router.use((req, res, next) => {
 	console.log('log by anonymous');
@@ -35,7 +39,7 @@ router.route('/write')
 		let result = await visiteBook.insertOne(arr);
 		console.log(result);
 
-		if(result.insertedId) {
+		if(result._id) {
 			res.render('writeChk', {arr});
 			console.table(req.body)
 		} else {
@@ -45,13 +49,13 @@ router.route('/write')
 
 router.route('/delete')
 	.get(async (req, res) => {
-		let visite = await visiteBook.findById(req.query.id);
+		let visite = await visiteBook.getById(req.query.id);
 		let activeUrl = '/delete'
 		res.render('passwordChk', {visite, activeUrl, msg: ""});	
 		console.log(visite.password)
 	})
 	.post(async (req, res) => {
-		let visite = await visiteBook.findById(req.body.id);
+		let visite = await visiteBook.getById(req.body.id);
 		let activeUrl = '/delete'
 		if(visite.password === req.body.password) {
 			let result = await visiteBook.deleteById(req.body.id);
@@ -63,14 +67,13 @@ router.route('/delete')
 
 router.route('/update')
 	.get(async (req, res) => {
-		let visite = await visiteBook.findById(req.query.id);
+		let visite = await visiteBook.getById(req.query.id);
 		res.render('update', {visite, msg: ""});
 		console.table(visite);
 	})
 	.post( async (req, res) => { 
-		let visite = await visiteBook.findById(req.body.id);
+		let visite = await visiteBook.getById(req.body.id);
 		let arr = {
-			_id: req.body.id,
 			name : req.body.name,
 			password : req.body.password,
 			comment: req.body.comment,
@@ -78,7 +81,7 @@ router.route('/update')
 		};
 		console.log(visite.password, arr.password);
 		if(visite.password === arr.password) {
-			// let result = await visiteBook.updateById(req.body.id, arr);
+			let result = await visiteBook.updateById(req.body.id, arr);
 			res.render('writeChk', {visite, arr});
 		}else {
 			res.render('update', {visite, msg: "비밀번호가 일치하지 않습니다"});
