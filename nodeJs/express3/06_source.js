@@ -43,6 +43,10 @@ const Movie = require('./model/Movie')
 			// 순수한 결과만 출력하고 싶으면 lean()을 사용하면된다
 			result = await Movie.find({repGenreNm: '애니메이션'}).select('movieNm prdtYear openDt -_id').sort('-prdtYear -openDt').lean();
 			console.table(result);
+
+		// 4.distinct 특정 필드의 데이터들 중 중복값 제거
+		let result4 = await Movie.find({}).distinct('repGenreNm');
+		console.log(result4);
 		
 
 	}catch(err) {

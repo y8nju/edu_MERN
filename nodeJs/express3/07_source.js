@@ -20,8 +20,13 @@ const Movie = require('./model/Movie')
 		// let result2 = await Movie.find({repGenreNm: {$in : ['액션', '드라마']}}).select('movieNm openDt -_id').lean();
 		let result2 = await Movie.find({}).where("repGenreNm").in(["액션", "드라마"]).select('movieNm openDt -_id').lean();
 
-		console.table(result2);
+		// console.table(result2);
 		
+		let result3 = await Movie.find({}).where('movieNm').regex('귀멸').lean();
+		// await Movie.find({}).where('movieNm').regex('귀멸').countDocuments();
+		// console.log(result3);
+
+
 
 	}catch(err) {
 		console.log('failed...', + err.message);
