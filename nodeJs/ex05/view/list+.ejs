@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MOVIE LIST</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		td,
+		th {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+		tr:nth-child(odd) {
+			background-color: #f1f1f1;
+		}
+		.dataInfo {
+			display: flex;
+			justify-content: space-between;
+		}
+		.pagenation {
+			text-align: right;
+		}
+	</style>
+</head>
+<body>
+	<h1>MOVIE LIST</h1>
+	<%# esj 파일에서 데이터를 접을 할 때 꼭 locals 붙여서 접근할 필요는 없다
+		만약 붙인다면? not defined를 피할 수 있다
+	%> 
+	<div>
+		<form action="/list" id="srchForm">
+			<label>
+				<span>영화명</span>
+				<input type="search" name="mvNm" class="searchInp" value="<%=locals.mvNm ?? ''%>">
+			</label>
+			<div>
+				<% genres.forEach(genre => { %> 
+				<label>
+					<% if (locals.grNm instanceof Array) {%> 
+						<input type="checkbox" name="grNm" class="grNm" value="<%=genre%>" 
+						<%= locals.grNm.includes(genre)? 'checked' : ''%>> 
+					<% }else { %> 
+						<input type="checkbox" name="grNm" class="grNm" value="<%=genre%>" 
+						<%= (locals.grNm == genre )? 'checked' : ''%>> 
+					<% } %> 
+					<%# (locals.grNm ?? locals.grNm.includes(grNm)) ? 'checked' : '' %> 
+					<span><%=genre%></span>
+				</label>
+				<% }) %>
+			</div>
+			<input type="hidden" name="page" value="1" id="page"> 
+			<button>조회하기</button>
+			<button type="reset" onclick="inpReset(event)">취소</button>
+			<spna class="test"></spna>
+		</form>
+	</div>
+	<div class="dataInfo">
+		<div>총 <b><%= locals.cnt ?? '-' %></b>개</div>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>제목</th>
+				<th>영화코드</th>
+				<th>제작연도</th>
+				<th>제작국가</th>
+				<th>유형</th>
+				<th>장르</th>
+				<th>제작상태</th>
+				<th>감독명</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% movieList.forEach(data => { %> 
+			<tr>
+				<td><%= data.movieNm %></td>
+				<td><%= data.movieCd %></td>
+				<td><%= data.prdtYear %></td>
+				<td><%= data.nationAlt %></td>
+				<td><%= data.typeNm %></td>
+				<td><%= data.repGenreNm %></td>
+				<td><%= data.prdtStatNm %></td>
+				<td><% data.directors.forEach(elm => { %>
+					<%= elm.peopleNm %>,
+				<% }) %></td>
+			</tr>
+			<% }) %> 
+		</tbody>
+	</table>
+	<div class="pagenation linkArea">
+		<% for(let p = 1; p <= endPage; p++) {%> 
+			<% if(locals.grNm instanceof Array) {%> 
+				<a href="/list?page=<%=p%>
+					&mvNm<%=locals.mvNm??''%>
+					<% locals.grNm.forEach(elm => { %>
+						&grNm=<%=elm%>
+					<% }) %>		
+				">
+				<%=p%> </a>
+			<% } else { %> 
+				<a href="/list?page=<%=p%>
+					&mvNm<%=locals.mvNm??''%>
+					&grNm=<%=locals.grNm??''%>"
+				>
+			<% } %> 
+			<!--
+				herf의 값은 기본이 url데이터라고 생각해서 javascript 함수 호출을 하려면
+				앞에 href="javascript: "라고 명시를 하면 된다
+			-->
+			<%=p%> </a>
+		<% } %> 
+	</div>
+	<script>
+		function inpReset(evt) {
+			document.querySelector('.searchInp').setAttribute('value', '')
+			let grNm = document.getElementsByClassName('grNm');
+			for(let i = 0; i < grNm.length; i++) {
+				grNm[i].checked = false;
+			}
+			evt.preventDefault();
+		}
+		function goPage(e) {
+			e.preventDefault();
+			// console.log(e.target.dataset.page);
+			document.querySelector("#page").value = e.target.dataset.page;
+			document.querySelector("#srchForm").submit();
+
+		}
+	</script>
+</body>
+</html>

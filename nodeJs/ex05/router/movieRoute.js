@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const movieDB = require('../Model/movie');
+const movieDB = require('../Model/Movie');
+const reviewDB = require('../Model/Review');
+
 const mongoose = require('mongoose');
 const uri = "mongodb+srv://y8nju:5yzi0RPjUsHkeSEb@cluster0.onr4ujj.mongodb.net/?retryWrites=true&w=majority";
 mongoose.connect(uri, {dbName: 'example'}).catch((err) => {
@@ -14,7 +16,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', async (req, res) => {
-	res.redirect('/list');
+	res.render('index');
 })
 
 router.route('/list')
@@ -40,17 +42,61 @@ router.route('/list')
 		let page = req.query.page ?? 1;
 		let skipValue = (page-1)*10;
 		const movieList = await movieDB.find(filter).sort('movieNm').skip(skipValue).limit(10).lean();
+		movieList.forEach(data => {
+			data.movieNm = data.movieNm.replace(req.query.mvNm, `<b>${req.query.mvNm}</b>`)
+		})
 		const genres = await movieDB.find({}).distinct('repGenreNm');
 		// res.render('list', {movieList})
 		// 렌더를 하면서 설정하는 데이터들은 res 객체의 locals라는 곳에서 설정이 되고, 
 		// ejs에서 불러서 쓰이게 된다
 		res.locals.movieList = movieList;
+		res.locals.page = page;
 		res.locals.cnt = cnt;
 		res.locals.endPage = Math.ceil(cnt / 10);
 		res.locals.genres = genres;
 		res.render('list');
 		console.log(filter);
 	})
+
+router.get('/api/match', (req, res)=> {
+	movieDB.find({}).where("movieNm").regex(req.query.mvNm).select("movieNm -_id").lean()
+		.then((result) => {
+			// console.log(result);
+			res.json(result);
+		}).catch((e) => {
+			res.sendStatus(500);
+		})
+})
+router.get('/reviews', async (req, res) => {
+	const reviewList = await reviewDB.find({}).populate('target', 'movieNm _id').sort('-createdAt').lean();
+	console.log(reviewList.length)
+	res.render('reviews', {reviewList})
+})
+router.get('/info', async (req, res) => {
+	// 영화 상세보기, 해당 영화의 정보와 해당영화에 달린 코멘트들, 해당영화에 코멘트를 달 수 있는 폼 제공
+	const movie = await movieDB.findById(req.query._id).populate('key', '-targetstr -targetCd').sort('-createdAt').lean();
+	const scores = []
+	movie.key.forEach(data => {
+		scores.push(data.score);
+	});
+	const scoreAvg = (scores.reduce((a,b) => a+b, 0)) / scores.length;
+	const directors = []
+	movie.directors.forEach(data => {
+		directors.push(data.peopleNm)
+	})
+	//리뷰가 있다면 스코어 평균
+	res.render('movieInfo', {movie, scoreAvg, directors})
+})
+
+router.post('/reviewWrite', async (req, res) => {
+	// target, score, comment
+	await reviewDB.create(req.body, {target: new mongoose.mongo.ObjectId(req.body.target)}).then(()=> {
+		// create 수정하자
+		res.redirect('/info?_id='+req.body.target);
+	}).catch((e)=> {
+		res.status(500).send(e.message)
+	})
+})
 
 
 module.exports = router;

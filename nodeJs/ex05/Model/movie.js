@@ -29,5 +29,9 @@ const movieSchema = new mongoose.Schema({
     //     }
     // }
 });
-
-module.exports = mongoose.model('movie', movieSchema);
+movieSchema.virtual('key', {
+    localField: '_id',
+    ref: 'Review',
+    foreignField: 'target'
+})
+module.exports = mongoose.model('Movie', movieSchema);

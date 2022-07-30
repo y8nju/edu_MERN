@@ -1,0 +1,200 @@
+/* common */
+@font-face {
+	font-family: 'S-CoreDream-3Light';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'ONE-Mobile-Title';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'TmoneyRoundWindExtraBold';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/TmoneyRoundWindExtraBold.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	--black : #333;
+	--gray: #78716c;
+	--beige: #e7e7df;
+	--ivory: #f4f4f0;
+	--accent: #e2442f;
+	--yellow: #ffc900;
+
+	--border: 1px solid var(--gray);
+}
+::selection {
+	background-color: var(--yellow);
+}
+body {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	font-family: 'S-CoreDream-3Light';
+	line-height: 1;
+	padding: 4rem 0;
+	color: var(--black);
+	background-color: var(--ivory);
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'ONE-Mobile-Title';
+	font-weight: normal;
+	letter-spacing: .1rem;
+}
+h1 {
+	font-size: 3rem;
+}
+h2 {
+	font-size: 2.2rem;
+}
+h3 {
+	font-size: 1.6rem;
+}
+a {
+	color: var(--black);
+}
+label {
+	display: flex;
+	align-items: center;
+}
+input, button, textarea {
+	font-family: 'S-CoreDream-3Light';
+	border: var(--border);
+	border-radius: .2rem;
+	line-height: 1;
+}
+input[type="checkbox"] {
+	width: 1.1rem;
+	height: 1.1rem;
+	margin-right: .2rem;
+}
+button {
+	font-weight: bold;
+	letter-spacing: .2rem;
+	margin: 0 .4rem;
+	padding: 1rem 1rem .8rem;
+	background-color: var(--ivory);
+	transition: all .15s ease-out;
+	cursor: pointer;
+}
+button:hover, .brn:hover {
+	background-color: var(--beige);
+}
+img {
+	width: 100%;
+	vertical-align: top;
+}
+form {
+	width: 100%;
+}
+table {
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse;
+}
+tr {
+	border-top: var(--border);
+	border-bottom: var(--border);
+}
+tr:nth-child(even) {
+	background-color: var(--ivory);
+}
+th, td {
+	padding: .6rem;
+}
+thead th {
+	height: 3rem;
+	font-size: 1.1rem;
+	letter-spacing: .4rem;
+	background-color: var(--beige);
+}
+/* utill */
+.row {
+	display: flex;
+}
+.col {
+	display: flex;
+	flex-direction: column;
+}
+.between{
+	justify-content: space-between;
+}
+.center {
+	justify-content: center;
+	align-items: center;
+}
+.grow1 {
+	flex-grow: 1;
+}
+.wrap {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	border-top: var(--border);
+	border-bottom: var(--border);
+}
+.container {
+	width: 100%;
+	overflow-y: auto;
+	background-color: #fff;
+	padding: 3.5rem 6rem;
+}
+.listContainer {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+}
+.content {
+	padding: 2.6rem 1.4rem;
+}
+.card {
+	overflow: hidden;
+	border: var(--border);
+	border-radius: .2rem;
+	background-color: #fff;
+	transition: all .15s ease-out;
+}
+.card:hover {
+	box-shadow: 0.25rem 0.25rem var(--black);
+}
+.borderB {
+	border-bottom: var(--border);
+}
+.tag {
+	width: fit-content;
+	font-size: .6rem;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 1;
+	border: var(--border);
+	border-radius: .2rem;
+	background-color: var(--ivory);
+	padding: .3rem;
+}
+.score {
+	position: relative;
+}
+.score .stars {
+	font-family: 'TmoneyRoundWindExtraBold';
+	vertical-align: bottom;
+}
+.score .stars.starBg {
+	color: var(--beige);
+}
+.score .stars.starAc {
+	position: absolute;
+	left: 0;
+	color: var(--accent);
+}

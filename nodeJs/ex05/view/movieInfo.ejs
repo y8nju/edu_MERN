@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><%= movie.movieNm %> : 영화 정보 </title>
+	<link rel="stylesheet" href="/style.css">
+	<style>
+		.tag {
+			display: inline-block;
+		}
+		h2 {
+			margin: .3rem 0 .5rem;
+		}
+		strong {
+			color: var(--gray);
+		}
+		dt, dd {
+			float: left;
+			margin-bottom: .4rem
+		}
+		dt {
+			float: left;
+			clear: left;
+			letter-spacing: 3px;
+			margin-right: 1rem;
+		}
+		em {
+			font-style: normal;
+			font-weight: bold;
+		}
+		.container .borderB {
+			border-color: var(--beige);
+			margin-bottom: 1rem;
+			padding-bottom: 1rem;
+		}
+		.scoreArea {
+			align-items: center;
+			font-size: 1.2rem;
+		}
+		.scoreArea .score {
+			font-size: 1.4rem;
+			margin-left: 1rem;
+			margin-right: .4rem;
+		}
+		.scoreAvg {
+			font-family: 'TmoneyRoundWindExtraBold';
+		}
+		.listContainer .scoreArea {
+			margin-bottom: 1rem;
+		}
+		.listContainer .reviewList{
+			flex: 4;
+			margin-right: 4rem;
+		}
+		.listContainer .reviewList table {
+			text-align: left;
+		}
+		.listContainer .reviewList .createdAt {
+			font-size: .7rem;
+			color: var(--gray);
+			margin-top: .2rem;
+		}
+		.listContainer .writeWrap {
+			flex: 2;
+		}
+		.listContainer .writeWrap textarea {
+			width: 100%;
+			height: 240px;
+			resize: none;
+			padding: .6rem .4rem;
+		}
+		.listContainer .writeWrap .scorePoint {
+			width: 68%;
+			align-items: center;
+			font-size: 1.2rem;
+			margin: 1rem auto 0;
+		}
+		.listContainer .writeWrap .score {
+			width: fit-content;
+			font-size: 2rem;
+			margin-left: 1.4rem;
+		}
+		.listContainer .writeWrap .draw {
+			width: 0;
+			overflow: hidden;
+			pointer-events: none;
+		}
+		.listContainer .writeWrap input[type="range"] {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0;
+			opacity: 0;
+			cursor: pointer;
+		}
+		.listContainer .writeWrap .scorePointVal {
+			font-family: 'TmoneyRoundWindExtraBold';
+			font-size: 1.6rem;
+			text-align: right;
+			margin-left: auto;
+		}
+		.btnWrap {
+			margin-top: 1rem;
+		}
+		.btnWrap button {
+			background-color: var(--yellow);
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<section class="container borderB">
+			<div class="borderB">
+				<small class="tag"><%= movie.movieCd %> </small>
+				<h2><%= movie.movieNm %></h2>
+				<strong><% if(movie.movieNmEn) {%> 
+						<%= movie.movieNmEn %>,
+					<% } %> 
+					<%= movie.prdtYear %> </strong>
+			</div>
+			<dl>
+				<dt><em>개요</em></dt>
+				<dd> <%= movie.genreAlt %> | <%= movie.nationAlt %> | <%= movie.openDt %> <%= movie.prdtStatNm %></dd>
+				<dt><em>감독</em></dt>
+				<dd><span>
+					<%= directors.join(', ') %>
+				</span></dd>
+			</dl>
+		</section>
+		<section class="container listContainer">
+			<div class="row scoreArea">
+				<h3>평점</h3>
+				<div class="score">
+					<span class="stars starBg">★★★★★</span>
+					<span class="stars starAc"><%="★".repeat(scoreAvg)%></span>
+				</div>
+				<em class="scoreAvg"><%= scoreAvg ? scoreAvg : '' %></em>
+			</div>
+			<div class="row between">
+				<div class="reviewList">
+					<table>
+						<colgroup>
+							<col width="15%">
+						</colgroup>
+						<tbody>
+							<% movie.key.forEach((data, index) => { %> 
+								<tr>
+									<td>
+										<div class="score">
+											<span class="stars starBg">★★★★★</span>
+											<span class="stars starAc"><%="★".repeat(data.score)%></span>
+											<strong><%= data.score %></strong>
+										</div>
+									</td>
+									<td class="commnetWrap">
+										<p class="comment"><%= data.comment %></p>
+										<p class="createdAt"><%= data.createdAt.toLocaleString() ?? '-' %> </p>
+									</td>
+								</tr>
+							<% }) %>
+						</tbody>
+					</table>
+				</div>
+				<div class="writeWrap">
+					<form action="/reviewWrite" method="post">
+						<input type="hidden" name="target" value="<%= movie._id %>">
+						<textarea name="comment" placeholder="감상평을 남겨주세요"></textarea>
+						<div class="row between scorePoint">
+							<p>별점을 선택하세요</p>
+							<div class="score">
+								<span class="stars starBg">★★★★★</span>
+								<span class="stars starAc draw">★★★★★</span>
+								<input type="range" name="score" value="0" step="0.5" min="0" max="5" oninput="drawStar(this)">
+							</div>
+							<strong class="scorePointVal">0</strong>
+						</div>
+						<div class="row center btnWrap">
+							<button>확인</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+		<script>
+			function drawStar(target) {
+				document.querySelector('.draw').style.width = `${target.value * 20}%`;
+				document.querySelector('.scorePointVal').innerHTML = target.value;
+			}
+		</script>
+	</div>
+</body>
+</html>

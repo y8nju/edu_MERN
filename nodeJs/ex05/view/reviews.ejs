@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>리뷰·평점</title>
+	<link rel="stylesheet" href="/style.css">
+	<style>
+		tbody {
+			font-size: .8rem;
+			color: var(--gray);
+		}
+		td {
+			padding: .8rem .6rem;
+		}
+		.commnetWrap {
+			font-size: 1rem;
+			text-align: left;
+			color: var(--black);
+		}
+		.score {
+			margin-left: .4rem;
+		}
+		.score .stars.starAc {
+			position: unset;
+		}
+		.comment {
+			margin-top: .6rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<section class="container borderB">
+			<h2>리뷰 &#183; 평점</h2>
+		</section>
+		<section class="container listContainer">
+			<table>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>감상평</th>
+						<th>날짜</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% reviewList.forEach((data, index) => { %> 
+						<tr>
+							<td>
+								<%= index + 1 %>
+							</td>
+							<td class="commnetWrap">
+								<div>
+									<span class="mvNm">
+										<b><a href="/info?_id=<%= data.target._id %> "><%= data.target.movieNm %></a></b>
+									</span> 
+									<span class="score"><b class="stars starAc"><%="★".repeat(data.score)%></b> <%= data.score %></span></div>
+								<div class="comment"><%= data.comment %></div>
+							</td>
+							<td><%= data.createAt ?? '-' %> </td>
+						</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</section>
+	</div>
+</body>
+</html>

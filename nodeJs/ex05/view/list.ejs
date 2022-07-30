@@ -4,113 +4,153 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>MOVIE LIST</title>
+	<title>영화 정보</title>
+	<link rel="stylesheet" href="/style.css">
 	<style>
-		table {
-			border-collapse: collapse;
-			width: 100%;
+		/* formArea */
+		.formArea {
+			margin-top: 1.6rem;
 		}
-		td,
-		th {
-			border: 1px solid #dddddd;
-			text-align: left;
-			padding: 8px;
+		.formArea #srchForm {
+			align-items: center;
 		}
-		tr:nth-child(odd) {
-			background-color: #f1f1f1;
+		.formArea .searchInp {
+			padding: .2rem;
+			width: 280px;
+			margin-left: .6rem;
 		}
-		.dataInfo {
+		.formArea .btnWrap {
+			margin-left: 1.4rem;
+		}
+		/* section.listContainer */
+		.listContainer .dataInfo {
 			display: flex;
 			justify-content: space-between;
+			color: var(--gray);
+			margin-bottom: .6rem;
 		}
-		.pagenation {
-			text-align: right;
+		.listContainer th, td {
+			border: var(--border);
+		}
+		.listContainer .dataInfo b {
+			color: var(--black);
+		}
+		.listContainer tbody {
+			font-size: .9rem;
+			color: var(--gray);
+		}
+		.listContainer tbody .mvNm {
+			font-size: 1rem;
+			color: var(--black);
+		}
+		.listContainer .pagenation {
+			text-align: center;
+			margin-top: auto;
+		}
+		.listContainer .pagenation a {
+			text-decoration: none;
+			word-spacing: 1rem;
+			color: var(--gray);
+		}
+		.listContainer .pagenation .active {
+			text-decoration: underline;
+			color: var(--accent);
 		}
 	</style>
 </head>
 <body>
-	<h1>MOVIE LIST</h1>
-	<%# esj 파일에서 데이터를 접을 할 때 꼭 locals 붙여서 접근할 필요는 없다
-		만약 붙인다면? not defined를 피할 수 있다
-	%> 
-	<div>
-		<form action="/list" class="searchForm">
-			<label>
-				<span>영화명</span>
-				<input type="search" name="mvNm" class="searchInp" value="<%=locals.mvNm ?? ''%>">
-			</label>
-			<div>
-				<% genres.forEach(genre => { %> 
-				<label>
-					<% if (locals.grNm instanceof Array) {%> 
-						<input type="checkbox" name="grNm" class="grNm" value="<%=genre%>" 
-						<%= locals.grNm.includes(genre)? 'checked' : ''%>> 
-					<% }else { %> 
-						<input type="checkbox" name="grNm" class="grNm" value="<%=genre%>" 
-						<%= (locals.grNm == genre )? 'checked' : ''%>> 
-					<% } %> 
-					<span><%=genre%></span>
-				</label>
-				<% }) %>
+	<div class="wrap">
+		<section class="container borderB">
+			<h2>영화 정보</h2>
+			<%# esj 파일에서 데이터를 접을 할 때 꼭 locals 붙여서 접근할 필요는 없다
+				만약 붙인다면? not defined를 피할 수 있다
+			%> 
+			<div class="formArea">
+				<form action="/list" class="row between" id="srchForm" autocomplete="off">
+					<div class="grow1">
+						<div style="margin-bottom: .6rem">
+							<label>
+								<span style="font-size: 1.1rem;">영화명</span>
+								<input type="search" name="mvNm" class="searchInp" id="mvNm" list="mvNms" value="<%=locals.mvNm ?? ''%>">
+							</label>
+							<datalist id="mvNms"></datalist>
+						</div>
+						<div class="row between">
+							<% genres.forEach(genre => { %> 
+							<label>
+								<input type="checkbox" name="grNm" class="grNm" value="<%=genre%>" 
+								<%=locals.grNm?.includes(genre) ? 'checked' : ''%>> 
+								<span><%=genre%></span>
+							</label>
+							<% }) %>
+						</div>
+						<input type="hidden" name="page" value="1" id="page" />
+					</div>
+					<div class="btnWrap">
+						<button>조회</button>
+						<button type="reset" onclick="inpReset(event)">취소</button>
+					</div>
+				</form>
 			</div>
-			<button>조회하기</button>
-			<button type="reset" onclick="inpReset(event)">취소</button>
-			<spna class="test"></spna>
-		</form>
-	</div>
-	<div class="dataInfo">
-		<div>총 <b><%= locals.cnt ?? '-' %></b>개</div>
-	</div>
-	<table>
-		<thead>
-			<tr>
-				<th>제목</th>
-				<th>영화코드</th>
-				<th>제작연도</th>
-				<th>제작국가</th>
-				<th>유형</th>
-				<th>장르</th>
-				<th>제작상태</th>
-				<th>감독명</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% movieList.forEach(data => { %> 
-			<tr>
-				<td><%= data.movieNm %></td>
-				<td><%= data.movieCd %></td>
-				<td><%= data.prdtYear %></td>
-				<td><%= data.nationAlt %></td>
-				<td><%= data.typeNm %></td>
-				<td><%= data.repGenreNm %></td>
-				<td><%= data.prdtStatNm %></td>
-				<td><% data.directors.forEach(elm => { %>
-					<%= elm.peopleNm %>,
-				<% }) %></td>
-			</tr>
-			<% }) %> 
-		</tbody>
-	</table>
-	<div class="pagenation linkArea">
-		<% for(let p = 1; p <= endPage; p++) {%> 
-			<% if(locals.grNm instanceof Array) {%> 
-				<a href="/list?page=<%=p%>
-					&mvNm<%=locals.mvNm??''%>
-					<% locals.grNm.forEach(elm => { %>
-						&grNm=<%=elm%>
-					<% }) %>		
-				">
-				<%=p%> </a>
-			<% } else { %> 
-				<a href="/list?page=<%=p%>
-					&mvNm<%=locals.mvNm??''%>
-					&grNm=<%=locals.grNm??''%>"
-				>
-				<%=p%> </a>
-			<% } %> 
-		<% } %> 
+		</section>
+		<section class="container listContainer">
+			<div class="dataInfo">
+				<div>총 <b><%= locals.cnt ?? '-' %></b>개</div>
+			</div>
+			<table>
+				<colgroup>
+					<col width="520px">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>제목</th>
+						<th>영화코드</th>
+						<th>제작연도</th>
+						<th>제작국가</th>
+						<th>유형</th>
+						<th>장르</th>
+						<th>제작상태</th>
+						<th>감독명</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% movieList.forEach(data => { %> 
+					<tr>
+						<td class="mvNm"><a href="/info?_id=<%= data._id %> "><%- data.movieNm %></a></td>
+						<td><%= data.movieCd %></td>
+						<td><%= data.prdtYear %></td>
+						<td><%= data.nationAlt %></td>
+						<td><%= data.typeNm %></td>
+						<td><%= data.repGenreNm %></td>
+						<td><%= data.prdtStatNm %></td>
+						<td><% data.directors.forEach(elm => { %>
+							<span><%= elm.peopleNm %></span>,
+						<% }) %></td>
+					</tr>
+					<% }) %> 
+				</tbody>
+			</table>
+			<div class="pagenation linkArea">
+				<% for(let p = 1; p <= endPage; p++) {%> 
+					<a href="#" onclick="goPage(event)" data-page="<%=p %>">
+						<% if(page == p) {%> 
+							<b class="active"><%=p %></b>
+						<% }else { %> 
+							<%=p %>
+						<% } %>
+					</a>
+				<% } %> 
+			</div>
+		</section>
 	</div>
 	<script>
+		function goPage(e) {
+			e.preventDefault();
+			// console.log(e.target.dataset.page);
+			document.querySelector("#page").value = e.target.dataset.page;
+			document.querySelector("#srchForm").submit();
+
+		}
 		function inpReset(evt) {
 			document.querySelector('.searchInp').setAttribute('value', '')
 			let grNm = document.getElementsByClassName('grNm');
@@ -118,6 +158,22 @@
 				grNm[i].checked = false;
 			}
 			evt.preventDefault();
+		}
+		document.querySelector("#mvNm").onkeyup = async function(e) {
+			console.log(e.target.value);
+			if(e.target.value.trim().length == 0) {
+				return;
+			}
+			// let words = [];
+			let response = await fetch('/api/match?mvNm='+e.target.value, {method: 'get'})
+			let json = await response.json();
+			console.log(json);
+
+			wordsOpt = json.map((one) => {
+				return `<option>${one.movieNm}</option>`
+			})
+			console.log(wordsOpt)
+			document.querySelector("#mvNms").innerHTML = wordsOpt.join("");
 		}
 	</script>
 </body>

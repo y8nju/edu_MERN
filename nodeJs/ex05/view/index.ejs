@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>영화</title>
+	<link rel="stylesheet" href="/style.css">
+	<style>
+		.wrap {
+			height: fit-content;
+		}
+		.container {
+			text-align: center;
+		}
+		button {
+			font-size: 1.2rem;
+			margin: 4rem .8rem 0;
+		}
+		button:hover {
+			transform: translate(-0.25rem,-0.25rem);
+			box-shadow: 0.25rem 0.25rem #000;
+		}
+	</style>
+</head>
+<body class="row center">
+	<div class="wrap">
+		<div class="container">
+			<h1>영화 정보 사이트🎞</h1>
+			<div>				
+				<button type="button" onclick="location.href='/list'">영화 정보 보기</button>
+				<button type="button" onclick="location.href='/reviews'">전체 리뷰 보기</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
