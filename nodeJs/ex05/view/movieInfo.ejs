@@ -136,7 +136,7 @@
 					<span class="stars starBg">★★★★★</span>
 					<span class="stars starAc"><%="★".repeat(scoreAvg)%></span>
 				</div>
-				<em class="scoreAvg"><%= scoreAvg ? scoreAvg : '' %></em>
+				<em class="scoreAvg"><%= scoreAvg ? scoreAvg.toFixed(2) : '' %></em>
 			</div>
 			<div class="row between">
 				<div class="reviewList">
@@ -156,7 +156,7 @@
 									</td>
 									<td class="commnetWrap">
 										<p class="comment"><%= data.comment %></p>
-										<p class="createdAt"><%= data.createdAt.toLocaleString() ?? '-' %> </p>
+										<p class="createdAt"><%= data.createdAt ? data.createdAt.toLocaleString() : '-' %> </p>
 									</td>
 								</tr>
 							<% }) %>

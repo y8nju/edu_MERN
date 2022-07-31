@@ -90,8 +90,8 @@ router.get('/info', async (req, res) => {
 
 router.post('/reviewWrite', async (req, res) => {
 	// target, score, comment
-	await reviewDB.create(req.body, {target: new mongoose.mongo.ObjectId(req.body.target)}).then(()=> {
-		// create 수정하자
+	await reviewDB.create(req.body).then(()=> {
+		target: new mongoose.mongo.ObjectId(req.body.target);
 		res.redirect('/info?_id='+req.body.target);
 	}).catch((e)=> {
 		res.status(500).send(e.message)
