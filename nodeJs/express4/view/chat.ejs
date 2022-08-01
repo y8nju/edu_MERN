@@ -62,37 +62,62 @@
 			padding: .3rem 1rem;
 		}
 		#view .leftMsg,
-		#view .rightMsg {	
+		#view .rightMsg {
 			max-width: 80%;
-			align-self: flex-end;
+			display: flex;
 			margin-bottom: .8rem;
 		}
-		#view .leftMsg .msg,
-		#view .rightMsg .msg {
-			display: inline-block;
-			border-radius: 0.2rem;
-			padding: .2rem;
-		}
-		#view .leftMsg .msg {
-			background-color: #5bb4d31a;
-		}
-		#view .rightMsg .msg {	
+		#view .rightMsg {
 			align-self: flex-end;
-			background-color: #ffc90017;
+		}
+		#view .leftMsg small {
+			height: fit-content;
+			font-weight: bold;
+			line-height: 1;
+			border-top-left-radius: .2rem;
+			border-bottom-left-radius: .2rem;
+			background: #63bddd4d;
+			padding: .4rem .6rem .4rem .2rem;
 		}
 		#view .rightMsg small {
 			display: none;
 		}
+		#view .leftMsg .msg,
+		#view .rightMsg .msg {
+			word-break: break-all;
+			border-radius: .2rem;
+			padding: .2rem .4rem;
+		}
+		#view .leftMsg .msg {
+			background-color: #5bb4d31a;
+			border-top-left-radius: 0;
+		}
+		#view .rightMsg .msg {	
+			background-color: #ffc90017;
+		}
 		.messageWrite {
+			display: flex;
+			align-items: center;
+			gap: .8rem;
 			text-align: center;
 			padding: .8rem 1rem;
 		}
 		.messageWrite input {
-			width: 80%;
-			border:  1px solid #78716c;
+			flex-grow: 1;
+			height: 1.6rem;
+			border: 1px solid #78716c;
 			border-radius: .2rem;
 			background-color: #f4f4f0;
 			padding: .2rem;
+		}
+		.messageWrite button {
+			height: 1.6rem;
+			font-size: .8rem;
+			line-height: 1;
+			border: 1px solid #78716c;
+			border-radius: .2rem;
+			background-color: #e7e7df;
+			padding: .4rem .6rem;
 		}
 	</style>
 </head>
@@ -103,10 +128,8 @@
 	<main>
 		<div id="view"></div>
 		<div class="messageWrite">
-			<label>
-				<span>message: </span>
-				<input type="text" onchange="sendMessage(event);">
-			</label>
+			<input type="text" onchange="sendMessage(event);">
+			<button type="submit">전송</button>
 		</div>
 	</main>
 	<script>
@@ -120,8 +143,9 @@
 
 			ws.send(JSON.stringify({"type": "join", "name" : nick}));
 		};
-		ws.onclose = (evt) => {
-			ws.send(JSON.stringify({"type": "exit", "name" : nick}))
+		ws.onclose = function(evt) {
+			ws.send(JSON.stringify({"type": "exit", "name" : nick}));
+			console.log('close');
 		}
 		ws.onerror = (evt) => {
 			console.log('onerror');
@@ -142,16 +166,17 @@
 				case 'chat' :
 					let align = (got.talker === nick) ? 'right' : 'left'
 					html = `<div class=" ${align}Msg">
-									<small>[${excapeXml(got.talker)}]</small>
-									<span class="msg">${excapeXml(got.ment)}</span>
+									<small>${excapeXml(got.talker)}</small>
+									<p class="msg">${excapeXml(got.ment)}</p>
 									</div>`
 				}
 				document.querySelector('#view').innerHTML += html;
 				rebalanceHeight();
 		}
-		window.addEventListener('beforeunload',  () => {
-			ws.close();
-		}, false)
+		window.addEventListener('beforeunload', (event) => {
+			event.preventDefault;
+			event.returnValue = '';
+		}, true)
 		function sendMessage(event) {
 			ws.send(JSON.stringify({type: "chat", talker: nick, ment: event.target.value}));
 			event.target.value= '';
