@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>websocket</title>
+</head>
+<body>
+    <h1>WebSocket</h1>
+    <p>서버와 클라이언트 간 양방향 통신을 위해서 만들어진 기술</p>
+
+    <script>
+        const ws = new WebSocket(`ws://${location.host}/server`); // 'ws://192.168.4.123:8000/server
+        ws.onopen = (ev) => {
+            console.log('onopen');
+            console.log(ev);
+            ws.send("❓");
+        };
+        ws.onerror = (ev) => {
+            console.log('onerror');
+            console.log(ev);
+        };
+        ws.onmessage = (ev) => {
+            // 서버측으로부터 메세지를 받았을 때
+            console.log('onmessage');
+            console.log(ev);
+        }
+    </script>
+</body>
+</html>

@@ -82,8 +82,16 @@ router.route('/modify')
 		const attachs = [];
 		req.files.forEach (arr => {
 			let url = `/images/post/${req.session.authUser.id}/${arr.filename}`;
+			console.log(attachs.length);
 			attachs.push(url);
 		})
+		if(attachs.length === 0) {
+			req.body.imgFIle.forEach(img => {
+				attachs.push(img);
+			})
+		}
+		console.log('req.body.imgFIle', req.body.imgFIle);
+		console.log('attachs', attachs);
 		let arr = {
 			_id: req.body.id,
 			message: req.body.message,

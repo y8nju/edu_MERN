@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CHAT</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		::-webkit-scrollbar {
+			display: none;
+		}
+		body {
+			width: 100vw;
+			height: 100vh;
+			color: #333;
+			background-color: #f4f4f0;
+			padding: 4rem;
+		}
+		header {
+			text-align: center;
+			border-top: 1px solid #78716c;
+			color: #78716c;
+			background-color: #fff;
+			padding: .8rem 1rem;
+		}
+		main {
+			border-top: 1px solid #78716c;
+			border-bottom:  1px solid #78716c;
+			background-color: #fff;
+		}
+		#view{
+			display: flex;
+			flex-direction: column;
+			height: 300px;
+			overflow-x: hidden;
+			overflow-y: auto;
+			font-size: .8rem;
+			border-bottom:  1px solid #78716c;
+			padding: 0 1rem 1rem;
+		}
+		#view .isConnected {
+			width:calc( 100% + 2rem);
+			text-align: center;
+			color: #fff;
+			background-color: #e7e7df;
+			margin-left: -1rem;
+			padding: .2rem 0;
+			margin-bottom: .8rem;
+		}
+		#view .serverMsg {
+			width: fit-content;
+			text-align: center;
+			line-height: 1;
+			border-radius: 1rem;
+			background-color: #f4f4f0;
+			margin: 0 auto .8rem;
+			padding: .3rem 1rem;
+		}
+		#view .leftMsg,
+		#view .rightMsg {	
+			max-width: 80%;
+			align-self: flex-end;
+			margin-bottom: .8rem;
+		}
+		#view .leftMsg .msg,
+		#view .rightMsg .msg {
+			display: inline-block;
+			border-radius: 0.2rem;
+			padding: .2rem;
+		}
+		#view .leftMsg .msg {
+			background-color: #5bb4d31a;
+		}
+		#view .rightMsg .msg {	
+			align-self: flex-end;
+			background-color: #ffc90017;
+		}
+		#view .rightMsg small {
+			display: none;
+		}
+		.messageWrite {
+			text-align: center;
+			padding: .8rem 1rem;
+		}
+		.messageWrite input {
+			width: 80%;
+			border:  1px solid #78716c;
+			border-radius: .2rem;
+			background-color: #f4f4f0;
+			padding: .2rem;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>CHAT</h1>
+	</header>
+	<main>
+		<div id="view"></div>
+		<div class="messageWrite">
+			<label>
+				<span>message: </span>
+				<input type="text" onchange="sendMessage(event);">
+			</label>
+		</div>
+	</main>
+	<script>
+		let nick;
+		const ws = new WebSocket(`ws://${location.host}/chat`);
+		ws.onopen = (evt) => {
+			nick = prompt('User Name?');
+
+			let html = '<p class="isConnected">Sever Connetcted</p>'
+			document.querySelector('#view').innerHTML += html;
+
+			ws.send(JSON.stringify({"type": "join", "name" : nick}));
+		};
+		ws.onclose = (evt) => {
+			ws.send(JSON.stringify({"type": "exit", "name" : nick}))
+		}
+		ws.onerror = (evt) => {
+			console.log('onerror');
+			console.log(evt);
+		};
+		ws.onmessage = (evt) => {	// 서버측으로부터 메세지를 받았을 때
+			console.log('onmessage');
+			// console.log(evt);	// 서버가 센트한 메세지값은 evt.data 안에 있다
+			let got = JSON.parse(evt.data);
+			let html;
+			switch(got.type) {
+				case 'join':
+					html = `<div class="serverMsg"><b>${excapeXml(got.name)}</b>님이 입장하였습니다</div>`
+					break;
+				case 'exit' :
+					html = `<div class="serverMsg"><b>${excapeXml(got.name)}</b>님이 퇴장하였습니다</div>`
+					break;
+				case 'chat' :
+					let align = (got.talker === nick) ? 'right' : 'left'
+					html = `<div class=" ${align}Msg">
+									<small>[${excapeXml(got.talker)}]</small>
+									<span class="msg">${excapeXml(got.ment)}</span>
+									</div>`
+				}
+				document.querySelector('#view').innerHTML += html;
+				rebalanceHeight();
+		}
+		window.addEventListener('beforeunload',  () => {
+			ws.close();
+		}, false)
+		function sendMessage(event) {
+			ws.send(JSON.stringify({type: "chat", talker: nick, ment: event.target.value}));
+			event.target.value= '';
+		}
+		function rebalanceHeight() {
+			document.querySelector('#view').scrollTop = document.querySelector('#view').scrollHeight;
+		}
+		function excapeXml(data) {
+			return data.replaceAll(/</g, '&lt;').replaceAll(/>/g, '&gt;')
+		}
+	</script>
+</body>
+</html>

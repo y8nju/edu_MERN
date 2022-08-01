@@ -48,6 +48,7 @@
 									<div class="imageWrap row">
 										<% found.attachs.forEach(elm => { %> 
 											<div class="img" style="background-image: url('<%= elm %>');">
+												<input type="hidden" name="imgFIle" value="<%= elm %>">
 											<img src="<%= elm %>" alt=""></div>
 										<% }) %> 
 									</div>
