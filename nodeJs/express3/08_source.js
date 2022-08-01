@@ -23,14 +23,15 @@ const Review = require('./model/Review');
 		// 기본 대상 ref 모델의 _id로 매칭
 		// 컬렉션의 디자인이 잘못되면, _id가 아닌 곳으로 걸어야 할 때가 있다
 		//ref의 대상은 무조건 _id로 고정이 되어 있다 👉 이럴 때는 스키마에서 virtual로 가상 변수를 만들어서 설정함
+		// _id로 populate하게되면 하나의 객체로 출력된다
 		let reviews = await Review.find({}).populate('vtTargetCd');
+		reviews = await Review.find({}).populate('vtTargetCd').limit(1);
 		//가상 변수로 vtTargetCd를 만들어서 populate를 해서 매칭 할 수 있다
 		// console.log(reviews);
 		reviews.forEach(elm => {
 			console.log(elm.comment, elm.sign, elm.vtTargetCd, elm.vtTargetCd.typeNm);
 		});
 
-		
 
 	}catch(err) {
 		console.log('failed...', + err.message);

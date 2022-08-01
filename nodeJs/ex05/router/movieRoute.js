@@ -10,6 +10,8 @@ mongoose.connect(uri, {dbName: 'example'}).catch((err) => {
 	console.log('failed' + err.message);
 });
 
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 router.use((req, res, next) => {
 	console.log('log by anonymous');
 	next();
@@ -79,19 +81,28 @@ router.get('/info', async (req, res) => {
 	movie.key.forEach(data => {
 		scores.push(data.score);
 	});
+	//리뷰가 있다면 스코어 평균
 	const scoreAvg = (scores.reduce((a,b) => a+b, 0)) / scores.length;
 	const directors = []
 	movie.directors.forEach(data => {
-		directors.push(data.peopleNm)
+		directors.push(data.peopleNm);
 	})
-	//리뷰가 있다면 스코어 평균
-	res.render('movieInfo', {movie, scoreAvg, directors})
+	const movieCd = movie.movieCd;
+	const movieInfoUrl = await fetch(`http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json?key=f5eef3421c602c6cb7ea224104795888&movieCd=${movieCd}`, {method: 'get'});
+	const movieInfoResult = await movieInfoUrl.json();
+	const movieInfo = movieInfoResult.movieInfoResult.movieInfo;
+	const actors = [];
+	movieInfo.actors.forEach(actor =>{
+		actors.push(actor.peopleNm);
+	})
+	console.log(actors);
+	res.render('movieInfo', {movie, scoreAvg, directors, actors})
 })
 
 router.post('/reviewWrite', async (req, res) => {
 	// target, score, comment
 	await reviewDB.create(req.body).then(()=> {
-		target: new mongoose.mongo.ObjectId(req.body.target);
+		// target: new mongoose.mongo.ObjectId(req.body.target);
 		res.redirect('/info?_id='+req.body.target);
 	}).catch((e)=> {
 		res.status(500).send(e.message)

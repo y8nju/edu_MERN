@@ -13,6 +13,7 @@ const Movie = require('./model/Movie')
 		// openDt가 20220801 이상인 데이터를 찾는다면?
 		let result = await Movie.find({openDt: {$gte: '20220801'}}).select('movieNm openDt').lean();
 		result = await Movie.find({}).where('openDt').gte('20220801').select('movieNm openDt').lean();
+		// result = await Movie.find({}).where('openDt').gte('20220801').lt('20220901').select('movieNm openDt').lean();
 		// console.table(result);
 
 		//repGenreNm이 액션이거나  드라마인 데이터를 찾는다면?

@@ -18,6 +18,12 @@ const reviewSchema = new mongoose.Schema({
 		type: String,
 		ref: "Movie"
 	}
+}, {
+	toObject: {	
+		// _id로 populating을 하게되면 1개의 객체로 출력되는데, 배열로 받을 수 있다
+		// {[Object]}
+		virtual: true
+	}
 })
 
 // virtual을 이용해서 populate용 가상변수를 설정할 수 있다
@@ -28,7 +34,7 @@ reviewSchema.virtual("vtTargetCd", {
 	localField: "targetCd",
 	ref: "Movie",
 	foreignField: "movieCd",
-	justOne: true
+	justOne: true	// populating을 하게되면 값은 1개일거라고 명시
 })
 	// .get(function(){
 	// 	return this.targetCd;

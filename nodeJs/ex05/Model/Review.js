@@ -14,6 +14,11 @@ const reviewSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     }
+}, {
+	toObject: {	
+		// _id로 populating을 하게되면 1개의 객체로 출력되는데, 배열로 받을 수 있다
+		virtual: true
+	}
 })
 
 module.exports = mongoose.model('Review', reviewSchema);

@@ -123,6 +123,11 @@
 			<dl>
 				<dt><em>개요</em></dt>
 				<dd> <%= movie.genreAlt %> | <%= movie.nationAlt %> | <%= movie.openDt %> <%= movie.prdtStatNm %></dd>
+				<dt><em>배우</em></dt>
+
+				<dd>
+					<span><%=actors.slice(1, 6)%></span>
+				</dd>
 				<dt><em>감독</em></dt>
 				<dd><span>
 					<%= directors.join(', ') %>
