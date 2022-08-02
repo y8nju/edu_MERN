@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><%= room.title %></title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/article/article.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+	<style>
+		main {
+			margin-top: 0;
+		}
+		#room {
+			width: 100%;
+			height: calc(100vh - var(--headerHeight));
+		}
+		.owner {
+			width: 2.4rem;
+			height: 2.4rem;
+			display: inline-block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			line-height: 1.7rem;
+			border-radius: 50%;
+			background-color: var(--bgLight);
+			color: var(--gray999);
+			padding: 0.3rem;
+		}
+		.chatView {
+			overflow-y: auto;
+		}
+		.messageWrite {
+			background-color: #fff;
+			gap: .8rem;
+			padding: 1rem;
+		}
+		.messageWrite textarea {
+			padding: 0;
+			background-color: transparent;
+		}
+		.messageWrite textarea::placeholder {
+			font-size: .9rem;
+			font-weight: lighter;
+		}
+		.messageWrite textarea:focus {
+			outline: none;
+		}
+		.messageWrite .sumitBtn{
+			height: fit-content;
+			font-size: .9rem;
+			border: transparent;
+			border-radius: .2rem;
+			color: #fff;
+			background-color: var(--successColor);
+			padding: .4rem .6rem;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="headerLeft">
+			<small class="owner" title="<%= room.owner %>"><%= room.owner %></small>
+		</div>
+		<div class="headerCenter">
+			<h3><%= room.title %> <small>(<%=room.joiner.length%>)</small></h3>
+		</div>
+		<div class="headerRight">
+		</div>
+	</header>
+	<main>
+		<div id="room" class="col">
+			<div class="chatView grow1">
+				<% messages.forEach(message => { %>
+					<div class="msgArea row">
+						<div class="talker"><%= message.talker %> </div>
+						<div class="msg"><%= message.content %></div>
+						<div class="time"><%= message.createdAt.toLocaleTimeString() %> </div>
+					</div>
+				<% }) %> 
+			</div>
+			<div class="messageWrite row">
+				<textarea type="text" class="grow1"  placeholder="메세지를 입력하세요" id="writeMsg" data-room-id="<%= room._id %>"></textarea>
+				<button type="submit" class="sumitBtn">전송</button>
+			</div>
+		</div>
+	</main>
+	<script>
+		document.querySelector('#writeMsg').onchange = (evt) => {
+			if(evt.target.value.trim().length === 0) {
+				return;
+			}
+			const headers = {"Content-type" : "application/json" } 
+			fetch("/chats/api/message",  {
+				headers, method: 'post', body : JSON.stringify({
+					roomId: evt.target.dataset.roomId,
+					content: evt.target.value
+				})
+			}).then(response => {
+				return response.json();
+			}).then(json => {
+				console.log(json);
+			}).catch(err => {
+				alert('서버와의 통신에 일시적인 장애가 있습니다')
+			});
+			evt.target.value = '';
+		};
+	</script>
+</body>
+</html>

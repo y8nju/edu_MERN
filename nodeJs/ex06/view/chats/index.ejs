@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>chat</title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/article/article.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+	<style>
+		.addChat {
+			background-color: #fff;
+			border: var(--border);
+			border-radius: 50%;
+			margin-left: auto;
+			padding: .4rem;
+		}
+		input#password {
+			display: none;
+		}
+		input#private:checked ~ input#password {
+			display: inline-block;
+		}
+		#modal .modalFooter {
+			justify-content: center;
+		}
+		#modal .closeBtn {
+			margin-left: auto;
+		}
+		#modal form > div {
+			width: 100%;
+			height: 1.6rem;
+			margin-bottom: .6rem;
+			align-items: center;
+		}
+		label[for="title"] {
+			width: 100%;
+			display: block;
+		}
+		#title {
+			width: 100%;
+			border: transparent;
+			border-bottom: var(--border);
+			border-radius: 0;
+		}
+		#title:focus {
+			outline: transparent;
+		}
+		.privateChk {
+			gap: .4rem;
+		}
+	</style>
+</head>
+<body>
+	<%- include("../common/header.ejs") %> 
+	<main>
+		<div id="home" class="col" style="width: 80%;">
+			<div>
+				<button onclick="isModal('flex')" class="addChat"><i class="fi fi-rr-add"></i></button>
+			</div>
+			<div>
+				<h3>개설된 방 목록 <span>(<%=rooms.length%>)</span></h3>
+				<% rooms.forEach(room => { %> 
+					<article class="card">
+						<a href="/chats/room?_id=<%= room._id %> " onClick="window.open(this.href, '', 'width=500, height=1080'); return false;">
+							<div class="row">
+								<span><%=room.title%></span>
+								<span><small>(<%=room.joiner.length%>)</small></span>
+								<% if(room.type=='private') { %>
+								<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+								<% } %> 
+							</div>
+							<div style="text-align: right">
+								<span><%=room.owner %></span> |
+								<span class="createAt"><%=room.createdAt.toLocaleString()%></span>
+							</div>
+						</a>
+					</article>
+				<% }) %>
+			</div>
+		</div>
+		<div id="modal">
+			<article class="modalContent card">
+				<div class="row">
+					<button type="button" class="btn closeBtn" onclick="isModal('none')">닫기</button>
+				</div>
+				<div class="modalTitle">
+					<h3>채팅방개설</h3>
+				</div>
+				<div class="modalBody">
+					<form action="/chats/open" method="post">
+						<div>
+							<label for="title">
+								<input type="text" name="title" placeholder="채팅방 이름을 입력해주세요" id="title">
+							</label>
+						</div>
+						<div class="row privateChk">
+							<label for="public">
+								<input type="radio" name="type" value="public" id="public" checked> 공개
+							</label>
+							<label for="private" class="row" style="gap: .4rem; align-items:center">
+								<input type="radio" name="type" value="private" id="private"> 비공개
+								<input type="text" name="password" id="password" placeholder="비밀번호를 입력하세요" class="grow1">
+							</label>
+						</div>
+						<div class="modalFooter row center">
+							<button type="submit" class="btn confirmBtn">방 개설</button>
+						</div>
+					</form>
+				</div>
+			</article>
+		</div>
+	</main>
+	<script>
+		function isModal(e) {
+			document.querySelector('#modal').style.display = e;
+		}
+		const ws = new WebSocket(`ws://${location.host}/chats/sse`);
+		ws.onmessage = function(recv) {
+			console.log(recv);
+			let message = JSON.parse(recv.data);
+			switch(message.type) {
+				case 'new':
+					// 토스트 띄우고 몇 초 뒤에 reload로 바꾸기
+					if(confirm('새로 개설된 채팅방이 있습니다')) {
+						location.reload();
+					}
+					break
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		input#password {
+			display: none;
+		}
+		input#private:checked ~ input#password {
+			display: inline-block;
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>채팅방개설</h1>
+		<form action="/chats/open" method="post">
+			<div>
+				<label>
+					<span>채팅방 이름</span>
+					<input type="text" name="title" placeholder="채팅방 이름을 입력해주세요">
+				</label>
+			</div>
+			<div>
+				<label for="public">
+					<input type="radio" name="type" value="public" id="public" checked> 공개
+				</label>
+				<label for="private">
+					<input type="radio" name="type" value="private" id="private"> 비공개
+					<input type="text" name="password" id="password" placeholder="비밀번호를 입력하세요">
+				</label>
+			</div>
+			<div>
+				<button type="submit">방개설</button>
+				<button type="reset">재작성</button>
+			</div>
+		</form>
+	</main>
+	<script>
+		// document.querySelector('#private').onchange = (evt)  => {
+		// 	if(evt.target.checled) {
+
+		// 	}
+		// }
+	</script>
+</body>
+</html>

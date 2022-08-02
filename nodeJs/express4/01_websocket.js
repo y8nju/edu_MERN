@@ -9,7 +9,7 @@
 */
 
 const express = require('express');
-const expressWs = require('express-ws');
+const expressWs = require('express-ws')(app);
 const path = require('path');
 const app = express();
 const wsServer = expressWs(app);
@@ -30,6 +30,9 @@ app.ws('/server', (ws, req) => {
 });
 
 app.ws('/chat', (ws, req) => {
+	ws.on('close', () => {
+		
+	})
 	ws.on('message', (msg) => {
 		let message = JSON.parse(msg);
 		switch(message.type) {
