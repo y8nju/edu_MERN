@@ -13,17 +13,38 @@
 	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 	<style>
 		.addChat {
+			height: fit-content;
 			background-color: #fff;
 			border: var(--border);
 			border-radius: 50%;
-			margin-left: auto;
 			padding: .4rem;
 		}
-		input#password {
+		.container .roomList {
+			margin-top: .4rem;
+		}
+		.container .card {
+			padding: 0;
+			margin-bottom: .4rem;
+		}
+		.container .card > a {
+			display: block;
+			padding: 1rem 1.4rem;
+		}
+		.roomSel {
+			width: 8rem;
+			height: 1.6rem;
+			display: block;
+			font-size: .9rem;
+			border-radius: .2rem;
+			color: var(--gray777);
+			padding: 0.2rem;
+			margin-left: auto;
+		}
+		.roomList {
 			display: none;
 		}
-		input#private:checked ~ input#password {
-			display: inline-block;
+		.roomList.active {
+			display: block;
 		}
 		#modal .modalFooter {
 			justify-content: center;
@@ -36,21 +57,27 @@
 			height: 1.6rem;
 			margin-bottom: .6rem;
 			align-items: center;
+		}		
+		#modal input#password {
+			display: none;
 		}
-		label[for="title"] {
+		#modal input#private:checked ~ input#password {
+			display: inline-block;
+		}
+		#modal label[for="title"] {
 			width: 100%;
 			display: block;
 		}
-		#title {
+		#modal #title {
 			width: 100%;
 			border: transparent;
 			border-bottom: var(--border);
 			border-radius: 0;
 		}
-		#title:focus {
+		#modal #title:focus {
 			outline: transparent;
 		}
-		.privateChk {
+		#modal .privateChk {
 			gap: .4rem;
 		}
 	</style>
@@ -59,28 +86,77 @@
 	<%- include("../common/header.ejs") %> 
 	<main>
 		<div id="home" class="col" style="width: 80%;">
-			<div>
-				<button onclick="isModal('flex')" class="addChat"><i class="fi fi-rr-add"></i></button>
-			</div>
-			<div>
-				<h3>개설된 방 목록 <span>(<%=rooms.length%>)</span></h3>
-				<% rooms.forEach(room => { %> 
-					<article class="card">
-						<a href="/chats/room?_id=<%= room._id %> " onClick="window.open(this.href, '', 'width=500, height=1080'); return false;">
-							<div class="row">
-								<span><%=room.title%></span>
-								<span><small>(<%=room.joiner.length%>)</small></span>
-								<% if(room.type=='private') { %>
-								<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
-								<% } %> 
-							</div>
-							<div style="text-align: right">
-								<span><%=room.owner %></span> |
-								<span class="createAt"><%=room.createdAt.toLocaleString()%></span>
-							</div>
-						</a>
-					</article>
-				<% }) %>
+			<div class="container between">
+				<div class="row between" style="align-items: center;">
+					<h3>개설된 방 목록 <span>(<%=rooms.length%>)</span></h3>
+					<button onclick="isModal('flex')" class="addChat"><i class="fi fi-rr-add"></i></button>
+				</div>
+				<div>
+						<select name="" id=""  class="roomSel" onchange="roomSel()">
+							<option value="allList" data-roomSel="allList" selected>전체 목록</option>
+							<option value="joinList" data-roomSel="joinList">참여 중인 목록</option>
+							<option value="notList" data-roomSel="notList">미참여 목록</option>
+						</select>
+				</div>
+				<div class="roomListArea">
+					<div class="roomList active" id="allList">
+						<% rooms.forEach(room => { %> 
+							<article class="card">
+								<a href="/chats/room?_id=<%= room._id %> " onClick="window.open(this.href, '', 'width=500, height=1080'); return false;">
+									<div class="row">
+										<span><%=room.title%></span>
+										<span><small>(<%=room.joiner.length%>)</small></span>
+										<% if(room.type=='private') { %>
+										<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+										<% } %> 
+									</div>
+									<div style="text-align: right">
+										<span><%=room.owner %></span> |
+										<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+									</div>
+								</a>
+							</article>
+						<% }) %>
+					</div>
+					<div class="roomList" id="joinList">
+						<% joinRooms.forEach(room => { %> 
+							<article class="card">
+								<a href="/chats/room?_id=<%= room._id %> " onClick="window.open(this.href, '', 'width=500, height=1080'); return false;">
+									<div class="row">
+										<span><%=room.title%></span>
+										<span><small>(<%=room.joiner.length%>)</small></span>
+										<% if(room.type=='private') { %>
+										<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+										<% } %> 
+									</div>
+									<div style="text-align: right">
+										<span><%=room.owner %></span> |
+										<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+									</div>
+								</a>
+							</article>
+						<% }) %>
+					</div>
+					<div class="roomList" id="notList">
+						<% notRooms.forEach(room => { %> 
+							<article class="card">
+								<a href="/chats/room?_id=<%= room._id %> " onClick="window.open(this.href, '', 'width=500, height=1080'); return false;">
+									<div class="row">
+										<span><%=room.title%></span>
+										<span><small>(<%=room.joiner.length%>)</small></span>
+										<% if(room.type=='private') { %>
+										<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+										<% } %> 
+									</div>
+									<div style="text-align: right">
+										<span><%=room.owner %></span> |
+										<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+									</div>
+								</a>
+							</article>
+						<% }) %>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div id="modal">
@@ -116,6 +192,15 @@
 		</div>
 	</main>
 	<script>
+		function roomSel() {
+			let roomSel = document.querySelector('.roomSel');
+			let selVal = roomSel.options[roomSel.selectedIndex].value;
+			let roomList = document.querySelectorAll('.roomList');
+			roomList.forEach((elm) => {
+				elm.classList.remove('active');
+			})
+			document.querySelector('#'+selVal).classList.add('active');
+		}
 		function isModal(e) {
 			document.querySelector('#modal').style.display = e;
 		}

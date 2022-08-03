@@ -34,6 +34,51 @@
 		}
 		.chatView {
 			overflow-y: auto;
+			padding: .8rem;
+			gap: .6rem
+		}
+		.chatView .msgArea {
+			max-width: 70vw;
+			align-items: flex-end;
+		}
+		.chatView .serverMsg {
+			width: fit-content;
+			align-self: center;
+			font-size: .8rem;
+			border-radius: 1rem;
+			background-color: var(--bgLight);
+			color: var(--gray999);
+			margin: 0.8rem 0;
+			padding: 0.4rem 0.8rem;
+		}
+		.chatView .msgArea .talker {
+			font-size: .8rem;
+			color: var(--gray777);
+		}
+		.chatView .msgArea .msg {
+			font-size: .9rem;
+			border-radius: .2rem;
+			background-color: #ddd;
+			padding: .4rem .5rem;
+		}
+		.chatView .msgArea .time {
+			font-size: .6rem;
+			white-space: nowrap;
+			color: var(--gray999);
+			margin: 0 .4rem;
+		}
+		.chatView .msgArea.mine {
+			align-self: flex-end;
+		}
+		.chatView .msgArea.mine .talker {
+			display: none;
+		}
+		.chatView .msgArea.mine .msg {
+			background-color: #fff;
+			margin-top: .4rem;
+		}
+		.chatView .msgArea.mine .time{
+			order: -1;
 		}
 		.messageWrite {
 			background-color: #fff;
@@ -60,27 +105,52 @@
 			background-color: var(--successColor);
 			padding: .4rem .6rem;
 		}
+		.headerLeft .joinerList {
+			display: none;
+			max-width: 80vw;
+			position: absolute;
+			z-index: 500;
+			left: 3rem;
+			top: 4rem;
+			font-size: .8rem;
+			text-align: left;
+			border-radius: .4rem;
+			background-color: var(--bgLight);
+			box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+			padding: .8rem;
+		}
+		.headerLeft .owner:hover ~ .joinerList {
+			display: block;
+		}
 	</style>
 </head>
 <body>
 	<header>
 		<div class="headerLeft">
-			<small class="owner" title="<%= room.owner %>"><%= room.owner %></small>
+			<small class="owner"><%= room.owner %></small>
+			<div class="joinerList">
+				<%= room.joiner.join(', ') %>
+			</div>
 		</div>
 		<div class="headerCenter">
 			<h3><%= room.title %> <small>(<%=room.joiner.length%>)</small></h3>
 		</div>
 		<div class="headerRight">
+			<a href="/chats/exit?_id=<%= room._id %>">
+				<button><i class="fi fi-rr-exit"></i></button>
+			</a>
 		</div>
 	</header>
 	<main>
 		<div id="room" class="col">
-			<div class="chatView grow1">
+			<div class="chatView grow1 col">
 				<% messages.forEach(message => { %>
-					<div class="msgArea row">
-						<div class="talker"><%= message.talker %> </div>
-						<div class="msg"><%= message.content %></div>
-						<div class="time"><%= message.createdAt.toLocaleTimeString() %> </div>
+					<div class="msgArea <%=message.type %> row">
+						<div class="msgContent">
+							<div class="talker"><%= message.talker %> </div>
+							<div class="msg"><%= message.content %></div>
+						</div>
+						<div class="time createAt"><%= message.createdAt.toLocaleTimeString() %> </div>
 					</div>
 				<% }) %> 
 			</div>
@@ -91,6 +161,7 @@
 		</div>
 	</main>
 	<script>
+		rebalanceHeight();
 		document.querySelector('#writeMsg').onchange = (evt) => {
 			if(evt.target.value.trim().length === 0) {
 				return;
@@ -110,6 +181,52 @@
 			});
 			evt.target.value = '';
 		};
+
+		const roomId = document.querySelector('#writeMsg').dataset.roomId;
+		const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
+		ws.onmessage = function(rst) {
+			let msg = JSON.parse(rst.data);
+			if(msg.apply !== roomId) {
+				return;
+			}
+				let div = document.createElement("div");
+				div.classList.add("serverMsg");
+			switch(msg.type) {
+				case 'join':
+					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
+					document.querySelector('.chatView').appendChild(div);
+					document.querySelector('.joinerList').textContent = msg.joiner;
+					document.querySelector(`.headerCenter small`).textContent = `(${msg.joiner.length})`;
+					break;
+				case 'exit':
+					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
+					div.classList.add("serverMsg");
+					document.querySelector('.chatView').appendChild(div);
+					document.querySelector('.joinerList').innerHTML = msg.joiner;
+					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joiner.length})`
+					break;
+
+				case 'new': 
+					let html = `
+						<div class="msgArea row ${msg.data.type}">
+							<div class="msgContent">
+								<div class="talker">${msg.data.talker} </div>
+								<div class="msg">${msg.data.content}</div>
+							</div>
+							<div class="time createAt">${new Date(msg.data.createdAt).toLocaleTimeString()}</div>
+						</div>
+					`
+					document.querySelector('.chatView').insertAdjacentHTML(
+						'beforeend', html
+					);
+			}
+			rebalanceHeight()
+			// console.log(msg);
+		}
+		
+		function rebalanceHeight() {
+			document.querySelector('.chatView').scrollTop = document.querySelector('.chatView').scrollHeight;
+		}
 	</script>
 </body>
 </html>
