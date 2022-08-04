@@ -6,6 +6,7 @@ const path = require('path')
 
 const Room = require('../Models/Room');
 const Message = require('../Models/Message');
+const { type } = require('os');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -53,8 +54,8 @@ router.ws('/room', (ws, req) => {
 
 router.get('/', async (req, res)=> {
 	const rooms = await Room.find({}).sort('-createdAt').lean();
-	const joinRooms = await Room.find({joiner: req.session.userId}).sort('-createdAt').lean();
-	const notRooms =  await Room.find({joiner: {$ne: req.session.userId}}).sort('-createdAt').lean();;
+	const joinRooms = await Room.find({'joiner.joinerName': req.session.userId}).sort('-createdAt').lean();
+	const notRooms =  await Room.find({'joiner.joinerName': {$ne:  req.session.userId}}).sort('-createdAt').lean();;
 	res.locals.rooms = rooms;
 	res.locals.joinRooms = joinRooms;
 	res.locals.notRooms = notRooms;
@@ -74,29 +75,39 @@ router.route('/open')
 	});
 
 router.get('/room', async (req, res) => {
-	const room = await Room.findByIdAndUpdate(req.query._id, 
-		{$addToSet: {joiner: req.session.userId}},
-		{returnDocument: 'after'}).lean();
-	const messages = await Message.find({roomId: req.query._id}).sort('createdAt').lean();
-	res.locals.room = room;
+	let joinerChk = await Room.findOne({_id: req.query._id, 'joiner.joinerName': req.session.userId});
+	let joinerTime ;
+	if(!joinerChk) {
+		const room = await Room.findByIdAndUpdate(req.query._id, 
+			{$addToSet: {joiner: {joinerName: req.session.userId}}},
+			{returnDocument: 'after'}).lean();
+		res.locals.room = room;
+		roomWss.forEach((ws) => {
+			ws.send(JSON.stringify({
+				apply: req.query._id, 
+				type: 'join', 
+				id:  req.session.userId,
+				joiner: room.joiner
+			}));
+		})
+	}else {
+		const room = await Room.findById(req.query._id);
+		res.locals.room = room;
+		joinerTime = joinerChk.joiner.find(function(data){ return data.joinerName === req.session.userId}).joinTime;
+	}
+	const messages = await Message.find({roomId: req.query._id}).where('createdAt').gte(joinerTime).sort('createdAt').lean();
 	res.locals.messages = messages.map((one) => {
         return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
     });
-	roomWss.forEach((ws) => {
-		ws.send(JSON.stringify({
-			apply: req.query._id, 
-			type: 'join', 
-			id:  req.session.userId,
-			joiner: room.joiner
-		}));
-	})
+	
 	res.render('chats/room');
 });
 
 router.get('/exit', async(req, res) => {
 	const room = await Room.findByIdAndUpdate(req.query._id, 
-		{$pull: {joiner: req.session.userId}},
+		{$pull:  {joiner: {joinerName: req.session.userId}}},
 		{returnDocument: 'after'}).lean();
+	
 	roomWss.forEach((ws) => {
 		ws.send(JSON.stringify({
 			apply: req.query._id, 

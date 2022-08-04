@@ -158,7 +158,9 @@
 		<div class="headerLeft">
 			<small class="owner"><%= room.owner %></small>
 			<div class="joinerList">
-				<%= room.joiner.join(', ') %>
+				<% room.joiner.forEach(elm => { %>
+					<span><%=elm.joinerName%></span>
+				<%})%>
 			</div>
 		</div>
 		<div class="headerCenter">
@@ -207,22 +209,6 @@
 		document.querySelector('.fileSch').onclick = (evt) => {
 			document.querySelector("#attach").dispatchEvent(new MouseEvent('click'));
 		}
-		// document.querySelector("#attach").onchange = async (evt) =>{
-		// 	// 전송 버튼 눌렀을 때로 변경
-		// 	console.log(evt.target.files[0]);
-		// 	// post + multipart/form-data 로 요청을 보내야 파일이 전송이 됨.
-		// 	// multipart 용 바디는 FormData 라는 객체를 사용하면 된다.
-		// 	const body = new FormData();
-		// 	const roomId = evt.target.dataset.roomId;
-		// 	body.append("attach", evt.target.files[0]);
-		// 	body.append("roomId", roomId);
-		// 	let response = await fetch("/chats/api/upload?roomId="+roomId, {
-		// 		method : "post",
-		// 		body : body
-		// 	});
-		// 	let json = response.json();
-		// 	console.log(json);
-		// };
 		async function fileSend() {
 			let attach = document.querySelector("#attach");
 			if(attach.files[0]) {
@@ -280,18 +266,25 @@
 			}
 				let div = document.createElement("div");
 				div.classList.add("serverMsg");
+				let joinerList =[]
 			switch(msg.type) {
 				case 'join':
 					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
 					document.querySelector('.chatView').appendChild(div);
-					document.querySelector('.joinerList').textContent = msg.joiner;
+					msg.joiner.forEach(elm => {
+						joinerList.push(elm.joinerName);
+					});
+					document.querySelector('.joinerList').textContent = joinerList.join(', ');
 					document.querySelector(`.headerCenter small`).textContent = `(${msg.joiner.length})`;
 					break;
 				case 'exit':
 					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
 					div.classList.add("serverMsg");
 					document.querySelector('.chatView').appendChild(div);
-					document.querySelector('.joinerList').innerHTML = msg.joiner;
+					// 나간 유저 찾아서 날리기
+					// let exitUser = joinerList.includes(msg.id);
+					// joinerList.slice()
+					document.querySelector('.joinerList').innerHTML = joinerList;
 					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joiner.length})`
 					break;
 
