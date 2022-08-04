@@ -61,6 +61,9 @@
 			background-color: #ddd;
 			padding: .4rem .5rem;
 		}
+		.chatView .msgArea .msg img {
+			max-width: 50vw;
+		}
 		.chatView .msgArea .time {
 			font-size: .6rem;
 			white-space: nowrap;
@@ -86,8 +89,9 @@
 			padding: 1rem;
 		}
 		.messageWrite textarea {
-			padding: 0;
+			width: 100%;
 			background-color: transparent;
+			padding: 0;
 		}
 		.messageWrite textarea::placeholder {
 			font-size: .9rem;
@@ -95,6 +99,31 @@
 		}
 		.messageWrite textarea:focus {
 			outline: none;
+		}
+		.filePreview {
+			width: 95%;
+			height: 5rem;
+			display: none;
+			position: absolute;
+			top: 0;
+			left: .4rem;
+		}
+		.filePreview .previewImg {
+			max-width: 100%;
+			height: 100%;
+		}
+		.fileSch {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			border: transparent;
+			border-radius: 50%;
+			color: var(--successColor);
+			background-color: #fff;
+			padding: 0.4rem;
+		}
+		.fileSch:hover {
+			background-color: #e5f2ff;
 		}
 		.messageWrite .sumitBtn{
 			height: fit-content;
@@ -148,20 +177,80 @@
 					<div class="msgArea <%=message.type %> row">
 						<div class="msgContent">
 							<div class="talker"><%= message.talker %> </div>
-							<div class="msg"><%= message.content %></div>
+							<div class="msg">
+								<%if(message.data=='chat'){%>
+									<%= message.content %>
+								<% }else {%>
+									<img src="<%= message.content %>">
+								<%}%>
+							</div>
 						</div>
 						<div class="time createAt"><%= message.createdAt.toLocaleTimeString() %> </div>
 					</div>
 				<% }) %> 
 			</div>
 			<div class="messageWrite row">
-				<textarea type="text" class="grow1"  placeholder="메세지를 입력하세요" id="writeMsg" data-room-id="<%= room._id %>"></textarea>
-				<button type="submit" class="sumitBtn">전송</button>
+				<div class="grow1" style="position: relative;">
+					<textarea type="text"  placeholder="메세지를 입력하세요" id="writeMsg" data-room-id="<%= room._id %>"></textarea>
+					<div class="filePreview"><img  class="previewImg"src=""></div>
+					<button class="fileSch"><i class="fi fi-rr-picture"></i></button>
+					<input style="display:none" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>" onchange="filePreview(event)">
+				</div>
+				<button type="submit" class="sumitBtn" onclick="fileSend()">전송</button>
 			</div>
 		</div>
 	</main>
 	<script>
-		rebalanceHeight();
+		window.onload = function() {
+			rebalanceHeight();
+		}
+		document.querySelector('.fileSch').onclick = (evt) => {
+			document.querySelector("#attach").dispatchEvent(new MouseEvent('click'));
+		}
+		// document.querySelector("#attach").onchange = async (evt) =>{
+		// 	// 전송 버튼 눌렀을 때로 변경
+		// 	console.log(evt.target.files[0]);
+		// 	// post + multipart/form-data 로 요청을 보내야 파일이 전송이 됨.
+		// 	// multipart 용 바디는 FormData 라는 객체를 사용하면 된다.
+		// 	const body = new FormData();
+		// 	const roomId = evt.target.dataset.roomId;
+		// 	body.append("attach", evt.target.files[0]);
+		// 	body.append("roomId", roomId);
+		// 	let response = await fetch("/chats/api/upload?roomId="+roomId, {
+		// 		method : "post",
+		// 		body : body
+		// 	});
+		// 	let json = response.json();
+		// 	console.log(json);
+		// };
+		async function fileSend() {
+			let attach = document.querySelector("#attach");
+			if(attach.files[0]) {
+				const body = new FormData();
+				const roomId = attach.dataset.roomId;
+				body.append("attach", attach.files[0]);
+				body.append("roomId", roomId);
+				let response = await fetch("/chats/api/upload?roomId="+roomId, {
+					method : "post",
+					body : body
+				});
+				let json = response.json();
+				console.log(json);
+			}
+		}
+		async function filePreview(evt) {
+			let msgFiled = document.querySelector(`.messageWrite textarea`);
+			msgFiled.setAttribute('placeholder', '');
+			msgFiled.setAttribute('disabled', '');
+			if(evt.target.files && evt.target.files[0]) {
+				let reader = new FileReader();
+				reader.readAsDataURL(evt.target.files[0]);
+				reader.onload = function(rst) {
+					document.querySelector('.previewImg').src = rst.target.result;
+					document.querySelector('.filePreview').style.display = 'block'
+				}
+			}
+		}
 		document.querySelector('#writeMsg').onchange = (evt) => {
 			if(evt.target.value.trim().length === 0) {
 				return;
@@ -207,11 +296,17 @@
 					break;
 
 				case 'new': 
+						let content;
+						if (msg.data.data == "chat") {
+							content = msg.data.content;
+						} else {
+							content = `<img src="${msg.data.content}"/>`;
+						}
 					let html = `
 						<div class="msgArea row ${msg.data.type}">
 							<div class="msgContent">
 								<div class="talker">${msg.data.talker} </div>
-								<div class="msg">${msg.data.content}</div>
+								<div class="msg">${content}</div>
 							</div>
 							<div class="time createAt">${new Date(msg.data.createdAt).toLocaleTimeString()}</div>
 						</div>

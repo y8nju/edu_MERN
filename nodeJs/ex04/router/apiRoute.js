@@ -3,7 +3,6 @@ const router = express.Router();
 const accounts = require('../collections/accounts');
 const articles = require('../collections/articles');
 const uuid = require('uuid');
-const { response } = require('express');
 
 router.get("/idCheck", async(req, res) => {
 	let found = await accounts.findById(req.query.id);

@@ -1,8 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const fs = require('fs')
+const path = require('path')
 
 const Room = require('../Models/Room');
 const Message = require('../Models/Message');
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, callback) => {
+            console.log(req.query.roomId , req.body.roomId);
+            const uploadPath = path.join(__dirname, "..", "static", "files", req.query.roomId);
+            if (!fs.existsSync(uploadPath)) {
+                fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            req.uploadbaseURL = "/files/" + req.query.roomId+"/";
+            callback(null, uploadPath);
+        }
+    })
+});
 
 router.use((req, res, next) => {
 	if(req.session.auth) {
@@ -75,6 +92,7 @@ router.get('/room', async (req, res) => {
 	})
 	res.render('chats/room');
 });
+
 router.get('/exit', async(req, res) => {
 	const room = await Room.findByIdAndUpdate(req.query._id, 
 		{$pull: {joiner: req.session.userId}},
@@ -95,7 +113,7 @@ router.post('/api/message', async (req, res)=> {
 	// req.body에 roomId랑 comment가 왔다는 조건 하에
 	console.log(req.body);
 	try {
-		let result = await Message.create({...req.body, talker: req.session.userId});
+		let result = await Message.create({...req.body, talker: req.session.userId, data: 'chat'});
 		result = result.toObject();
 		roomWss.forEach((ws, ownerId)=> {
 			result.type = result.talker === ownerId ? 'mine' : 'other'
@@ -105,6 +123,30 @@ router.post('/api/message', async (req, res)=> {
 		res.json({'success': true, 'result': result});
 	}catch(err) {
 		res.json({'success': false, 'error': err.Message});
+	}
+});
+
+router.post('/api/upload', upload.single('attach'), async (req, res) => {
+	// 업로드 처리는 됨
+	// 이걸 데이터 베이스에 저장할 것
+	// 이 요청을 했던 사용자에게  res.json으로 성공여부 알려주고
+	// 해당 방 사용자들에게 파일이 업도드 된 것을 알 수 있도록
+	// 메세지를 전송하는데, 랜더링에 필요한 데이터를 같이 보내줌
+	try {
+		let result = await Message.create({
+			...req.body, 
+			talker: req.session.userId, 
+			data: 'file', 
+			content: "/files/" + req.query.roomId+"/" + req.file.filename
+		});
+		result = result.toObject();
+		roomWss.forEach((ws, ownerId)=> {
+			result.type = result.talker === ownerId ? 'mine' : 'other'
+			ws.send(JSON.stringify({apply: req.body.roomId, type: 'new', data: result}));
+		})
+		res.json({'success': true});
+	}catch(err) {
+		res.json({'success': false});
 	}
 });
 
