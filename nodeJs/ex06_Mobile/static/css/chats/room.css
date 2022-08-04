@@ -1,0 +1,148 @@
+/* header */
+header .owner {
+	width: 10.3vw;
+	height: 10.3vw;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 7vw;
+	border-radius: 50%;
+	background-color: var(--bgLight);
+	color: var(--gray);
+	padding: 1.3vw;
+}
+header .joinerList {
+	display: none;
+	max-width: 80vw;
+	position: absolute;
+	z-index: 500;
+	left: 11vw;
+	top: 14vw;
+	font-size: .8rem;
+	text-align: left;
+	border-radius: .4rem;
+	background-color: var(--bgLight);
+	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+	padding: 3vw;
+}
+header .owner:hover ~ .joinerList {
+	display: block;
+}
+
+main {
+	margin-top: 0;
+}
+#room {
+	width: 100%;
+	height: calc(100vh - var(--headerHeight));
+}
+.chatView {
+	overflow-y: auto;
+	padding-top: 3.4vw;
+	gap: 2.6vw;
+}
+.chatView .msgArea {
+	max-width: 70vw;
+	align-items: flex-end;
+}
+.chatView .serverMsg {
+	width: fit-content;
+	align-self: center;
+	font-size: .8rem;
+	border-radius: 1rem;
+	background-color: var(--bgLight);
+	color: var(--gray);
+	margin: 0.8rem 0;
+	padding: 0.4rem 0.8rem;
+}
+.chatView .msgArea .talker {
+	font-size: .8rem;
+	color: var(--gray);
+	margin-bottom: 0.8vw;
+}
+.chatView .msgArea .msg {
+	font-size: .9rem;
+	border-radius: 1vw;
+	background-color: var(--beige);
+	padding: 1.8vw 2.2vw;
+}
+.chatView .msgArea .msg img {
+	max-width: 50vw;
+}
+.chatView .msgArea .time {
+	font-size: .6rem;
+	white-space: nowrap;
+	color: var(--gray);
+	margin: 0 1.7vw;
+}
+.chatView .msgArea.mine {
+	align-self: flex-end;
+}
+.chatView .msgArea.mine .talker {
+	display: none;
+}
+.chatView .msgArea.mine .msg {
+	background-color: #fff;
+}
+.chatView .msgArea.mine .time{
+	order: -1;
+}
+.messageWrite {
+	width: calc(100% + 10vw);
+	background-color: #fff;
+	gap: 3.4vw;
+	margin-left: -5vw;
+	padding: 4.2vw;
+}
+.messageWrite textarea {
+	width: 100%;
+	height: 25vw;
+	border: none;
+	border-radius: 0;
+	background-color: transparent;
+	padding: 0 0 6vw;
+	resize: none;
+}
+.messageWrite textarea::placeholder {
+	font-size: .9rem;
+	font-weight: lighter;
+}
+.messageWrite textarea:focus {
+	outline: none;
+}
+.messageWrite .filePreview {
+	width: 95%;
+	height: 25vw;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: .4rem;
+}
+.messageWrite .filePreview .previewImg {
+	max-width: 100%;
+	height: 100%;
+}
+.messageWrite .fileSch {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	line-height: 0;
+	background-color: #fff;
+	padding: 0.4rem;
+}
+.messageWrite .fileSch i {
+	font-size: 3.2vw;
+}
+.messageWrite .fileSch:hover {
+	background-color: var(--bgLight);
+}
+.messageWrite .sumitBtn{
+	height: fit-content;
+	font-size: .9rem;
+	border: transparent;
+	border-radius: 1vw;
+	color: #fff;
+	background-color: var(--successColor);
+	padding: .4rem .6rem;
+}

@@ -1,0 +1,63 @@
+input {
+	width: 100%;
+	font-size: .9rem;
+	line-height: 1;
+	padding: 2.6vw 3.8vw;
+}
+label {
+	display: inline-block;
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 1.7vw;
+}
+button {
+	width: 100%;
+	color: #fff;
+	background-color: var(--black);
+}
+button:hover, button:active {
+	border-color: var(--successColor);
+	box-shadow: 1vw 1vw #000;
+	background-color: var(--successColor);
+	transform: translate(-1vw,-1vw);
+}
+/* 
+.signupLink {
+	text-align: center;
+	margin-top: 1.8rem;
+}
+.signupLink a {
+	font-size: 1.1rem;
+	font-weight: 600;
+	text-decoration: underline;
+	color: var(--ongolingColor);
+}
+
+#signin, #signup {
+	width: 400px;
+}
+#signin .signForm > div,
+#signup .signupForm > div  {
+	margin: 1.1rem 0;
+	font-size: .9rem;
+}
+#signup .signupForm .errorMsg {
+	margin-top: .4rem;
+}
+
+#signComplete h1 {
+	margin-bottom: 3rem;
+}
+#signComplete .textContent {
+	text-align: center;
+	line-height: 2;
+}
+#signComplete .userId {
+	color: var(--successColor);
+}
+#signComplete .signinBtn {
+	width: fit-content;
+	text-decoration: none;
+	margin: 2rem auto;
+	padding: 0.9rem 1.4rem;
+} */

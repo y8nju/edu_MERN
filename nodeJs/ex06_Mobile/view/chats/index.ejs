@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>chat</title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/common/modal.css">
+	<link rel="stylesheet" href="/css/chats/home.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+	<%- include("../common/header.ejs") %> 
+	<main>
+		<div id="home" class="col">
+			<div class="container between">
+				<section class="row between" style="align-items: center;">
+					<h3>개설된 방 목록<small>(<%=rooms.length%>)</small></h3>
+					<button onclick="isModal('flex')" class="addChat iconBtn"><i class="fi fi-sr-add"></i></button>
+				</section>
+				<section>
+					<select class="roomSel" onchange="roomSel()">
+						<option value="allList" data-roomSel="allList" selected>전체 목록</option>
+						<option value="joinList" data-roomSel="joinList">참여 중인 목록</option>
+						<option value="notList" data-roomSel="notList">미참여 목록</option>
+					</select>
+				</section>
+				</div>
+				<section class="roomListArea">
+					<div class="roomList active" id="allList">
+						<% rooms.forEach(room => { %> 
+							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+								<div class="row">
+									<span class="roomTit"><%=room.title%></span> 
+									<span><small>(<%=room.joiner.length%>)</small></span>
+									<% if(room.type=='private') { %>
+									<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+									<% } %> 
+								</div>
+								<div class="roomInfo">
+									<span><%=room.owner %></span> |
+									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+								</div>
+							</article>
+						<% }) %>
+					</div>
+					<div class="roomList" id="joinList">
+						<% joinRooms.forEach(room => { %> 
+							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+								<div class="row">
+									<span class="roomTit"><%=room.title%></span> 
+									<span><small>(<%=room.joiner.length%>)</small></span>
+									<% if(room.type=='private') { %>
+									<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+									<% } %> 
+								</div>
+								<div class="roomInfo">
+									<span><%=room.owner %></span> |
+									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+								</div>
+							</article>
+						<% }) %>
+					</div>
+					<div class="roomList" id="notList">
+						<% notRooms.forEach(room => { %> 
+							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+								<div class="row">
+									<span class="roomTit"><%=room.title%></span> 
+									<span><small>(<%=room.joiner.length%>)</small></span>
+									<% if(room.type=='private') { %>
+									<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+									<% } %> 
+								</div>
+								<div class="roomInfo">
+									<span><%=room.owner %></span> |
+									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+								</div>
+							</article>
+						<% }) %>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="modal">
+			<article class="modalContent card">
+				<div class="row">
+					<button type="button" class="btn closeBtn" onclick="isModal('none')">닫기</button>
+				</div>
+				<div class="modalTit">
+					<h3>채팅방개설</h3>
+				</div>
+				<div class="modalBody">
+					<form action="/chats/open" method="post">
+						<div>
+							<label for="title">
+								<input type="text" name="title" placeholder="채팅방 이름을 입력해주세요" id="title">
+							</label>
+						</div>
+						<div class="row privateChk">
+							<label for="public" class="customLabel">
+								<input type="radio" name="type" value="public" id="public" class="customRadio" checked> 공개
+							</label>
+							<label for="private" class="customLabel grow1">
+								<input type="radio" name="type" value="private" id="private" class="customRadio"> 비공개
+								<input type="text" name="password" id="password" placeholder="비밀번호를 입력하세요" class="grow1">
+							</label>
+						</div>
+						<div class="row center">
+							<button type="submit" class="btn confirmBtn">방 개설</button>
+						</div>
+					</form>
+				</div>
+			</article>
+		</div>
+	</main>
+	<script>
+		function roomSel() {
+			let roomSel = document.querySelector('.roomSel');
+			let selVal = roomSel.options[roomSel.selectedIndex].value;
+			let roomList = document.querySelectorAll('.roomList');
+			roomList.forEach((elm) => {
+				elm.classList.remove('active');
+			})
+			document.querySelector('#'+selVal).classList.add('active');
+		}
+		function isModal(e) {
+			document.querySelector('#modal').style.display = e;
+		}
+		const ws = new WebSocket(`ws://${location.host}/chats/sse`);
+		ws.onmessage = function(recv) {
+			console.log(recv);
+			let message = JSON.parse(recv.data);
+			switch(message.type) {
+				case 'new':
+					// 토스트 띄우고 몇 초 뒤에 reload로 바꾸기
+					if(confirm('새로 개설된 채팅방이 있습니다')) {
+						location.reload();
+					}
+					break
+			}
+		}
+	</script>
+</body>
+</html>

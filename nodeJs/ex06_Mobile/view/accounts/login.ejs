@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>로그인 | chat</title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/account/account.css">
+	<style>
+		header .logo {
+			font-family: 'Manse';
+			padding: 5vw;
+		}
+		header .logo > i {
+			font-size: 1.6rem;
+			font-style: normal;
+			color: var(--successColor);
+		}
+		.signForm > div {
+			margin-bottom: 6vw;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<h2 class="logo">knoc<i>K</i>nocK</h2>
+	</header>
+	<main>
+		<div id="signin">
+			<h1>Welcome back</h1>
+			<form action="/account/login" method="post" class="signForm">
+				<div>
+					<label>Id</label>
+					<input type="text" name="id">
+				</div>
+				<div>
+					<label>password</label>
+					<input type="password" name="password">
+				</div>
+				<div>
+					<p class="errorMsg"><%= msg %></p>
+				</div>
+				<button type="submit" class="bigBtn">Login</button>
+			</form>
+			<!-- <section class="signupLink">
+				<span>처음이신가요?</span>&emsp;<a href="/account/signup">회원가입</a>
+			</section> -->
+		</div>
+	</main>
+
+</body>
+
+</html>

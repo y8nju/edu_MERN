@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><%= room.title %></title>
+	<link rel="icon" type="image/svg" href="/images/favicon.svg"/>
+	<link rel="stylesheet" href="/css/common/normalize.css">
+	<link rel="stylesheet" href="/css/common/default.css">
+	<link rel="stylesheet" href="/css/common/header.css">
+	<link rel="stylesheet" href="/css/chats/room.css">
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+</head>
+<body>
+	<header>
+		<div class="headerLeft">
+			<small class="owner"><%= room.owner %></small>
+			<div class="joinerList">
+				<% room.joiner.forEach(elm => { %>
+					<span><%=elm.joinerName%></span>
+				<%})%>
+			</div>
+		</div>
+		<div class="headerCenter">
+			<h3><%= room.title %> <small>(<%=room.joiner.length%>)</small></h3>
+		</div>
+		<div class="headerRight">
+			<a href="/chats/exit?_id=<%= room._id %>">
+				<button class="iconBtn"><i class="fi fi-rr-exit"></i></button>
+			</a>
+		</div>
+	</header>
+	<main>
+		<div id="room" class="col">
+			<section class="chatView grow1 col">
+				<% messages.forEach(message => { %>
+					<div class="msgArea <%=message.type %> row">
+						<div class="msgContent">
+							<div class="talker"><%= message.talker %> </div>
+							<div class="msg">
+								<%if(message.data=='chat'){%>
+									<%= message.content %>
+								<% }else {%>
+									<img src="<%= message.content %>">
+								<%}%>
+							</div>
+						</div>
+						<div class="time"><%= message.createdAt.toLocaleTimeString() %> </div>
+					</div>
+				<% }) %> 
+			</section>
+			<section class="messageWrite row">
+				<div class="grow1" style="position: relative;">
+					<textarea type="text"  placeholder="메세지를 입력하세요" id="writeMsg" data-room-id="<%= room._id %>"></textarea>
+					<div class="filePreview"><img class="previewImg" src=""></div>
+					<button class="fileSch"><i class="fi fi-rr-picture"></i></button>
+					<input style="display:none" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>" onchange="filePreview(event)">
+				</div>
+				<button type="submit" class="sumitBtn" onclick="fileSend()">전송</button>
+			</section>
+		</div>
+	</main>
+	<script>
+		window.onload = function() {
+			rebalanceHeight();
+		}
+		document.querySelector('.fileSch').onclick = (evt) => {
+			document.querySelector("#attach").dispatchEvent(new MouseEvent('click'));
+		}
+		async function fileSend() {
+			let attach = document.querySelector("#attach");
+			if(attach.files[0]) {
+				const body = new FormData();
+				const roomId = attach.dataset.roomId;
+				body.append("attach", attach.files[0]);
+				body.append("roomId", roomId);
+				let response = await fetch("/chats/api/upload?roomId="+roomId, {
+					method : "post",
+					body : body
+				});
+				let json = response.json();
+				console.log(json);
+			}
+		}
+		async function filePreview(evt) {
+			let msgFiled = document.querySelector(`.messageWrite textarea`);
+			msgFiled.setAttribute('placeholder', '');
+			msgFiled.setAttribute('disabled', '');
+			if(evt.target.files && evt.target.files[0]) {
+				let reader = new FileReader();
+				reader.readAsDataURL(evt.target.files[0]);
+				reader.onload = function(rst) {
+					document.querySelector('.previewImg').src = rst.target.result;
+					document.querySelector('.filePreview').style.display = 'block'
+				}
+			}
+		}
+		document.querySelector('#writeMsg').onchange = (evt) => {
+			if(evt.target.value.trim().length === 0) {
+				return;
+			}
+			const headers = {"Content-type" : "application/json" } 
+			fetch("/chats/api/message",  {
+				headers, method: 'post', body : JSON.stringify({
+					roomId: evt.target.dataset.roomId,
+					content: evt.target.value
+				})
+			}).then(response => {
+				return response.json();
+			}).then(json => {
+				console.log(json);
+			}).catch(err => {
+				alert('서버와의 통신에 일시적인 장애가 있습니다')
+			});
+			evt.target.value = '';
+		};
+
+		const roomId = document.querySelector('#writeMsg').dataset.roomId;
+		const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
+		ws.onmessage = function(rst) {
+			let msg = JSON.parse(rst.data);
+			if(msg.apply !== roomId) {
+				return;
+			}
+				let div = document.createElement("div");
+				div.classList.add("serverMsg");
+			switch(msg.type) {
+				case 'join':
+					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
+					document.querySelector('.chatView').appendChild(div);
+					document.querySelector('.joinerList').textContent = msg.joinerList.join(', ');
+					document.querySelector(`.headerCenter small`).textContent = `(${msg.joinerList.length})`;
+					break;
+				case 'exit':
+					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
+					div.classList.add("serverMsg");
+					document.querySelector('.chatView').appendChild(div);
+					// 나간 유저 찾아서 날리기
+					// let exitUser = joinerList.includes(msg.id);
+					// joinerList.slice()
+					document.querySelector('.joinerList').innerHTML = msg.joinerList.join(', ');
+					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`
+					break;
+
+				case 'new': 
+						let content;
+						if (msg.data.data == "chat") {
+							content = msg.data.content;
+						} else {
+							content = `<img src="${msg.data.content}"/>`;
+						}
+					let html = `
+						<div class="msgArea row ${msg.data.type}">
+							<div class="msgContent">
+								<div class="talker">${msg.data.talker} </div>
+								<div class="msg">${content}</div>
+							</div>
+							<div class="time">${new Date(msg.data.createdAt).toLocaleTimeString()}</div>
+						</div>
+					`
+					document.querySelector('.chatView').insertAdjacentHTML(
+						'beforeend', html
+					);
+			}
+			rebalanceHeight()
+			// console.log(msg);
+		}
+		
+		function rebalanceHeight() {
+			document.querySelector('.chatView').scrollTop = document.querySelector('.chatView').scrollHeight;
+		}
+	</script>
+</body>
+</html>
