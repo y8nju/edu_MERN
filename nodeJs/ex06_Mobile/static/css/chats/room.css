@@ -39,7 +39,7 @@ main {
 }
 .chatView {
 	overflow-y: auto;
-	padding-top: 3.4vw;
+	padding: 3.4vw 0;
 	gap: 2.6vw;
 }
 .chatView .msgArea {

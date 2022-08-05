@@ -93,9 +93,10 @@ router.get('/room', async (req, res) => {
 	}else {
 		const room = await Room.findById(req.query._id);
 		res.locals.room = room;
-		joinerTime = joinerChk.joiner.find(function(data){ return data.joinerName === req.session.userId}).joinTime;
 	}
+	joinerTime = joinerChk.joiner.find(function(data){ return data.joinerName === req.session.userId}).joinTime;
 	const messages = await Message.find({roomId: req.query._id}).where('createdAt').gte(joinerTime).sort('createdAt').lean();
+	console.log(joinerTime, '확인')
 	res.locals.messages = messages.map((one) => {
         return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
     });
