@@ -35,16 +35,15 @@
 					<div class="roomList active" id="allList">
 						<% rooms.forEach(room => { %> 
 							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
-								<span class="newCnt"><%= room.count%></span>
 								<div class="row">
-									<span class="roomTit"><%=room.title%></span> 
-									<span><small>(<%=room.joiner.length%>)</small></span>
+									<span class="roomTit"><%=room.title%> <small><%=room.joiner.length%></small></span> 
 									<% if(room.type=='private') { %>
-									<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+										<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
+									<span class="newCnt"><%= room.count%></span>
 								</div>
-								<div class="roomInfo">
-									<span><%=room.owner %></span> |
+								<div class="roomInfo row between">
+									<span><%=room.owner %></span>
 									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
 								</div>
 							</article>
@@ -53,16 +52,17 @@
 					<div class="roomList" id="joinList">
 						<% joinRooms.forEach(room => { %> 
 							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
-								<span class="newCnt"><%= room.count%></span>
 								<div class="row">
-									<span class="roomTit"><%=room.title%></span> 
-									<span><small>(<%=room.joiner.length%>)</small></span>
+									<span class="roomTit">
+										<%=room.title%><small>(<%=room.joiner.length%>)</small>
+									</span> 
 									<% if(room.type=='private') { %>
-									<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
+									<span class="newCnt"><%= room.count%></span>
 								</div>
-								<div class="roomInfo">
-									<span><%=room.owner %></span> |
+								<div class="roomInfo row between">
+									<span><%=room.owner %></span>
 									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
 								</div>
 							</article>
@@ -72,14 +72,14 @@
 						<% notRooms.forEach(room => { %> 
 							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
 								<div class="row">
-									<span class="roomTit"><%=room.title%></span> 
-									<span><small>(<%=room.joiner.length%>)</small></span>
+									<span class="roomTit"><%=room.title%><small>(<%=room.joiner.length%>)</small></span> 
 									<% if(room.type=='private') { %>
-									<span style="margin-left: auto;"><i class="fi fi-rr-lock"></i></span>
+									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
+									<span class="newCnt"><%= room.count%></span>
 								</div>
-								<div class="roomInfo">
-									<span><%=room.owner %></span> |
+								<div class="roomInfo row between">
+									<span><%=room.owner %></span>
 									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
 								</div>
 							</article>

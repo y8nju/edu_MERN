@@ -111,9 +111,9 @@ router.get('/room', async (req, res) => {
 			joinerList.push(elm.joinerName);
 		})
 		res.locals.joinerList = joinerList;
+		await Message.updateMany({roomId: req.query._id, reable: req.session.userId}, {$pull: {unread: req.session.userId}},{returnDocument: 'after'}).lean();
 	}
-	const messages = await Message.find({roomId: req.query._id, reable: req.session.userId, createdAt: joinerTime })
-		.sort('createdAt').lean();
+	const messages = await Message.find({roomId: req.query._id, reable: req.session.userId}).where('createdAt').gte(joinerTime).sort('createdAt').lean();
 	res.locals.messages = messages.map((one) => {
         return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
     });
@@ -198,14 +198,14 @@ router.post('/api/upload', upload.single('attach'), async (req, res) => {
 		room.joiner.forEach(elm => {
 			joiner.push(elm.joinerName)
 		})
-		const unread = [...room.joiner];
-        unread.splice(unread.indesOf(req.session.userId), 1);
+		const unread = [...joiner];
+        unread.splice(unread.indexOf(req.session.userId), 1);
 		let result = await Message.create({
 			...req.body, 
 			talker: req.session.userId, 
 			data: 'file', 
 			content: "/files/" + req.query.roomId+"/" + req.file.filename,
-			readable : room.joiner,
+			readable : joiner,
             unread
 		});
 		result = result.toObject();

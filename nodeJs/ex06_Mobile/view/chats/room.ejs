@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div class="headerCenter">
-			<h3><%= room.title %> <small>(<%=room.joiner.length%>)</small></h3>
+			<h4><%= room.title %> <small>(<%=room.joiner.length%>)</small></h4>
 		</div>
 		<div class="headerRight">
 			<a href="/chats/exit?_id=<%= room._id %>">
@@ -46,7 +46,10 @@
 								<%}%>
 							</div>
 						</div>
-						<div class="time"><%= message.createdAt.toLocaleTimeString() %> </div>
+						<div class="msgInfo">
+							<div class="unreadCnt"><%= message.unread.length %> </div>
+							<div class="time"><%= message.createdAt.toLocaleTimeString() %> </div>
+						</div>
 					</div>
 				<% }) %> 
 			</section>
@@ -54,7 +57,7 @@
 				<div class="grow1" style="position: relative;">
 					<textarea type="text"  placeholder="메세지를 입력하세요" id="writeMsg" data-room-id="<%= room._id %>"></textarea>
 					<div class="filePreview"><img class="previewImg" src=""></div>
-					<button class="fileSch"><i class="fi fi-rr-picture"></i></button>
+					<button type="button" class="fileSch"><i class="fi fi-rr-picture"></i></button>
 					<input style="display:none" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>" onchange="filePreview(event)">
 				</div>
 				<button type="submit" class="sumitBtn" onclick="fileSend()">전송</button>
@@ -100,6 +103,7 @@
 				}
 			}
 		}
+
 		document.querySelector('#writeMsg').onchange = (evt) => {
 			if(evt.target.value.trim().length === 0) {
 				return;
@@ -160,7 +164,10 @@
 								<div class="talker">${msg.data.talker} </div>
 								<div class="msg">${content}</div>
 							</div>
-							<div class="time">${new Date(msg.data.createdAt).toLocaleTimeString()}</div>
+							<div class="msgInfo">
+								<div class="unreadCnt">${msg.data.unread.length}</div>
+								<div class="time">${new Date(msg.data.createdAt).toLocaleTimeString()}</div>
+							</div>
 						</div>
 					`
 					document.querySelector('.chatView').insertAdjacentHTML(

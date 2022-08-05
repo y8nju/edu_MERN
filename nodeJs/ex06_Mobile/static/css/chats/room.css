@@ -70,11 +70,16 @@ main {
 .chatView .msgArea .msg img {
 	max-width: 100%;
 }
-.chatView .msgArea .time {
+.chatView .msgArea .msgInfo {
 	font-size: .6rem;
+	margin: 0 1.7vw;
+}
+.chatView .msgArea .unreadCnt {
+	color: var(--accentColor);
+}
+.chatView .msgArea .time {
 	white-space: nowrap;
 	color: var(--gray);
-	margin: 0 1.7vw;
 }
 .chatView .msgArea.mine {
 	align-self: flex-end;
@@ -85,8 +90,11 @@ main {
 .chatView .msgArea.mine .msg {
 	background-color: #fff;
 }
-.chatView .msgArea.mine .time{
+.chatView .msgArea.mine .msgInfo {
 	order: -1;
+}
+.chatView .msgArea.mine .unreadCnt {
+	text-align: right;
 }
 .messageWrite {
 	width: calc(100% + 10vw);
