@@ -17,6 +17,15 @@ const roomSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	}
+}, {
+	toObject: {virtuals: true}
 });
+
+roomSchema.virtual("key",{
+	localField:"_id",
+	ref: "message",
+	foreignField:"roomId"
+});
+
 
 module.exports = mongoose.model('room', roomSchema)

@@ -82,6 +82,10 @@
 				let json = response.json();
 				console.log(json);
 			}
+			let msgFiled = document.querySelector(`.messageWrite textarea`);
+			msgFiled.setAttribute('placeholder', '메세지를 입력하세요');
+			msgFiled.disabled = false;
+			document.querySelector('.filePreview').style.display = 'none'
 		}
 		async function filePreview(evt) {
 			let msgFiled = document.querySelector(`.messageWrite textarea`);
@@ -129,8 +133,8 @@
 				case 'join':
 					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
 					document.querySelector('.chatView').appendChild(div);
-					document.querySelector('.joinerList').textContent = msg.joinerList.join(', ');
-					document.querySelector(`.headerCenter small`).textContent = `(${msg.joinerList.length})`;
+					document.querySelector('.joinerList').innerHTML = msg.joinerList.join(', ');
+					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`;
 					break;
 				case 'exit':
 					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
@@ -142,8 +146,8 @@
 					document.querySelector('.joinerList').innerHTML = msg.joinerList.join(', ');
 					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`
 					break;
-
 				case 'new': 
+				console.log(msg)
 						let content;
 						if (msg.data.data == "chat") {
 							content = msg.data.content;

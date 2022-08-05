@@ -6,6 +6,7 @@ const path = require('path')
 
 const Room = require('../Models/Room');
 const Message = require('../Models/Message');
+const { type } = require('os');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -52,9 +53,17 @@ router.ws('/room', (ws, req) => {
 });
 
 router.get('/', async (req, res)=> {
-	const rooms = await Room.find({}).sort('-createdAt').lean();
-	const joinRooms = await Room.find({'joiner.joinerName': req.session.userId}).sort('-createdAt').lean();
-	const notRooms =  await Room.find({'joiner.joinerName': {$ne:  req.session.userId}}).sort('-createdAt').lean();;
+	const rooms = await Room.find({}).sort('-createdAt').populate({path: 'key', match : {unread : req.session.userId}}).lean();
+	rooms.forEach((room) => {
+		room.count = room.key.length;
+	})
+	const joinRooms = await Room.find({'joiner.joinerName': req.session.userId}).sort('-createdAt').populate({path: 'key', match : {unread : req.session.userId}}).lean();
+	joinRooms.forEach((room) => {
+		room.count = room.key.length;
+	})
+	const notRooms =  await Room.find({'joiner.joinerName': {$ne:  req.session.userId}}).sort('-createdAt').lean();
+	// console.dir(joinRooms, {depth: 3});
+	res.locals.userSession = req.session.userId;
 	res.locals.rooms = rooms;
 	res.locals.joinRooms = joinRooms;
 	res.locals.notRooms = notRooms;
@@ -67,9 +76,8 @@ router.route('/open')
 		let result = await Room.create(data);
 		console.log(result);
 		clients.forEach(ws => {
-			ws.send(JSON.stringify({type: 'new'}))
+			ws.send(JSON.stringify({type: 'new', session: req.session.userId}))
 		})
-		// res.sendStatus(200);
 		res.redirect('/chats/room?_id='+result._id)
 	});
 
@@ -82,26 +90,30 @@ router.get('/room', async (req, res) => {
 			{$addToSet: {joiner: {joinerName: req.session.userId}}},
 			{returnDocument: 'after'}).lean();
 		res.locals.room = room;
-		room.joiner.forEach(elm => {
+		room.joiner.forEach((elm) => {
 			joinerList.push(elm.joinerName);
-		});
+		})
+		res.locals.room = room
 		roomWss.forEach((ws) => {
 			ws.send(JSON.stringify({
 				apply: req.query._id, 
 				type: 'join', 
-				id: req.session.userId,
+				id:  req.session.userId,
 				joiner: room.joiner,
-				joinerList: joinerList
+				joinerList
 			}));
 		})
 	}else {
 		const room = await Room.findById(req.query._id);
 		res.locals.room = room;
-		joinerTime = joinerChk.joiner.find((data)=> {
-			return data.joinerName === req.session.userId
-		}).joinTime;
+		joinerTime = joinerChk.joiner.find(function(data){ return data.joinerName === req.session.userId}).joinTime;
+		room.joiner.forEach((elm) => {
+			joinerList.push(elm.joinerName);
+		})
+		res.locals.joinerList = joinerList;
 	}
-	const messages = await Message.find({roomId: req.query._id}).where('createdAt').gte(joinerTime).sort('createdAt').lean();
+	const messages = await Message.find({roomId: req.query._id, reable: req.session.userId, createdAt: joinerTime })
+		.sort('createdAt').lean();
 	res.locals.messages = messages.map((one) => {
         return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
     });
@@ -110,22 +122,30 @@ router.get('/room', async (req, res) => {
 });
 
 router.get('/exit', async(req, res) => {
-	const room = await Room.findByIdAndUpdate(req.query._id, 
+	const room = await Room.findByIdAndUpdate(
+		req.query._id, 
 		{$pull:  {joiner: {joinerName: req.session.userId}}},
 		{returnDocument: 'after'}).lean();
-		
-	let joinerList = [];
+	await Message.updateMany(
+		{roomId: req.query._id},
+		{$pull: {readable: req.session.userId}})
+	let joiner = [];
 	room.joiner.forEach(elm => {
-		joinerList.push(elm.joinerName);
+		joiner.push(elm.joinerName);
+	})
+	let joinerList = joiner.filter((elm) => {
+		return elm !== req.session.userId
 	});
-	roomWss.forEach((ws) => {
-		ws.send(JSON.stringify({
-			apply: req.query._id, 
-			type: 'exit', 
-			id:  req.session.userId,
-			joiner: room.joiner,
-			joinerList: joinerList
-		}));
+
+
+roomWss.forEach((ws) => {
+	ws.send(JSON.stringify({
+		apply: req.query._id, 
+		type: 'exit', 
+		id:  req.session.userId,
+		joiner: room.joiner,
+		joinerList
+	}));
 	})
 	res.redirect('/chats')
 })
@@ -135,7 +155,25 @@ router.post('/api/message', async (req, res)=> {
 	// req.body에 roomId랑 comment가 왔다는 조건 하에
 	console.log(req.body);
 	try {
-		let result = await Message.create({...req.body, talker: req.session.userId, data: 'chat'});
+		const room = await Room.findById(req.body.roomId).lean();
+		let joiner = []
+		room.joiner.forEach(elm => {
+			joiner.push(elm.joinerName)
+		})
+		const unread = joiner.filter((one) => {
+            if (one !== req.session.userId) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+		let result = await Message.create({
+			...req.body,
+			talker: req.session.userId, 
+			data: 'chat', 
+			readable:  joiner,
+			unread,
+		});
 		result = result.toObject();
 		roomWss.forEach((ws, ownerId)=> {
 			result.type = result.talker === ownerId ? 'mine' : 'other'
@@ -155,11 +193,20 @@ router.post('/api/upload', upload.single('attach'), async (req, res) => {
 	// 해당 방 사용자들에게 파일이 업도드 된 것을 알 수 있도록
 	// 메세지를 전송하는데, 랜더링에 필요한 데이터를 같이 보내줌
 	try {
+		const room = await Room.findById(req.body.roomId).lean();
+		let joiner = []
+		room.joiner.forEach(elm => {
+			joiner.push(elm.joinerName)
+		})
+		const unread = [...room.joiner];
+        unread.splice(unread.indesOf(req.session.userId), 1);
 		let result = await Message.create({
 			...req.body, 
 			talker: req.session.userId, 
 			data: 'file', 
-			content: "/files/" + req.query.roomId+"/" + req.file.filename
+			content: "/files/" + req.query.roomId+"/" + req.file.filename,
+			readable : room.joiner,
+            unread
 		});
 		result = result.toObject();
 		roomWss.forEach((ws, ownerId)=> {

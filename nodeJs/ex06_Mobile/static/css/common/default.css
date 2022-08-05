@@ -93,7 +93,7 @@ input, textarea, select, button {
 input::placeholder, textarea::placeholder, select::placeholder {
 	color: var(--gray);
 }
-input:focus, textarea:focus, select:focus {
+input:focus, textarea:focus, select:focus, button:focus {
 	outline-color: var(--green);
 }
 .customLabel {

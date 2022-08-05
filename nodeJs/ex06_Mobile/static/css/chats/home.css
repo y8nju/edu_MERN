@@ -1,6 +1,10 @@
 .container > section {
 	margin-bottom: 3vw;
 }
+.card {
+	position: relative;
+	overflow: unset;
+}
 .roomSel {
 	width: 28vw;
 	display: block;
@@ -23,6 +27,25 @@
 }
 .roomTit small {
 	color: var(--gray)
+}
+.newCnt {
+	width: 4vw;
+    height: 4vw;
+	display: inline-block;
+	position: absolute;
+	top: -1vw;
+	right: -1vw;
+    text-align: center;
+    font-size: .7rem;
+    line-height: 4vw;
+    border-radius: 50%;
+    color: #fff;
+	opacity: 0;
+	transition: opacity 1s ease;
+}
+.newCnt.active {
+    background-color: var(--errorColor);
+	opacity: 1;
 }
 .roomInfo {
 	font-size: .9rem;
