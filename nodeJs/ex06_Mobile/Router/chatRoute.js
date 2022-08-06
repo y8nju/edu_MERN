@@ -6,20 +6,19 @@ const path = require('path')
 
 const Room = require('../Models/Room');
 const Message = require('../Models/Message');
-const { type } = require('os');
 
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: (req, file, callback) => {
-            console.log(req.query.roomId , req.body.roomId);
-            const uploadPath = path.join(__dirname, "..", "static", "files", req.query.roomId);
-            if (!fs.existsSync(uploadPath)) {
-                fs.mkdirSync(uploadPath, { recursive: true });
-            }
-            req.uploadbaseURL = "/files/" + req.query.roomId+"/";
-            callback(null, uploadPath);
-        }
-    })
+	storage: multer.diskStorage({
+		destination: (req, file, callback) => {
+			console.log(req.query.roomId , req.body.roomId);
+			const uploadPath = path.join(__dirname, "..", "static", "files", req.query.roomId);
+			if (!fs.existsSync(uploadPath)) {
+				fs.mkdirSync(uploadPath, { recursive: true });
+			}
+			req.uploadbaseURL = "/files/" + req.query.roomId+"/";
+			callback(null, uploadPath);
+		}
+	})
 });
 
 router.use((req, res, next) => {
@@ -93,7 +92,16 @@ router.get('/room', async (req, res) => {
 		room.joiner.forEach((elm) => {
 			joinerList.push(elm.joinerName);
 		})
-		res.locals.room = room
+		let serverReadable = joinerList.filter((elm) => {
+			return elm !== req.session.userId
+		});
+		await Message.create({
+			roomId: req.query._id,
+			talker: req.session.userId,
+			data: 'serverMsg', 
+			content: req.session.userId+'님이 입장하였습니다',
+			readable: serverReadable
+		});
 		roomWss.forEach((ws) => {
 			ws.send(JSON.stringify({
 				apply: req.query._id, 
@@ -111,13 +119,13 @@ router.get('/room', async (req, res) => {
 			joinerList.push(elm.joinerName);
 		})
 		res.locals.joinerList = joinerList;
-		await Message.updateMany({roomId: req.query._id, reable: req.session.userId}, {$pull: {unread: req.session.userId}},{returnDocument: 'after'}).lean();
+		await Message.updateMany({roomId: req.query._id, readable: req.session.userId}, {$pull: {unread: req.session.userId}},{returnDocument: 'after'}).lean();
 	}
-	const messages = await Message.find({roomId: req.query._id, reable: req.session.userId}).where('createdAt').gte(joinerTime).sort('createdAt').lean();
+	const messages = await Message.find({roomId: req.query._id, readable: req.session.userId}).where('createdAt').gte(joinerTime).sort('createdAt').lean();
 	res.locals.messages = messages.map((one) => {
-        return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
-    });
-	
+		return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
+	});
+	res.locals.today = new Date();
 	res.render('chats/room');
 });
 
@@ -136,7 +144,13 @@ router.get('/exit', async(req, res) => {
 	let joinerList = joiner.filter((elm) => {
 		return elm !== req.session.userId
 	});
-
+	await Message.create({
+		roomId: req.query._id,
+		talker: req.session.userId,
+		data: 'serverMsg', 
+		content: req.session.userId+'님이 퇴장하였습니다',
+		readable: joinerList
+	});
 
 roomWss.forEach((ws) => {
 	ws.send(JSON.stringify({
@@ -161,12 +175,12 @@ router.post('/api/message', async (req, res)=> {
 			joiner.push(elm.joinerName)
 		})
 		const unread = joiner.filter((one) => {
-            if (one !== req.session.userId) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+			if (one !== req.session.userId) {
+				return true;
+			} else {
+				return false;
+			}
+		});
 		let result = await Message.create({
 			...req.body,
 			talker: req.session.userId, 
@@ -199,14 +213,14 @@ router.post('/api/upload', upload.single('attach'), async (req, res) => {
 			joiner.push(elm.joinerName)
 		})
 		const unread = [...joiner];
-        unread.splice(unread.indexOf(req.session.userId), 1);
+		unread.splice(unread.indexOf(req.session.userId), 1);
 		let result = await Message.create({
 			...req.body, 
 			talker: req.session.userId, 
 			data: 'file', 
 			content: "/files/" + req.query.roomId+"/" + req.file.filename,
 			readable : joiner,
-            unread
+			unread
 		});
 		result = result.toObject();
 		roomWss.forEach((ws, ownerId)=> {

@@ -131,6 +131,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 }
 button {
 	font-weight: bold;
+	white-space: nowrap;
 	background-color: var(--ivory);
 	padding: 4.2vw;
 	transition: all .15s ease-out;

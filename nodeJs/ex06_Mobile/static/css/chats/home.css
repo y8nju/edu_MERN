@@ -32,7 +32,9 @@
 }
 .private i {
 	font-size: 3vw;
+	vertical-align: middle;
 	color: var(--gray);
+	margin-bottom: 0.5vw;
 }
 .newCnt {
 	width: 4.2vw;

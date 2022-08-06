@@ -15,42 +15,52 @@
 <body>
 	<header>
 		<div class="headerLeft">
-			<small class="owner"><%= room.owner %></small>
-			<div class="joinerList">
-				<% room.joiner.forEach(elm => { %>
-					<span><%=elm.joinerName%></span>
-				<%})%>
-			</div>
 		</div>
 		<div class="headerCenter">
-			<h4><%= room.title %> <small>(<%=room.joiner.length%>)</small></h4>
+			<h5><span class="roomTit"><%= room.title %></span><small>(<%=room.joiner.length%>)</small></h5>
 		</div>
 		<div class="headerRight">
-			<a href="/chats/exit?_id=<%= room._id %>">
-				<button class="iconBtn"><i class="fi fi-rr-exit"></i></button>
-			</a>
+			<div style="display: none;" title="햄버거 메뉴">
+				<small class="owner"><%= room.owner %></small>
+				<div class="joinerList">
+					<% room.joiner.forEach(elm => { %>
+						<span><%=elm.joinerName%></span>
+					<%})%>
+				</div>
+				<a href="/chats/exit?_id=<%= room._id %>">
+					<button class="iconBtn"><i class="fi fi-rr-exit"></i></button>
+				</a>
+			</div>
 		</div>
 	</header>
 	<main>
 		<div id="room" class="col">
 			<section class="chatView grow1 col">
 				<% messages.forEach(message => { %>
-					<div class="msgArea <%=message.type %> row">
-						<div class="msgContent">
-							<div class="talker"><%= message.talker %> </div>
-							<div class="msg">
-								<%if(message.data=='chat'){%>
-									<%= message.content %>
-								<% }else {%>
-									<img src="<%= message.content %>">
-								<%}%>
+					<% if(message.data !== 'serverMsg') {%> 
+						<div class="msgArea <%=message.type %> row">
+							<div class="msgContent">
+								<div class="talker"><%= message.talker %> </div>
+								<div class="msg">
+									<%if(message.data=='chat'){%>
+										<%= message.content %>
+									<% } else if(message.data=='file') {%>
+										<img src="<%= message.content %>">
+									<%}%>
+								</div>
+							</div>
+							<div class="msgInfo">
+								<div class="unreadCnt"><%= message.unread.length %></div>
+								<% if(new Date(message.createdAt.toLocaleDateString()) < new Date(today.toLocaleDateString())) {%> 
+									<div class="time"><%= message.createdAt.toLocaleString().slice(6)%></div>
+								<% }else {%> 
+									<div class="time"><%= message.createdAt.toLocaleTimeString()%></div>
+								<% } %> 
 							</div>
 						</div>
-						<div class="msgInfo">
-							<div class="unreadCnt"><%= message.unread.length %> </div>
-							<div class="time"><%= message.createdAt.toLocaleTimeString() %> </div>
-						</div>
-					</div>
+					<% } else {%> 
+						<div class="serverMsg"><%= message.content %></div>
+					<% } %> 
 				<% }) %> 
 			</section>
 			<section class="messageWrite row">
@@ -60,7 +70,7 @@
 					<button type="button" class="fileSch"><i class="fi fi-rr-picture"></i></button>
 					<input style="display:none" type="file" id="attach" accept="image/*" data-room-id="<%=room._id%>" onchange="filePreview(event)">
 				</div>
-				<button type="submit" class="sumitBtn" onclick="fileSend()">전송</button>
+				<button type="button" class="sumitBtn" onclick="fileSend(); messageSend();">전송</button>
 			</section>
 		</div>
 	</main>
@@ -68,6 +78,14 @@
 		window.onload = function() {
 			rebalanceHeight();
 		}
+		// 메세지 확인 표시
+		let newCnt = document.querySelectorAll('.unreadCnt');
+		for(let i =0; i<newCnt.length; i++) {
+			if(newCnt[i].textContent > 0){
+				newCnt[i].classList.add('active');
+			}
+		}
+		// 메세지 전송
 		document.querySelector('.fileSch').onclick = (evt) => {
 			document.querySelector("#attach").dispatchEvent(new MouseEvent('click'));
 		}
@@ -90,6 +108,7 @@
 			msgFiled.disabled = false;
 			document.querySelector('.filePreview').style.display = 'none'
 		}
+		
 		async function filePreview(evt) {
 			let msgFiled = document.querySelector(`.messageWrite textarea`);
 			msgFiled.setAttribute('placeholder', '');
@@ -103,16 +122,17 @@
 				}
 			}
 		}
-
-		document.querySelector('#writeMsg').onchange = (evt) => {
-			if(evt.target.value.trim().length === 0) {
+		async function messageSend() {
+			let writeMsg = document.querySelector('#writeMsg')
+			
+			if(writeMsg.value.trim().length === 0) {
 				return;
 			}
 			const headers = {"Content-type" : "application/json" } 
 			fetch("/chats/api/message",  {
 				headers, method: 'post', body : JSON.stringify({
-					roomId: evt.target.dataset.roomId,
-					content: evt.target.value
+					roomId: writeMsg.dataset.roomId,
+					content: writeMsg.value
 				})
 			}).then(response => {
 				return response.json();
@@ -121,8 +141,27 @@
 			}).catch(err => {
 				alert('서버와의 통신에 일시적인 장애가 있습니다')
 			});
-			evt.target.value = '';
-		};
+			writeMsg.value = '';
+		}
+		// document.querySelector('#writeMsg').onchange = (evt) => {
+		// 	if(evt.target.value.trim().length === 0) {
+		// 		return;
+		// 	}
+		// 	const headers = {"Content-type" : "application/json" } 
+		// 	fetch("/chats/api/message",  {
+		// 		headers, method: 'post', body : JSON.stringify({
+		// 			roomId: evt.target.dataset.roomId,
+		// 			content: evt.target.value
+		// 		})
+		// 	}).then(response => {
+		// 		return response.json();
+		// 	}).then(json => {
+		// 		console.log(json);
+		// 	}).catch(err => {
+		// 		alert('서버와의 통신에 일시적인 장애가 있습니다')
+		// 	});
+		// 	evt.target.value = '';
+		// };
 
 		const roomId = document.querySelector('#writeMsg').dataset.roomId;
 		const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
@@ -135,13 +174,13 @@
 				div.classList.add("serverMsg");
 			switch(msg.type) {
 				case 'join':
-					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다."));
+					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다"));
 					document.querySelector('.chatView').appendChild(div);
 					document.querySelector('.joinerList').innerHTML = msg.joinerList.join(', ');
 					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`;
 					break;
 				case 'exit':
-					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다."));
+					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다"));
 					div.classList.add("serverMsg");
 					document.querySelector('.chatView').appendChild(div);
 					// 나간 유저 찾아서 날리기

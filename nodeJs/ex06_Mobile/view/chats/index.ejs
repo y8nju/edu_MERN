@@ -76,10 +76,10 @@
 									<% if(room.type=='private') { %>
 									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
-									<span><%=room.owner %></span>
+									<span><%=room.owner%></span>
 									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
 								</div>
 							</article>
@@ -151,7 +151,17 @@
 							location.reload();
 						}
 					}
-					break
+					break;
+				case 'add': 
+					chkCnt(message.roomId);
+					break;
+			}
+		}
+		async function chkCnt(roomId){
+			let response = await fetch('chats/api/chkCnt?roomId='+roomId);
+			let json = await response.json();
+			if(json.success) {
+				document.querySelector('.newCnt'+roomId).innerHTML = json.count;
 			}
 		}
 	</script>

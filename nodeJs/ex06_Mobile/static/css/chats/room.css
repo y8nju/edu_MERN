@@ -29,6 +29,29 @@ header .joinerList {
 header .owner:hover ~ .joinerList {
 	display: block;
 }
+header .headerCenter {
+	flex-grow: 1;
+	position: unset;
+	text-align: left;
+	line-height: 1;
+    transform: none;
+}
+header .headerCenter h5 {
+	font-weight: lighter;
+}
+header .headerCenter h5 > * {
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: bottom;
+}
+header .roomTit {
+	max-width: 40vw;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+header .headerCenter small {
+	color: var(--gray);
+}
 
 main {
 	margin-top: 0;
@@ -53,11 +76,11 @@ main {
 	border-radius: 1rem;
 	background-color: var(--bgLight);
 	color: var(--gray);
-	margin: 0.8rem 0;
+	margin: 0.6rem 0;
 	padding: 0.4rem 0.8rem;
 }
 .chatView .msgArea .talker {
-	font-size: .8rem;
+	font-size: .7rem;
 	color: var(--gray);
 	margin-bottom: 0.8vw;
 }
@@ -76,6 +99,9 @@ main {
 }
 .chatView .msgArea .unreadCnt {
 	color: var(--accentColor);
+}
+.chatView .msgArea .unreadCnt {
+	color: transparent;
 }
 .chatView .msgArea .time {
 	white-space: nowrap;
@@ -106,6 +132,8 @@ main {
 .messageWrite textarea {
 	width: 100%;
 	height: 25vw;
+	font-size: .9rem;
+	line-height: 1.3;
 	border: none;
 	border-radius: 0;
 	background-color: transparent;
