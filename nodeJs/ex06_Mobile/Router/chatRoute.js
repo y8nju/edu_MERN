@@ -29,17 +29,15 @@ router.use((req, res, next) => {
 	}
 });
 
-const clients = new Set();
-router.ws('/sse', (ws, req)=> {
+const waitWss = new Map();
+router.ws("/sse", (ws, req) => {
 	//클라이언트 쪽에서 웹소켓 연결이 일어났을 때 작동
-	console.log(req.originalUrl + 'connected by' + req.session.id);
-	// 사용자의 소켓 정보 저장
-	clients.add(ws);
-	ws.on('close', () => {
-		console.log('closed....');
-		// 사용자의 소켓 정보 삭제 
-		clients.delete(ws);
-	})
+    // 사용자의 소켓 정보 저장
+    waitWss.set(req.session.userId, ws);
+    ws.on("close", () => {
+        // 사용자의 소켓 정보 삭제
+        waitWss.delete(req.session.userId);
+    });
 });
 
 const roomWss = new Map();
@@ -74,9 +72,9 @@ router.route('/open')
 		let data = {...req.body, owner: req.session.userId}
 		let result = await Room.create(data);
 		console.log(result);
-		clients.forEach(ws => {
-			ws.send(JSON.stringify({type: 'new', session: req.session.userId}))
-		})
+		waitWss.forEach((ws) => {
+			ws.send(JSON.stringify({ "type": "new", session: req.session.userId }));
+		});
 		res.redirect('/chats/room?_id='+result._id)
 	});
 
@@ -189,14 +187,18 @@ router.post('/api/message', async (req, res)=> {
 			unread,
 		});
 		result = result.toObject();
-		roomWss.forEach((ws, ownerId)=> {
-			result.type = result.talker === ownerId ? 'mine' : 'other'
-			ws.send(JSON.stringify({apply: req.body.roomId, type: 'new', data: result}));
-		})
-		console.log(user);
-		res.json({'success': true, 'result': result});
+		roomWss.forEach((ws, ownerId) => {
+            result.type = result.talker === ownerId ? "mine" : "other";
+            ws.send(JSON.stringify({ apply: req.body.roomId, type: "new", data: result }));
+        });
+        waitWss.forEach((ws, ownerId) => {
+            if(room.joiner.includes(ownerId)) {
+                ws.send(JSON.stringify({type: "added", roomId: req.body.roomId }));
+            }
+        });
+		res.json({ "success": true, "result": result });
 	}catch(err) {
-		res.json({'success': false, 'error': err.Message});
+		res.json({ "success": false, "error": err.message });
 	}
 });
 
@@ -223,14 +225,28 @@ router.post('/api/upload', upload.single('attach'), async (req, res) => {
 			unread
 		});
 		result = result.toObject();
-		roomWss.forEach((ws, ownerId)=> {
-			result.type = result.talker === ownerId ? 'mine' : 'other'
-			ws.send(JSON.stringify({apply: req.body.roomId, type: 'new', data: result}));
-		})
-		res.json({'success': true});
+		roomWss.forEach((ws, ownerId) => {
+            result.type = result.talker === ownerId ? "mine" : "other";
+            ws.send(JSON.stringify({ apply: req.body.roomId, type: "new", data: result }));
+        });
+        waitWss.forEach((ws, ownerId) => {
+            if(room.joiner.includes(ownerId)) {
+                ws.send(JSON.stringify({type: "added", roomId: req.body.roomId }));
+            }
+        });
+		res.json({ "success": true });
 	}catch(err) {
-		res.json({'success': false});
+		res.json({ "success": false });
 	}
+});
+router.get("/api/checkcount", async (req, resp)=>{
+    try {
+    let count = await Message.find({roomId : req.query.roomId , unread : req.session.userId}).countDocuments();
+    resp.json({success: true, count });
+    }catch(e) {
+        console.log(e);
+        resp.json({success: false});
+    }
 });
 
 module.exports = router;

@@ -40,7 +40,7 @@
 									<% if(room.type=='private') { %>
 										<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
 									<span><%=room.owner %></span>
@@ -59,7 +59,7 @@
 									<% if(room.type=='private') { %>
 									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
 									<span><%=room.owner %></span>
@@ -76,7 +76,7 @@
 									<% if(room.type=='private') { %>
 									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
 									<span><%=room.owner%></span>
@@ -152,16 +152,16 @@
 						}
 					}
 					break;
-				case 'add': 
-					chkCnt(message.roomId);
+				case "added" :
+					checkCount(message.roomId);
 					break;
 			}
 		}
-		async function chkCnt(roomId){
-			let response = await fetch('chats/api/chkCnt?roomId='+roomId);
+		async function checkCount(roomId) {
+			let response = await fetch("/chats/api/checkcount?roomId="+roomId);
 			let json = await response.json();
 			if(json.success) {
-				document.querySelector('.newCnt'+roomId).innerHTML = json.count;
+				document.querySelector("#cnt_"+roomId).innerHTML = json.count;
 			}
 		}
 	</script>

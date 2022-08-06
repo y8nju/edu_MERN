@@ -143,26 +143,6 @@
 			});
 			writeMsg.value = '';
 		}
-		// document.querySelector('#writeMsg').onchange = (evt) => {
-		// 	if(evt.target.value.trim().length === 0) {
-		// 		return;
-		// 	}
-		// 	const headers = {"Content-type" : "application/json" } 
-		// 	fetch("/chats/api/message",  {
-		// 		headers, method: 'post', body : JSON.stringify({
-		// 			roomId: evt.target.dataset.roomId,
-		// 			content: evt.target.value
-		// 		})
-		// 	}).then(response => {
-		// 		return response.json();
-		// 	}).then(json => {
-		// 		console.log(json);
-		// 	}).catch(err => {
-		// 		alert('서버와의 통신에 일시적인 장애가 있습니다')
-		// 	});
-		// 	evt.target.value = '';
-		// };
-
 		const roomId = document.querySelector('#writeMsg').dataset.roomId;
 		const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
 		ws.onmessage = function(rst) {
