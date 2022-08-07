@@ -32,12 +32,12 @@ router.use((req, res, next) => {
 const waitWss = new Map();
 router.ws("/sse", (ws, req) => {
 	//클라이언트 쪽에서 웹소켓 연결이 일어났을 때 작동
-    // 사용자의 소켓 정보 저장
-    waitWss.set(req.session.userId, ws);
-    ws.on("close", () => {
-        // 사용자의 소켓 정보 삭제
-        waitWss.delete(req.session.userId);
-    });
+	// 사용자의 소켓 정보 저장
+	waitWss.set(req.session.userId, ws);
+	ws.on("close", () => {
+		// 사용자의 소켓 정보 삭제
+		waitWss.delete(req.session.userId);
+	});
 });
 
 const roomWss = new Map();
@@ -81,15 +81,13 @@ router.route('/open')
 router.get('/room', async (req, res) => {
 	let joinerChk = await Room.findOne({_id: req.query._id, 'joiner.joinerName': req.session.userId});
 	let joinerTime ;
-	let joinerList = [];
+	let joinerList;
 	if(!joinerChk) {
 		const room = await Room.findByIdAndUpdate(req.query._id, 
 			{$addToSet: {joiner: {joinerName: req.session.userId}}},
 			{returnDocument: 'after'}).lean();
 		res.locals.room = room;
-		room.joiner.forEach((elm) => {
-			joinerList.push(elm.joinerName);
-		})
+		joinerList = room.joiner.map((elm) => elm.joinerName);
 		let serverReadable = joinerList.filter((elm) => {
 			return elm !== req.session.userId
 		});
@@ -113,9 +111,7 @@ router.get('/room', async (req, res) => {
 		const room = await Room.findById(req.query._id);
 		res.locals.room = room;
 		joinerTime = joinerChk.joiner.find(function(data){ return data.joinerName === req.session.userId}).joinTime;
-		room.joiner.forEach((elm) => {
-			joinerList.push(elm.joinerName);
-		})
+		joinerList = room.joiner.forEach((elm) => elm.joinerName);
 		res.locals.joinerList = joinerList;
 		await Message.updateMany({roomId: req.query._id, readable: req.session.userId}, {$pull: {unread: req.session.userId}},{returnDocument: 'after'}).lean();
 	}
@@ -135,11 +131,8 @@ router.get('/exit', async(req, res) => {
 	await Message.updateMany(
 		{roomId: req.query._id},
 		{$pull: {readable: req.session.userId}})
-	let joiner = [];
-	room.joiner.forEach(elm => {
-		joiner.push(elm.joinerName);
-	})
-	let joinerList = joiner.filter((elm) => {
+	joinerList = room.joiner.map((elm) => elm.joinerName);
+	let readable = joinerList.filter((elm) => {
 		return elm !== req.session.userId
 	});
 	await Message.create({
@@ -147,7 +140,7 @@ router.get('/exit', async(req, res) => {
 		talker: req.session.userId,
 		data: 'serverMsg', 
 		content: req.session.userId+'님이 퇴장하였습니다',
-		readable: joinerList
+		readable: readable
 	});
 
 roomWss.forEach((ws) => {
@@ -156,7 +149,7 @@ roomWss.forEach((ws) => {
 		type: 'exit', 
 		id:  req.session.userId,
 		joiner: room.joiner,
-		joinerList
+		joinerList: readable
 	}));
 	})
 	res.redirect('/chats')
@@ -168,11 +161,9 @@ router.post('/api/message', async (req, res)=> {
 	console.log(req.body);
 	try {
 		const room = await Room.findById(req.body.roomId).lean();
-		let joiner = []
-		room.joiner.forEach(elm => {
-			joiner.push(elm.joinerName)
-		})
-		const unread = joiner.filter((one) => {
+		let joinerList = room.joiner.map((elm) => elm.joinerName);
+		console.log(joinerList)
+		const unread = joinerList.filter((one) => {
 			if (one !== req.session.userId) {
 				return true;
 			} else {
@@ -183,19 +174,19 @@ router.post('/api/message', async (req, res)=> {
 			...req.body,
 			talker: req.session.userId, 
 			data: 'chat', 
-			readable:  joiner,
+			readable: joinerList,
 			unread,
 		});
 		result = result.toObject();
 		roomWss.forEach((ws, ownerId) => {
-            result.type = result.talker === ownerId ? "mine" : "other";
-            ws.send(JSON.stringify({ apply: req.body.roomId, type: "new", data: result }));
-        });
-        waitWss.forEach((ws, ownerId) => {
-            if(room.joiner.includes(ownerId)) {
-                ws.send(JSON.stringify({type: "added", roomId: req.body.roomId }));
-            }
-        });
+			result.type = result.talker === ownerId ? "mine" : "other";
+			ws.send(JSON.stringify({ apply: req.body.roomId, type: "new", data: result }));
+		});
+		waitWss.forEach((ws, ownerId) => {
+			if(joinerList.includes(ownerId)) {
+				ws.send(JSON.stringify({"type": "added", roomId: req.body.roomId }));
+			}
+		});
 		res.json({ "success": true, "result": result });
 	}catch(err) {
 		res.json({ "success": false, "error": err.message });
@@ -210,43 +201,43 @@ router.post('/api/upload', upload.single('attach'), async (req, res) => {
 	// 메세지를 전송하는데, 랜더링에 필요한 데이터를 같이 보내줌
 	try {
 		const room = await Room.findById(req.body.roomId).lean();
-		let joiner = []
-		room.joiner.forEach(elm => {
-			joiner.push(elm.joinerName)
-		})
-		const unread = [...joiner];
+		let joinerList = room.joiner.map((elm) => elm.joinerName);
+		const unread = [...joinerList];
 		unread.splice(unread.indexOf(req.session.userId), 1);
 		let result = await Message.create({
 			...req.body, 
 			talker: req.session.userId, 
 			data: 'file', 
 			content: "/files/" + req.query.roomId+"/" + req.file.filename,
-			readable : joiner,
+			readable : joinerList,
 			unread
 		});
 		result = result.toObject();
 		roomWss.forEach((ws, ownerId) => {
-            result.type = result.talker === ownerId ? "mine" : "other";
-            ws.send(JSON.stringify({ apply: req.body.roomId, type: "new", data: result }));
-        });
-        waitWss.forEach((ws, ownerId) => {
-            if(room.joiner.includes(ownerId)) {
-                ws.send(JSON.stringify({type: "added", roomId: req.body.roomId }));
-            }
-        });
+			result.type = result.talker === ownerId ? "mine" : "other";
+			ws.send(JSON.stringify({ apply: req.body.roomId, type: "new", data: result }));
+		});
+		waitWss.forEach((ws, ownerId) => {
+			if(joinerList.includes(ownerId)) {
+				ws.send(JSON.stringify({type: "added", roomId: req.body.roomId }));
+			}
+		});
 		res.json({ "success": true });
 	}catch(err) {
 		res.json({ "success": false });
 	}
 });
-router.get("/api/checkcount", async (req, resp)=>{
-    try {
-    let count = await Message.find({roomId : req.query.roomId , unread : req.session.userId}).countDocuments();
-    resp.json({success: true, count });
-    }catch(e) {
-        console.log(e);
-        resp.json({success: false});
-    }
+router.get("/api/checkcount", async (req, res)=>{
+	try {
+		let count = await Message.find({
+			roomId: req.query.roomId, 
+			unread: req.session.userId
+		}).countDocuments();
+		res.json({success: true, count });
+	}catch(e) {
+		console.log(e);
+		res.json({success: false});
+	}
 });
 
 module.exports = router;

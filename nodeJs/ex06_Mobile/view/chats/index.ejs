@@ -20,14 +20,14 @@
 			<input type="hidden" value="<%=userSession%>" class="userSession">
 			<div class="container between">
 				<section class="row between" style="align-items: center;">
-					<h3>개설된 방 목록<small>(<%=rooms.length%>)</small></h3>
-					<button onclick="isModal('flex')" class="addChat iconBtn"><i class="fi fi-sr-add"></i></button>
+					<h3>전체 채팅<small>(<%=rooms.length%>)</small></h3>
+					<button type="button" onclick="isModal('flex')" class="addChat iconBtn"><i class="fi fi-sr-add"></i></button>
 				</section>
 				<section>
 					<select class="roomSel" onchange="roomSel()">
-						<option value="allList" data-roomSel="allList" selected>전체 목록</option>
-						<option value="joinList" data-roomSel="joinList">참여 중인 목록</option>
-						<option value="notList" data-roomSel="notList">미참여 목록</option>
+						<option value="allList" data-name="전체 채팅"selected>전체 채팅</option>
+						<option value="joinList" data-name="참여 중인 채팅">참여 중인 채팅</option>
+						<option value="notList" data-name="미참여 채팅">미참여 채팅</option>
 					</select>
 				</section>
 				</div>
@@ -40,7 +40,7 @@
 									<% if(room.type=='private') { %>
 										<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span id="cnt_<%room._id%>" class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
 									<span><%=room.owner %></span>
@@ -59,7 +59,7 @@
 									<% if(room.type=='private') { %>
 									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span id="cnt_<%room._id%>" class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
 									<span><%=room.owner %></span>
@@ -76,7 +76,7 @@
 									<% if(room.type=='private') { %>
 									<span class="private"><i class="fi fi-sr-lock"></i></span>
 									<% } %> 
-									<span id="cnt_<%room._id%>" class="newCnt"><%= room.count%></span>
+									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
 								</div>
 								<div class="roomInfo row between">
 									<span><%=room.owner%></span>
@@ -121,12 +121,6 @@
 		</div>
 	</main>
 	<script>
-		let newCnt = document.querySelectorAll('.newCnt');
-		for(let i =0; i<newCnt.length; i++) {
-			if(newCnt[i].textContent > 0){
-				newCnt[i].classList.add('active');
-			}
-		}
 		function roomSel() {
 			let roomSel = document.querySelector('.roomSel');
 			let selVal = roomSel.options[roomSel.selectedIndex].value;
@@ -135,6 +129,9 @@
 				elm.classList.remove('active');
 			})
 			document.querySelector('#'+selVal).classList.add('active');
+			let selName = roomSel.options[roomSel.selectedIndex].dataset.name;
+			let rooms = document.querySelectorAll(`.active .card`)
+			document.querySelector('h3').innerHTML = `${selName}<small>(${rooms.length})</small>`
 		}
 		function isModal(e) {
 			document.querySelector('#modal').style.display = e;
@@ -145,7 +142,6 @@
 			let userSession = document.querySelector('.userSession').value;
 			switch(message.type) {
 				case 'new':
-					// 토스트 띄우고 몇 초 뒤에 reload로 바꾸기
 					if(message.session !== userSession){
 						if(confirm('새로 개설된 채팅방이 있습니다')) {
 							location.reload();
@@ -154,6 +150,7 @@
 					break;
 				case "added" :
 					checkCount(message.roomId);
+					newCnt();
 					break;
 			}
 		}
@@ -164,6 +161,17 @@
 				document.querySelector("#cnt_"+roomId).innerHTML = json.count;
 			}
 		}
+		function newCnt() {
+			let newCnt = document.querySelectorAll('.newCnt');
+			for(let i =0; i<newCnt.length; i++) {
+				if(newCnt[i].textContent > 0){
+					newCnt[i].classList.add('active');
+				}else {
+					newCnt[i].classList.remove('active');
+				}
+			}
+		}
+		newCnt();
 	</script>
 </body>
 </html>

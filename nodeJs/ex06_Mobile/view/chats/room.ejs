@@ -15,11 +15,19 @@
 <body>
 	<header>
 		<div class="headerLeft">
+			<div>
+				<a href="/chats" class="backBtn">
+					<button class="iconBtn"><i class="fi fi-rr-angle-left"></i></button>
+				</a>
+			</div>
 		</div>
 		<div class="headerCenter">
 			<h5><span class="roomTit"><%= room.title %></span><small>(<%=room.joiner.length%>)</small></h5>
 		</div>
 		<div class="headerRight">
+			<div>
+				<button class="iconBtn"><i class="fi fi-rr-menu-burger"></i></button>
+			</div>
 			<div style="display: none;" title="햄버거 메뉴">
 				<small class="owner"><%= room.owner %></small>
 				<div class="joinerList">

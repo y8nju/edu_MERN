@@ -1,33 +1,19 @@
 /* header */
-header .owner {
-	width: 10.3vw;
-	height: 10.3vw;
-	display: inline-block;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	line-height: 7vw;
-	border-radius: 50%;
-	background-color: var(--bgLight);
-	color: var(--gray);
-	padding: 1.3vw;
+header {
+	padding: 0;
+	gap: 3vw;
 }
-header .joinerList {
-	display: none;
-	max-width: 80vw;
-	position: absolute;
-	z-index: 500;
-	left: 11vw;
-	top: 14vw;
-	font-size: .8rem;
+header > :not(.headerCenter) {
+	width: 8%;
+}
+header .headerLeft {
+	text-align: right;
+}
+header .headerRight {
 	text-align: left;
-	border-radius: .4rem;
-	background-color: var(--bgLight);
-	box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-	padding: 3vw;
 }
-header .owner:hover ~ .joinerList {
-	display: block;
+header .iconBtn i {
+	font-size: 3.2vw;
 }
 header .headerCenter {
 	flex-grow: 1;
@@ -36,6 +22,7 @@ header .headerCenter {
 	line-height: 1;
     transform: none;
 }
+
 header .headerCenter h5 {
 	font-weight: lighter;
 }
