@@ -182,7 +182,7 @@ button:hover, .brn:hover {
 .card:hover {
 	box-shadow: 0.25rem 0.25rem var(--black);
 }
-.createAt {
+.createdAt {
 	font-size: .6rem;
 	color: var(--gray);
 	margin: 0.4rem 0;

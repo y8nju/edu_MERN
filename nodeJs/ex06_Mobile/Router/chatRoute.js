@@ -23,6 +23,7 @@ const upload = multer({
 
 router.use((req, res, next) => {
 	if(req.session.auth) {
+		res.locals.today = new Date();
 		next();
 	}else {
 		res.redirect('/')
@@ -50,15 +51,37 @@ router.ws('/room', (ws, req) => {
 });
 
 router.get('/', async (req, res)=> {
-	const rooms = await Room.find({}).sort('-createdAt').populate({path: 'key', match : {unread : req.session.userId}}).lean();
+	const rooms = await Room.find({}).sort('-createdAt').populate('key').lean();
 	rooms.forEach((room) => {
-		room.count = room.key.length;
-	})
-	const joinRooms = await Room.find({'joiner.joinerName': req.session.userId}).sort('-createdAt').populate({path: 'key', match : {unread : req.session.userId}}).lean();
+		room.key.sort((a, b) => -(a.createdAt - b.createdAt));
+		let lastMsg = room.key.filter(key => {
+			return key.readable.includes(req.session.userId)
+		})
+		room.lastMsg = lastMsg[0];
+		let count = room.key.filter(key => {
+			if(key.unread.includes(req.session.userId)) {
+				return true;
+			}
+		});
+		room.count = count.length;
+	});
+	// const joinRooms = await Room.find({'joiner.joinerName': req.session.userId}).sort('-createdAt').populate({path: 'key', match : {unread : req.session.userId}}).lean();
+	const joinRooms = await Room.find({'joiner.joinerName': req.session.userId}).sort('-createdAt').populate('key').lean();
 	joinRooms.forEach((room) => {
-		room.count = room.key.length;
+		room.key.sort((a, b) => -(a.createdAt - b.createdAt));
+		let lastMsg = room.key.filter(key => {
+			return key.readable.includes(req.session.userId)
+		})
+		room.lastMsg = lastMsg[0];
+		let count = room.key.filter(key => {
+			if(key.unread.includes(req.session.userId)) {
+				return true;
+			}
+		});
+		room.count = count.length;
 	})
 	const notRooms =  await Room.find({'joiner.joinerName': {$ne:  req.session.userId}}).sort('-createdAt').lean();
+
 	// console.dir(joinRooms, {depth: 3});
 	res.locals.userSession = req.session.userId;
 	res.locals.rooms = rooms;
@@ -119,7 +142,6 @@ router.get('/room', async (req, res) => {
 	res.locals.messages = messages.map((one) => {
 		return { ...one, type : one.talker == req.session.userId ? "mine" : "other" };
 	});
-	res.locals.today = new Date();
 	res.render('chats/room');
 });
 
@@ -233,7 +255,17 @@ router.get("/api/checkcount", async (req, res)=>{
 			roomId: req.query.roomId, 
 			unread: req.session.userId
 		}).countDocuments();
-		res.json({success: true, count });
+
+		res.json({success: true, count});
+	}catch(e) {
+		console.log(e);
+		res.json({success: false});
+	}
+});
+router.get("/api/lastMsg", async (req, res)=>{
+	try {
+		let lastMsg = await Message.find({roomId: req.query.roomId}).sort('-createdAt').limit(1).lean();
+		res.json({success: true, lastMsg});
 	}catch(e) {
 		console.log(e);
 		res.json({success: false});

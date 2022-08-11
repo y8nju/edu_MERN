@@ -20,67 +20,104 @@
 			<input type="hidden" value="<%=userSession%>" class="userSession">
 			<div class="container between">
 				<section class="row between" style="align-items: center;">
-					<h3>전체 채팅<small>(<%=rooms.length%>)</small></h3>
+					<h3>참여 중인 채팅<small>(<%=joinRooms.length%>)</small></h3>
 					<button type="button" onclick="isModal('flex')" class="addChat iconBtn"><i class="fi fi-sr-add"></i></button>
 				</section>
 				<section>
 					<select class="roomSel" onchange="roomSel()">
-						<option value="allList" data-name="전체 채팅"selected>전체 채팅</option>
-						<option value="joinList" data-name="참여 중인 채팅">참여 중인 채팅</option>
+						<option value="joinList" data-name="참여 중인 채팅" selected>참여 중인 채팅</option>
+						<option value="allList" data-name="전체 채팅">전체 채팅</option>
 						<option value="notList" data-name="미참여 채팅">미참여 채팅</option>
 					</select>
 				</section>
 				</div>
 				<section class="roomListArea">
-					<div class="roomList active" id="allList">
-						<% rooms.forEach(room => { %> 
-							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
-								<div class="row">
-									<span class="roomTit"><%=room.title%> <small><%=room.joiner.length%></small></span> 
-									<% if(room.type=='private') { %>
-										<span class="private"><i class="fi fi-sr-lock"></i></span>
-									<% } %> 
-									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
-								</div>
-								<div class="roomInfo row between">
-									<span><%=room.owner %></span>
-									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
-								</div>
-							</article>
-						<% }) %>
-					</div>
-					<div class="roomList" id="joinList">
+					<div class="roomList active" id="joinList" title="참여 중인 채팅">
 						<% joinRooms.forEach(room => { %> 
-							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
-								<div class="row">
-									<span class="roomTit">
-										<%=room.title%><small>(<%=room.joiner.length%>)</small>
-									</span> 
-									<% if(room.type=='private') { %>
-									<span class="private"><i class="fi fi-sr-lock"></i></span>
-									<% } %> 
-									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
+							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+								<div class="row center owner">
+									<span><%=room.owner%></span>
 								</div>
-								<div class="roomInfo row between">
-									<span><%=room.owner %></span>
-									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+								<div class="grow1">
+									<div class="row">
+										<span class="roomTit"><%=room.title%> <small><%=room.joiner.length%></small></span> 
+										<% if(room.type=='private') { %>
+										<span class="private"><i class="fi fi-sr-lock"></i></span>
+										<% } %> 
+										<span class="createdAt">
+											<% if(new Date(new Object(room.lastMsg).createdAt).toLocaleDateString() == today.toLocaleDateString()) { %> 
+												<%= new Object(room.lastMsg).createdAt.toLocaleTimeString().substring(0, new Object(room.lastMsg).createdAt.toLocaleTimeString().lastIndexOf(':'))%>
+											<% }else { %> 
+												<%= new Object(room.lastMsg).createdAt ? new Date(new Object(room.lastMsg).createdAt).toLocaleDateString().slice(6) : '' %>
+											<% } %>
+										</span>
+									</div>
+									<div class="roomInfo row between">
+										<span id="lastMsg_<%=room._id%>" class="lastMsg">
+											<% if(new Object(room.lastMsg).data == 'chat') { %>
+												<%= new Object(room.lastMsg).content ?? '' %>
+											<% }else if(new Object(room.lastMsg).data == 'file') { %> 
+												사진
+											<% } %>
+										</span>
+										<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
+									</div>
 								</div>
 							</article>
 						<% }) %>
 					</div>
-					<div class="roomList" id="notList">
-						<% notRooms.forEach(room => { %> 
-							<article class="card" onclick="location.href='/chats/room?_id=<%= room._id %>'">
-								<div class="row">
-									<span class="roomTit"><%=room.title%><small>(<%=room.joiner.length%>)</small></span> 
-									<% if(room.type=='private') { %>
-									<span class="private"><i class="fi fi-sr-lock"></i></span>
-									<% } %> 
-									<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
-								</div>
-								<div class="roomInfo row between">
+					<div class="roomList" id="allList" title="전체 채팅">
+						<% rooms.forEach(room => { %> 
+							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+								<div class="row center owner">
 									<span><%=room.owner%></span>
-									<span class="createAt"><%=room.createdAt.toLocaleDateString()%></span>
+								</div>
+								<div class="grow1">
+									<div class="row">
+										<span class="roomTit"><%=room.title%> <small><%=room.joiner.length%></small></span> 
+										<% if(room.type=='private') { %>
+										<span class="private"><i class="fi fi-sr-lock"></i></span>
+										<% } %> 
+										<span class="createdAt">
+											<% if(new Date(new Object(room.lastMsg).createdAt).toLocaleDateString() == today.toLocaleDateString()) { %> 
+												<%= new Object(room.lastMsg).createdAt.toLocaleTimeString().substring(0, new Object(room.lastMsg).createdAt.toLocaleTimeString().lastIndexOf(':'))%>
+											<% }else { %> 
+												<%= new Object(room.lastMsg).createdAt ? new Date(new Object(room.lastMsg).createdAt).toLocaleDateString().slice(6) : '' %>
+											<% } %>
+										</span>
+									</div>
+									<div class="roomInfo row between">
+										<span id="lastMsg_<%=room._id%>" class="lastMsg">
+											<% if(new Object(room.lastMsg).data == 'chat') { %>
+												<%= new Object(room.lastMsg).content ?? '' %>
+											<% }else if(new Object(room.lastMsg).data == 'file') { %> 
+												사진
+											<% } %>
+										</span>
+										<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
+									</div>
+								</div>
+							</article>
+						<% }) %>
+					</div>
+					<div class="roomList" id="notList" title="미참여 채팅">
+						<% notRooms.forEach(room => { %> 
+							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+								<div class="row center owner">
+									<span><%=room.owner%></span>
+								</div>
+								<div class="grow1">
+									<div class="row">
+										<span class="roomTit"><%=room.title%> <small><%=room.joiner.length%></small></span> 
+										<% if(room.type=='private') { %>
+										<span class="private"><i class="fi fi-sr-lock"></i></span>
+										<% } %> 
+										<span class="createdAt"></span>
+									</div>
+									<div class="roomInfo row between">
+										<span id="lastMsg_<%=room._id%>" class="lastMsg"></span>
+										<span id="cnt_<%=room._id%>" class="newCnt"></span>
+									</div>
 								</div>
 							</article>
 						<% }) %>
@@ -121,6 +158,7 @@
 		</div>
 	</main>
 	<script>
+		isNewCnt()
 		function roomSel() {
 			let roomSel = document.querySelector('.roomSel');
 			let selVal = roomSel.options[roomSel.selectedIndex].value;
@@ -150,7 +188,7 @@
 					break;
 				case "added" :
 					checkCount(message.roomId);
-					newCnt();
+					lastMsg(message.roomId);
 					break;
 			}
 		}
@@ -158,20 +196,36 @@
 			let response = await fetch("/chats/api/checkcount?roomId="+roomId);
 			let json = await response.json();
 			if(json.success) {
-				document.querySelector("#cnt_"+roomId).innerHTML = json.count;
+				document.querySelector(`#room_${roomId} .newCnt`).innerHTML = json.count;
+				isNewCnt();
 			}
 		}
-		function newCnt() {
-			let newCnt = document.querySelectorAll('.newCnt');
-			for(let i =0; i<newCnt.length; i++) {
-				if(newCnt[i].textContent > 0){
-					newCnt[i].classList.add('active');
-				}else {
-					newCnt[i].classList.remove('active');
+		async function lastMsg(roomId){
+			let response = await fetch("/chats/api/lastMsg?roomId="+roomId);
+			let json = await response.json();
+			if(json.success) {
+				let lastMsg = document.querySelector(`#room_${roomId} .lastMsg`);
+				let lastMsgTime = document.querySelector(`#room_${roomId} .createdAt`);
+				let msgType = json.lastMsg[0].data
+				if(msgType == 'chat') {
+					lastMsg.innerHTML = json.lastMsg[0].content;
+				lastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
+				} else if(msgType == 'file') {
+					lastMsg.innerHTML = '사진';
+				lastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
 				}
 			}
 		}
-		newCnt();
+		function isNewCnt() {
+			let newCnt = document.querySelectorAll('.newCnt');
+			for(cnt of newCnt) {
+				if(parseInt(cnt.textContent) > 0){
+					cnt.classList.add('active');
+				}else {
+					cnt.classList.remove('active');
+				}
+			}
+		}
 	</script>
 </body>
 </html>
