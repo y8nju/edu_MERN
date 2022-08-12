@@ -1,4 +1,4 @@
-#modal {
+.modal {
 	width: 100vw;
 	height: 100vh;
 	display: none;
@@ -14,21 +14,21 @@
 	background-color: rgba(0, 0, 0, .5);
 }
 
-#modal .modalContent {
+.modal .modalContent {
 	min-width: 80vw;
 	padding: 3vw 3.4vw;
 }
-#modal .modalContent:hover {
+.modal .modalContent:hover {
 	box-shadow: none;
 }
-#modal h3 {
+.modal h3 {
 	margin: 0;
 }
-#modal .modalFooter {
+.modal .modalFooter {
 	justify-content: flex-end;
 	margin-top: 1rem;
 }
-#modal .btn {
+.modal .btn {
 	font-size: .8rem;
 	font-weight: lighter;
 	border: transparent;
@@ -36,9 +36,12 @@
 	color: #fff;
 	padding: .4rem .6rem;
 }
-#modal .closeBtn {
+.modal .closeBtn {
 	background-color: var(--gray);
 }
-#modal .confirmBtn {
+.modal .confirmBtn {
 	background-color: var(--successColor);
+}
+.modal .btn:disabled {
+	background-color: var(--beige);
 }

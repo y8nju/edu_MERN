@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="/css/common/default.css">
 	<link rel="stylesheet" href="/css/common/header.css">
 	<link rel="stylesheet" href="/css/common/modal.css">
+	<link rel="stylesheet" href="/css/common/toast.css">
 	<link rel="stylesheet" href="/css/chats/home.css">
 	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 </head>
@@ -21,7 +22,7 @@
 			<div class="container between">
 				<section class="row between" style="align-items: center;">
 					<h3>참여 중인 채팅<small>(<%=joinRooms.length%>)</small></h3>
-					<button type="button" onclick="isModal('flex')" class="addChat iconBtn"><i class="fi fi-sr-add"></i></button>
+					<button type="button" onclick="newRoomModal('flex')" class="addChat iconBtn"><i class="fi fi-sr-add"></i></button>
 				</section>
 				<section>
 					<select class="roomSel" onchange="roomSel()">
@@ -34,6 +35,7 @@
 				<section class="roomListArea">
 					<div class="roomList active" id="joinList" title="참여 중인 채팅">
 						<% joinRooms.forEach(room => { %> 
+							<!-- 참여 중인 채팅방의 경우 비밀번호를 받지 않아도 됨 -->
 							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
 								<div class="row center owner">
 									<span><%=room.owner%></span>
@@ -68,7 +70,13 @@
 					</div>
 					<div class="roomList" id="allList" title="전체 채팅">
 						<% rooms.forEach(room => { %> 
-							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+							<article class="card row" onclick="
+								<% if(room.type=='public' || room.joinerList.includes(userSession)) { %>
+									location.href='/chats/room?_id=<%= room._id %>'
+								<% }else {%> 
+									pwChkModal('flex', '<%= room._id %>');
+								<% }%>
+								">
 								<div class="row center owner">
 									<span><%=room.owner%></span>
 								</div>
@@ -102,7 +110,13 @@
 					</div>
 					<div class="roomList" id="notList" title="미참여 채팅">
 						<% notRooms.forEach(room => { %> 
-							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+							<article class="card row" onclick="
+								<% if(!(room.type=='private')) { %>
+								location.href='/chats/room?_id=<%= room._id %>'
+								<% }else{%> 
+									pwChkModal('flex', '<%= room._id %>');
+								<% } %>
+								">
 								<div class="row center owner">
 									<span><%=room.owner%></span>
 								</div>
@@ -125,10 +139,10 @@
 				</div>
 			</div>
 		</div>
-		<div id="modal">
+		<div class="modal" id="newRoomModal" title="채팅방 개설 모달">
 			<article class="modalContent card">
 				<div class="row">
-					<button type="button" class="btn closeBtn" onclick="isModal('none')">닫기</button>
+					<button type="button" class="btn closeBtn" onclick="newRoomModal('none')">닫기</button>
 				</div>
 				<div class="modalTit">
 					<h3>채팅방개설</h3>
@@ -137,7 +151,7 @@
 					<form action="/chats/open" method="post">
 						<div>
 							<label for="title">
-								<input type="text" name="title" placeholder="채팅방 이름을 입력해주세요" id="title">
+								<input type="text" name="title" id="title" class="borderB" placeholder="채팅방 이름을 입력해주세요">
 							</label>
 						</div>
 						<div class="row privateChk">
@@ -156,6 +170,33 @@
 				</div>
 			</article>
 		</div>
+		<div class="modal" id="pwChkModal" title="비밀번호 체크 모달">
+			<article class="modalContent card">
+				<div class="row">
+					<button type="button" class="btn closeBtn" onclick="pwChkModal('none')">닫기</button>
+				</div>
+				<div class="modalTit">
+					<h3>비밀번호 확인</h3>
+				</div>
+				<div class="modalBody">
+					<form action="" onsubmit="return false">
+						<input type="hidden" name="_id" class="roomId">
+						<div>
+							<label for="pwChk">
+								<input type="password" name="pwChk" id="pwChk" class="borderB" placeholder="비밀번호를 입력해주세요" onchange="pwChkApi(event)">
+							</label>
+							<p class="pwMsg"></p>
+						</div>
+						<div class="row center">
+							<button type="submit" class="btn confirmBtn" disabled>확인</button>
+						</div>
+					</form>
+				</div>
+			</article>
+		</div>
+		<div class="toast">
+			<p class="toastTxt"></p>
+		</div>
 	</main>
 	<script>
 		isNewCnt()
@@ -171,8 +212,32 @@
 			let rooms = document.querySelectorAll(`.active .card`)
 			document.querySelector('h3').innerHTML = `${selName}<small>(${rooms.length})</small>`
 		}
-		function isModal(e) {
-			document.querySelector('#modal').style.display = e;
+		function newRoomModal(e) {
+			document.querySelector('#newRoomModal').style.display = e;
+		}
+		function pwChkModal(e, roomId) {
+			document.querySelector('#pwChkModal').style.display = e;
+			document.querySelector(`.roomId`).setAttribute('value', `${roomId}`);
+			document.querySelector(`#pwChkModal form`).setAttribute('action', `/chats/room?_id=${roomId}`)
+		}
+		async function pwChkApi(evt) {
+			let pwChkBtn = document.querySelector(`#pwChkModal .confirmBtn`);
+			let roomId = document.querySelector(`.roomId`).value;
+			let pwMsg = document.querySelector('.pwMsg')
+			let response = await fetch(`/chats/api/pwChk?_id=${roomId}&password=${evt.target.value}`, {method :"get"});
+			let json = await response.json();
+			console.log(json)
+			if(json.success) {
+				pwChkBtn.disabled = false;
+				pwMsg.innerHTML = '';
+				document.querySelector(`#pwChkModal form`).setAttribute('onsubmit', '');
+			}else{
+				pwChkBtn.disabled = true;
+				pwMsg.innerHTML = '⩗ 비밀번호가 일치하지 않습니다';
+				if(evt.target.value.trim().length == 0) {
+					pwMsg.innerHTML = '';
+				}
+			}
 		}
 		const ws = new WebSocket(`ws://${location.host}/chats/sse`);
 		ws.onmessage = function(recv) {
@@ -181,14 +246,25 @@
 			switch(message.type) {
 				case 'new':
 					if(message.session !== userSession){
-						if(confirm('새로 개설된 채팅방이 있습니다')) {
+						document.querySelector('.toast').style.display = 'block';
+						document.querySelector('.toastTxt').innerHTML = '새로 개설된 채팅방이 있습니다';
+						setTimeout(function() {
 							location.reload();
-						}
+						}, 2000);
 					}
 					break;
 				case "added" :
 					checkCount(message.roomId);
 					lastMsg(message.roomId);
+					break;
+				case 'delete' :
+					if(message.session !== userSession){
+						document.querySelector('.toast').style.display = 'block';
+						document.querySelector('.toastTxt').innerHTML = `참여 중인 ${message.roomTitle}채팅이 삭제되었습니다`;
+						setTimeout(function() {
+							location.reload();
+						}, 2000);
+					}
 					break;
 			}
 		}

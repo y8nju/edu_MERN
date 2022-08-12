@@ -26,23 +26,50 @@
 		</div>
 		<div class="headerRight">
 			<div>
-				<button class="iconBtn"><i class="fi fi-rr-menu-burger"></i></button>
+				<button type="button" class="iconBtn" onclick="navShow()"><i class="fi fi-rr-menu-burger"></i></button>
 			</div>
-			<div style="display: none;" title="햄버거 메뉴">
-				<small class="owner"><%= room.owner %></small>
-				<div class="joinerList">
-					<% room.joiner.forEach(elm => { %>
-						<span><%=elm.joinerName%></span>
-					<%})%>
+			<nav title="메뉴">
+				<div class="menu col">
+					<div class="menuHeader">
+						<button type="button" class="iconBtn closeBtn" onclick="navHide()"><i class="fi fi-rr-cross"></i></button>
+						<h3><%= room.title %></h3>
+						<p class="joinerNum"><span><%=room.joiner.length%></span> 명 참여중</p>
+						<dl>
+							<dt>개설자</dt>
+							<dd><%= room.owner %></dd>
+							<dt>개설일</dt>
+							<dd><%= room.createdAt.toLocaleDateString() %></dd>
+						</dl>
+						<% if(room.owner == userSession) {%>
+							<a href="/chats/delete?_id=<%= room._id %>" class="roomDelLink">채팅방 삭제하기</a>
+						<% } %> 
+					</div>
+					<div class="joinerList">
+						<h3>참여자</h3>
+						<% room.joiner.forEach(elm => { %>
+						<p class="user row">
+							<span class="icon"><i class="fi fi-rr-portrait"></i></span>
+							<% if(elm.joinerName == userSession) {%>
+								<span class="userMe">나</span>
+							<% }%>
+							<span><%=elm.joinerName%></span>
+						</p>
+						<%})%>
+					</div>
+					<div class="menuFooter">
+						<a href="/chats/exit?_id=<%= room._id %>" class="row">
+							<span class="iconBtn"><i class="fi fi-rr-exit"></i></span>
+							<span>채팅 나가기</span>
+						</a>
+					</div>
 				</div>
-				<a href="/chats/exit?_id=<%= room._id %>">
-					<button class="iconBtn"><i class="fi fi-rr-exit"></i></button>
-				</a>
-			</div>
+				<div class="overlay" onclick="navHide()"></div>
+			</nav>
 		</div>
 	</header>
 	<main>
 		<div id="room" class="col">
+			<input type="hidden" class="userSession" value="<%= userSession %>">
 			<section class="chatView grow1 col">
 				<% messages.forEach(message => { %>
 					<% if(message.data !== 'serverMsg') {%> 
@@ -86,6 +113,13 @@
 		window.onload = function() {
 			rebalanceHeight();
 		}
+		// nav action
+		function navShow() {
+			document.querySelector('nav').classList.add('on');
+		}
+		function navHide() {
+			document.querySelector('nav').classList.remove('on');
+		}
 		// 메세지 확인 표시
 		let newCnt = document.querySelectorAll('.unreadCnt');
 		for(let i =0; i<newCnt.length; i++) {
@@ -116,7 +150,7 @@
 			msgFiled.disabled = false;
 			document.querySelector('.filePreview').style.display = 'none'
 		}
-		
+		// file preview
 		async function filePreview(evt) {
 			let msgFiled = document.querySelector(`.messageWrite textarea`);
 			msgFiled.setAttribute('placeholder', '');
@@ -130,6 +164,7 @@
 				}
 			}
 		}
+		// message 전송
 		async function messageSend() {
 			let writeMsg = document.querySelector('#writeMsg')
 			
@@ -151,6 +186,7 @@
 			});
 			writeMsg.value = '';
 		}
+		// room 안에서 이루어지는 webSocket
 		const roomId = document.querySelector('#writeMsg').dataset.roomId;
 		const ws = new WebSocket(`ws://${location.host}/chats/room?_id=${roomId}`);
 		ws.onmessage = function(rst) {
@@ -158,33 +194,52 @@
 			if(msg.apply !== roomId) {
 				return;
 			}
-				let div = document.createElement("div");
-				div.classList.add("serverMsg");
+			let div = document.createElement("div");
+			div.classList.add("serverMsg");
 			switch(msg.type) {
 				case 'join':
 					div.appendChild(document.createTextNode(msg.id+"님이 입장하였습니다"));
 					document.querySelector('.chatView').appendChild(div);
-					document.querySelector('.joinerList').innerHTML = msg.joinerList.join(', ');
-					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`;
+					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`
+					document.querySelector(`.joinerNum span`).innerHTML = `${msg.joinerList.length}`
+					let newJoiner = msg.joinerList[msg.joinerList.length - 1];
+					let newJoinerHtml = `
+						<p class="user row">
+							<span class="icon"><i class="fi fi-rr-portrait"></i></span>
+							<span>${newJoiner}</span>
+						</p>
+					`;
+					document.querySelector('.joinerList').insertAdjacentHTML(
+						'beforeend', newJoinerHtml
+					);
 					break;
 				case 'exit':
 					div.appendChild(document.createTextNode(msg.id+"님이 퇴장하였습니다"));
 					div.classList.add("serverMsg");
 					document.querySelector('.chatView').appendChild(div);
-					// 나간 유저 찾아서 날리기
-					// let exitUser = joinerList.includes(msg.id);
-					// joinerList.slice()
-					document.querySelector('.joinerList').innerHTML = msg.joinerList.join(', ');
 					document.querySelector(`.headerCenter small`).innerHTML = `(${msg.joinerList.length})`
+					document.querySelector(`.joinerNum span`).innerHTML = `${msg.joinerList.length}`
+					let joinerReloadHtml = `
+						<h3>참여자</h3>
+						<% room.joiner.forEach(elm => { %>
+						<p class="user row">
+							<span class="icon"><i class="fi fi-rr-portrait"></i></span>
+							<% if(elm.joinerName == userSession) {%>
+								<span class="userMe">나</span>
+							<% }%>
+							<span><%=elm.joinerName%></span>
+						</p>
+						<%})%>
+					`
+					document.querySelector('.joinerList').innerHTML = joinerReloadHtml;
 					break;
 				case 'new': 
-				console.log(msg)
-						let content;
-						if (msg.data.data == "chat") {
-							content = msg.data.content;
-						} else {
-							content = `<img src="${msg.data.content}"/>`;
-						}
+					let content;
+					if (msg.data.data == "chat") {
+						content = msg.data.content;
+					} else {
+						content = `<img src="${msg.data.content}"/>`;
+					}
 					let html = `
 						<div class="msgArea row ${msg.data.type}">
 							<div class="msgContent">
@@ -196,10 +251,21 @@
 								<div class="time">${new Date(msg.data.createdAt).toLocaleTimeString()}</div>
 							</div>
 						</div>
-					`
+					`;
 					document.querySelector('.chatView').insertAdjacentHTML(
 						'beforeend', html
 					);
+					break;
+				case 'delete':
+					let userSession = document.querySelector('.userSession').value;
+					console.log(msg.session == userSession)
+					console.log(msg.session, userSession)
+					if(msg.session !== userSession){
+						if(confirm(`채팅이 삭제되었습니다`)) {
+							location.reload();
+						}
+					}
+					break;
 			}
 			rebalanceHeight()
 			// console.log(msg);
