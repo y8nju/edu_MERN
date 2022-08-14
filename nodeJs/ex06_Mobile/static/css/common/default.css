@@ -1,10 +1,5 @@
 /* common */
-@font-face {
-	font-family: 'S-CoreDream-3Light';
-	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-}
+@import 'https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css';
 @font-face {
 	font-family: 'ONE-Mobile-Title';
 	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-Title.woff') format('woff');
@@ -12,10 +7,10 @@
 	font-style: normal;
 }
 @font-face {
-    font-family: 'Manse';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Manse.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'Manse';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Manse.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
 }
 * {
 	margin: 0;
@@ -44,7 +39,7 @@
 }
 
 body {
-	font-family: 'S-CoreDream-3Light';
+	font-family: suit, sans-serif;
 	font-size: 4.2vw;
 	color: var(--black);
 	background-color: var(--bg);
@@ -108,12 +103,12 @@ input:focus, textarea:focus, select:focus, button:focus {
 }
 .customRadio::before {
 	content: '';
-    width: 3.2vw;
-    height: 3.2vw;
-    display: inline-block;
+	width: 3.2vw;
+	height: 3.2vw;
+	display: inline-block;
 	border-radius: 50%;
-    border: var(--border);
-    background: #fff;
+	border: var(--border);
+	background: #fff;
 }
 .customRadio:checked::before {
 	border-color: var(--successColor);
@@ -130,7 +125,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 	display: inline-block;
 }
 button {
-	font-weight: bold;
+	font-weight: 600;
 	white-space: nowrap;
 	background-color: var(--ivory);
 	padding: 4.2vw;
@@ -140,9 +135,9 @@ button {
 .iconBtn {
 	height: fit-content;
 	line-height: 0;
-    border-color: transparent;
-    background-color: transparent;
-    padding: 1vw;
+	border-color: transparent;
+	background-color: transparent;
+	padding: 1vw;
 }
 button:hover, .brn:hover {
 	background-color: var(--beige);

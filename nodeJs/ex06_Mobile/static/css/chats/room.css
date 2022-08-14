@@ -129,7 +129,7 @@ main {
 }
 .messageWrite textarea::placeholder {
 	font-size: .9rem;
-	font-weight: lighter;
+	font-weight: 300;
 }
 .messageWrite textarea:focus {
 	outline: none;
