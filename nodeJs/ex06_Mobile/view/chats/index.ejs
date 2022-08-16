@@ -36,7 +36,7 @@
 					<div class="roomList active" id="joinList" title="참여 중인 채팅">
 						<% joinRooms.forEach(room => { %> 
 							<!-- 참여 중인 채팅방의 경우 비밀번호를 받지 않아도 됨 -->
-							<article class="card row" onclick="location.href='/chats/room?_id=<%= room._id %>'">
+							<article class="card row" id="room_<%= room._id %>" onclick="location.href='/chats/room?_id=<%= room._id %>'">
 								<div class="row center owner">
 									<span><%=room.owner%></span>
 								</div>
@@ -55,14 +55,14 @@
 										</span>
 									</div>
 									<div class="roomInfo row between">
-										<span id="lastMsg_<%=room._id%>" class="lastMsg">
+										<span class="lastMsg">
 											<% if(new Object(room.lastMsg).data == 'chat') { %>
 												<%= new Object(room.lastMsg).content ?? '' %>
 											<% }else if(new Object(room.lastMsg).data == 'file') { %> 
 												사진
 											<% } %>
 										</span>
-										<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
+										<span class="newCnt"><%= room.count%></span>
 									</div>
 								</div>
 							</article>
@@ -70,7 +70,7 @@
 					</div>
 					<div class="roomList" id="allList" title="전체 채팅">
 						<% rooms.forEach(room => { %> 
-							<article class="card row" onclick="
+							<article class="card row" id="allRoom_<%= room._id %>" onclick="
 								<% if(room.type=='public' || room.joinerList.includes(userSession)) { %>
 									location.href='/chats/room?_id=<%= room._id %>'
 								<% }else {%> 
@@ -95,14 +95,14 @@
 										</span>
 									</div>
 									<div class="roomInfo row between">
-										<span id="lastMsg_<%=room._id%>" class="lastMsg">
+										<span class="lastMsg">
 											<% if(new Object(room.lastMsg).data == 'chat') { %>
 												<%= new Object(room.lastMsg).content ?? '' %>
 											<% }else if(new Object(room.lastMsg).data == 'file') { %> 
 												사진
 											<% } %>
 										</span>
-										<span id="cnt_<%=room._id%>" class="newCnt"><%= room.count%></span>
+										<span class="newCnt"><%= room.count%></span>
 									</div>
 								</div>
 							</article>
@@ -129,8 +129,8 @@
 										<span class="createdAt"></span>
 									</div>
 									<div class="roomInfo row between">
-										<span id="lastMsg_<%=room._id%>" class="lastMsg"></span>
-										<span id="cnt_<%=room._id%>" class="newCnt"></span>
+										<span class="lastMsg"></span>
+										<span class="newCnt"></span>
 									</div>
 								</div>
 							</article>
@@ -273,6 +273,7 @@
 			let json = await response.json();
 			if(json.success) {
 				document.querySelector(`#room_${roomId} .newCnt`).innerHTML = json.count;
+				document.querySelector(`#allRoom_${roomId} .newCnt`).innerHTML = json.count;
 				isNewCnt();
 			}
 		}
@@ -282,13 +283,19 @@
 			if(json.success) {
 				let lastMsg = document.querySelector(`#room_${roomId} .lastMsg`);
 				let lastMsgTime = document.querySelector(`#room_${roomId} .createdAt`);
+				let allLastMsg = document.querySelector(`#allRoom_${roomId} .lastMsg`);
+				let allLastMsgTime = document.querySelector(`#allRoom_${roomId} .createdAt`);
 				let msgType = json.lastMsg[0].data
 				if(msgType == 'chat') {
 					lastMsg.innerHTML = json.lastMsg[0].content;
-				lastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
+					lastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
+					allLastMsg.innerHTML = json.lastMsg[0].content;
+					allLastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
 				} else if(msgType == 'file') {
 					lastMsg.innerHTML = '사진';
-				lastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
+					lastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
+					allLastMsg.innerHTML = '사진';
+					allLastMsgTime.innerHTML = new Date(json.lastMsg[0].createdAt).toLocaleTimeString().substring(0, new Date(json.lastMsg[0].createdAt).toLocaleTimeString().lastIndexOf(':'))
 				}
 			}
 		}
