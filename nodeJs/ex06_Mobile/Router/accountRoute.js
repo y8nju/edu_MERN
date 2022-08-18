@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const accounts = require('../collections/accounts');
+const Account = require('../Models/accounts');
 
 router.route('/login')
 	.get((req, res) => {
@@ -19,31 +19,35 @@ router.route('/login')
 		// 	res.render('accounts/login', {msg: '⩗ 계정과 비밀번호를 확인하세요'});
 		// }
 	})
-/* 	
+	
 router.route('/signup')
 	.get((req, res) => {
 		res.render('accounts/signup', {msg: ""})
 	})
 	.post(async (req, res) => {
-		let birthDay = req.body.birth.split('-');
 		const accuontData = {
 			id: req.body.id,
 			password: req.body.password,
-			name: req.body.name,
-			email: req.body.email,
-			contact: req.body.contact,
-			birth: {
-				year: birthDay[0],
-				month: birthDay[1],
-				date: birthDay[2]
-			}
+			email: req.body.email
 		}
-		let getId = await accounts.findById(req.body.id);
+		let getId = await Account.findById(req.body.id);
 		if(!getId){
-			await accounts.insertOne(accuontData);
+			await Account.insertOne(accuontData);
 			// console.table(result)
 			res.render('accounts/signComplete', {accuontData});
 		}
 	})
- */
+
+router.get("/idCheck", async(req, res) => {
+	let found = await Account.find({id: req.query.id});
+	console.log(req.query.id)
+	const obj = {};
+	if(found) {
+		obj.success = false;
+	}else {
+		obj.success = true;
+	}
+	res.json(obj);
+})
+
 module.exports = router;
