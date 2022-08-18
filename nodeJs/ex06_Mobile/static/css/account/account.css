@@ -5,7 +5,10 @@ input {
 	padding: 2.6vw 3.8vw;
 }
 label {
-	display: inline-block;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
 	font-size: 1.1rem;
 	font-weight: 600;
 	margin-bottom: 1.7vw;
@@ -30,6 +33,7 @@ header {
 header .headerRight a {
 	text-decoration: underline;
 }
+
 .loginForm > div {
 	margin-bottom: 6vw;
 }

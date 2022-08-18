@@ -42,10 +42,10 @@ router.get("/idCheck", async(req, res) => {
 	let found = await Account.find({id: req.query.id});
 	console.log(req.query.id)
 	const obj = {};
-	if(found) {
-		obj.success = false;
-	}else {
+	if(!found) {
 		obj.success = true;
+	}else {
+		obj.success = false;
 	}
 	res.json(obj);
 })
